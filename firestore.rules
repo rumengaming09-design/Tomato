@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidReservation(data) {
+      return data.keys().hasAll(['name', 'phone', 'guests', 'date', 'time', 'location', 'duration', 'affectedSlots', 'createdAt']) 
+        && data.keys().size() == 9
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.phone is string && data.phone.size() >= 5 && data.phone.size() <= 20
+        && data.guests is number && data.guests > 0 && data.guests <= 50
+        && data.date is string && data.date.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && data.time is string && data.time.matches('^\\d{2}:\\d{2}$')
+        && data.location in ['hall', 'garden']
+        && data.duration is string
+        && data.affectedSlots is list
+        && data.createdAt == request.time;
+    }
+
+    function isValidCapacity(data) {
+      // Allow only slots_hall and slots_garden
+      return data.keys().hasAny(['slots_hall', 'slots_garden'])
+        && (data.get('slots_hall', {}) is map)
+        && (data.get('slots_garden', {}) is map);
+    }
+
+    match /reservations/{resId} {
+      allow create: if isValidReservation(incoming());
+      allow read: if true;
+      allow delete: if true;
+    }
+
+    match /daily_capacity/{date} {
+      allow get: if isValidId(date);
+      allow list: if false;
+      allow create, update: if isValidId(date) && isValidCapacity(incoming());
+    }
+  }
+}

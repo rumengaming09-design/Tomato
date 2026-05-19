@@ -1,0 +1,6 @@
+{
+  "name": "Tomato | Plovdiv's Aesthetic Gem",
+  "description": "An aesthetic modern restaurant in the heart of Plovdiv with a unique jazz vibe, serving masterfully cooked steaks, tapas, and fine wine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

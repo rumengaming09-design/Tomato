@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "reservation": {
+      "title": "Reservation",
+      "description": "A table reservation at Tomato",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "guests": { "type": "integer" },
+        "date": { "type": "string", "format": "date" },
+        "time": { "type": "string" },
+        "location": { "type": "string", "enum": ["hall", "garden"] },
+        "duration": { "type": "string" },
+        "affectedSlots": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "guests", "date", "time", "location", "duration", "affectedSlots", "createdAt"]
+    },
+    "dailyCapacity": {
+      "title": "Daily Capacity",
+      "description": "Tracking booked spots per day and time slot",
+      "type": "object",
+      "properties": {
+        "slots_hall": { 
+          "type": "object",
+          "description": "Map of hall time slots to number of booked guests"
+        },
+        "slots_garden": { 
+          "type": "object",
+          "description": "Map of garden time slots to number of booked guests"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/reservations/{resId}": {
+      "schema": "reservation",
+      "description": "Collection of all individual reservations"
+    },
+    "/daily_capacity/{date}": {
+      "schema": "dailyCapacity",
+      "description": "Tracking total booked persons per date (YYYY-MM-DD)"
+    }
+  }
+}
