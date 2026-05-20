@@ -20,7 +20,9 @@ import {
   Calendar,
   Users,
   CalendarCheck,
-  GlassWater
+  GlassWater,
+  Trash2,
+  AlertTriangle
 } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { db, handleFirestoreError, OperationType } from "./lib/firebase";
@@ -39,8 +41,7 @@ import {
 
 const CAPACITIES: Record<string, number> = {
   hall: 70,
-  garden: 30,
-  bar: 20
+  garden: 30
 };
 const OWNER_PHONE = "089 637 0777";
 
@@ -70,16 +71,10 @@ const LANGUAGES = {
         name: 'Градина',
         desc: "Нашата градина е истински оазис сред шума на града. Със своите 30 места, тя предлага тишина и свежест през топлите летни вечери. Пространството може да се затваря в студени дни, за да се поддържа приятна атмосфера. Зеленината и дискретното осветление създават приказна обстановка за романтична вечеря или спокойна среща с приятели. Това е нашата зала за пушачи.",
         features: ["30 места", "Свежа растителност", "Дискретно осветление"]
-      },
-      { 
-        id: 'vip', 
-        name: 'Бар',
-        desc: "Нашият Бар е мястото, където изкуството на коктейлите се среща с дълбокия звук на джаза. В една дискретна и затъмнена обстановка, ние предлагаме селекция от премиум напитки и авторски миксове, създадени с внимание към всеки детайл. Това е идеалното пространство за тези, които ценят спокойния разговор и висококачественото питие в уютна и изискана обстановка.",
-        features: ["20 места", "Авторски коктейли", "Премиум алкохол", "Дискретна джаз обстановка"]
       }
     ],
-    privateRoomDesc: "Нашият Бар е мястото, където изкуството на коктейлите се среща с дълбокия звук на джаза. Идеалното пространство за тези, които ценят спокойния разговор и висококачественото питие в уютна джаз обстановка.",
-    privateRoomFeatures: ["20 места", "Авторски коктейли", "Премиум алкохол", "Дискретна обстановка"],
+    privateRoomDesc: "Нашата градина е истински оазис сред шума на града. Идеалното пространство за тези, които ценят спокойния разговор и свежия въздух в уютна джаз обстановка.",
+    privateRoomFeatures: ["30 места", "Свежа растителност", "Дискретно осветление"],
     vipAtmosphere: [
       {
         title: "Кехлибарен Сияние",
@@ -148,7 +143,6 @@ const LANGUAGES = {
     confirmRes: "Потвърди резервацията",
     locationHall: "Зала",
     locationGarden: "Градина",
-    locationBar: "Бар",
     onlineResStat: "Вземете 10% отстъпка за резервации през сайта!",
     reservationsTab: "Резервации",
     resPasswordLabel: "Парола за достъп",
@@ -320,6 +314,7 @@ const LANGUAGES = {
       }
     ],
     gallery: [
+      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Майсторско приготвяне" },
       { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "Нови Моменти" },
       { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Интериор Tomato" },
       { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Вечерна магия" },
@@ -375,16 +370,10 @@ const LANGUAGES = {
         name: 'Garden',
         desc: "Our garden is a true oasis amidst the city noise. With its 30 seats, it offers peace and freshness during warm summer evenings. The space can be enclosed during colder days to maintain a pleasant atmosphere. The greenery and discrete lighting create a fairytale setting for a romantic dinner or a quiet gathering. This is our smoking area.",
         features: ["30 Seats", "Lush Greenery", "Mood Lighting"]
-      },
-      { 
-        id: 'vip', 
-        name: 'Bar',
-        desc: "Our Bar is where the art of mixology meets the deep sounds of jazz. In a discreet and dim-lit setting, we offer a selection of premium spirits and signature blends, crafted with attention to every detail. It is the perfect space for those who appreciate quiet conversation and a high-quality drink in a cozy and refined environment.",
-        features: ["20 Seats", "Signature Cocktails", "Premium Spirits", "Discreet Jazz Vibe"]
       }
     ],
-    privateRoomDesc: "Our Bar is where the art of mixology meets the deep sounds of jazz. The perfect space for those who appreciate quiet conversation and a high-quality drink in a cozy jazz environment.",
-    privateRoomFeatures: ["20 Seats", "Signature Cocktails", "Premium Spirits", "Discreet Vibe"],
+    privateRoomDesc: "Our garden is a true oasis amidst the city noise. The perfect space for those who appreciate quiet conversation and fresh air in a cozy jazz environment.",
+    privateRoomFeatures: ["30 Seats", "Lush Greenery", "Mood Lighting"],
     vipAtmosphere: [
       {
         title: "Amber Glow",
@@ -453,7 +442,6 @@ const LANGUAGES = {
     confirmRes: "Confirm Reservation",
     locationHall: "Main Hall",
     locationGarden: "Garden",
-    locationBar: "Bar",
     onlineResStat: "Get 10% OFF for reservations made through the website!",
     reservationsTab: "Reservations",
     resPasswordLabel: "Access Password",
@@ -625,6 +613,7 @@ const LANGUAGES = {
       }
     ],
     gallery: [
+      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Masterly Preparation" },
       { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "New Moments" },
       { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Tomato Interior" },
       { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Evening Magic" },
@@ -679,27 +668,29 @@ export default function App() {
   const [overlayView, setOverlayView] = useState<'none' | 'full-menu' | 'gallery' | 'reservations'>('none');
   const [menuSection, setMenuSection] = useState<'drinks' | 'food'>('drinks');
   const [scrolled, setScrolled] = useState(false);
-  const [selectedHall, setSelectedHall] = useState<'main' | 'garden' | 'vip'>('main');
+  const [selectedHall, setSelectedHall] = useState<'main' | 'garden'>('main');
 
   // Admin Reservations State
-  const [isAdminAuth, setIsAdminAuth] = useState(false);
+  const [isAdminAuth, setIsAdminAuth] = useState(() => {
+    return localStorage.getItem('isAdminAuth') === 'true';
+  });
   const [adminPassword, setAdminPassword] = useState("");
   const [adminAuthError, setAdminAuthError] = useState(false);
   const [allReservations, setAllReservations] = useState<any[]>([]);
   const [isLoadingReservations, setIsLoadingReservations] = useState(false);
+  const [resToDelete, setResToDelete] = useState<any | null>(null);
 
   // Booking System State
   const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
   const [bookingTime, setBookingTime] = useState("19:00");
-  const [bookingLocation, setBookingLocation] = useState<'hall' | 'garden' | 'bar'>('hall');
+  const [bookingLocation, setBookingLocation] = useState<'hall' | 'garden'>('hall');
   const [bookingName, setBookingName] = useState("");
   const [bookingPhone, setBookingPhone] = useState("");
   const [bookingGuests, setBookingGuests] = useState("2");
   const [availableSpots, setAvailableSpots] = useState<number | null>(null);
   const [liveSpots, setLiveSpots] = useState<Record<string, number | null>>({
     hall: null,
-    garden: null,
-    bar: null
+    garden: null
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
@@ -795,7 +786,7 @@ export default function App() {
       const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
       
       const updateLiveSpots = async () => {
-        const locations: ('hall' | 'garden' | 'bar')[] = ['hall', 'garden', 'bar'];
+        const locations: ('hall' | 'garden')[] = ['hall', 'garden'];
         const newSpots: any = {};
         
         for (const loc of locations) {
@@ -810,7 +801,7 @@ export default function App() {
       const interval = setInterval(updateLiveSpots, 300000); // 5 mins
       return () => clearInterval(interval);
     } else {
-      setLiveSpots({ hall: null, garden: null, bar: null });
+      setLiveSpots({ hall: null, garden: null });
     }
   }, [fetchCapacityForDateTime, getTimeSlotsForDate]);
 
@@ -852,12 +843,23 @@ export default function App() {
 
   function handleAdminLogin(e: any) {
     e.preventDefault();
-    const correctPassword = (import.meta as any).env.VITE_RESERVATIONS_PASSWORD || "tomato_admin";
-    if (adminPassword === correctPassword) {
+    const correctPassword = ((import.meta as any).env.VITE_RESERVATIONS_PASSWORD || "tomato_admin").trim();
+    if (adminPassword.trim() === correctPassword) {
       setIsAdminAuth(true);
       setAdminAuthError(false);
+      localStorage.setItem('isAdminAuth', 'true');
     } else {
       setAdminAuthError(true);
+    }
+  }
+
+  async function handleDeleteReservation() {
+    if (!resToDelete) return;
+    try {
+      await deleteDoc(doc(db, "reservations", resToDelete.id));
+      setResToDelete(null);
+    } catch (e) {
+      handleFirestoreError(e, OperationType.DELETE, `reservations/${resToDelete.id}`);
     }
   }
 
@@ -1288,6 +1290,15 @@ export default function App() {
                   >
                     <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-12">
                       <h3 className="text-3xl md:text-5xl font-serif italic text-white tracking-tighter">{t.resListTitle}</h3>
+                      <button 
+                        onClick={() => {
+                          setIsAdminAuth(false);
+                          localStorage.removeItem('isAdminAuth');
+                        }}
+                        className="text-[10px] uppercase tracking-widest text-jazz-red hover:text-white transition-colors font-bold"
+                      >
+                        Logout
+                      </button>
                     </div>
 
                     {isLoadingReservations ? (
@@ -1317,6 +1328,13 @@ export default function App() {
                               <a href={`tel:${res.phone}`} className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] uppercase tracking-widest font-bold text-white/60 hover:text-white hover:border-white/30 transition-all">
                                 <Phone size={10} /> {res.phone}
                               </a>
+                              <button 
+                                onClick={() => setResToDelete(res)}
+                                className="p-2 border border-white/10 text-white/40 hover:text-jazz-red hover:border-jazz-red/30 transition-all"
+                                title="Изтрий"
+                              >
+                                <Trash2 size={14} />
+                              </button>
                             </div>
                           </div>
                         ))}
@@ -1508,7 +1526,7 @@ export default function App() {
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
                   <img 
-                    src={selectedHall === 'main' ? "/src/assets/images/regenerated_image_1779207290851.jpg" : (selectedHall === 'garden' ? "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1200" : "/src/assets/images/regenerated_image_1779208466812.jpg")} 
+                    src={selectedHall === 'main' ? "/src/assets/images/regenerated_image_1779207290851.jpg" : "/src/assets/images/regenerated_image_1779208466812.jpg"} 
                     alt={selectedHall} 
                     className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110"
                     referrerPolicy="no-referrer"
@@ -1545,7 +1563,7 @@ export default function App() {
                       <span className="text-[8px] uppercase tracking-widest text-white/40 font-bold">{lang === 'BG' ? 'Жива наличност' : 'Live Availability'}</span>
                       <span className="text-[10px] md:text-xs uppercase tracking-widest text-[#00ff88] font-black">
                         {(() => {
-                          const currentLoc = selectedHall === 'main' ? 'hall' : (selectedHall === 'garden' ? 'garden' : 'bar');
+                          const currentLoc = selectedHall === 'main' ? 'hall' : 'garden';
                           return liveSpots[currentLoc] !== null 
                             ? `${liveSpots[currentLoc]} / ${CAPACITIES[currentLoc]} ${lang === 'BG' ? 'СВОБОДНИ' : 'FREE'}` 
                             : '...';
@@ -1556,15 +1574,6 @@ export default function App() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 mt-12">
-                  {selectedHall === 'vip' && (
-                    <button 
-                      onClick={() => { setOverlayView('full-menu'); setMenuSection('vip'); }}
-                      className="group relative inline-flex px-8 py-5 bg-white/5 border border-white/10 text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all hover:border-jazz-gold/50"
-                    >
-                      <div className="absolute inset-y-0 left-0 w-0 bg-jazz-gold transition-all duration-500 group-hover:w-full -z-10"></div>
-                      <span className="group-hover:text-jazz-black transition-colors">{t.vipMenuTitle}</span>
-                    </button>
-                  )}
                   <button 
                     onClick={() => setIsBookingOpen(true)}
                     className="group relative inline-flex px-8 py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-black overflow-hidden transition-all shadow-2xl flex items-center gap-3"
@@ -1698,6 +1707,47 @@ export default function App() {
         </div>
       </section>
 
+      {/* Confirmation Modal for Deletion */}
+      <AnimatePresence>
+        {resToDelete && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-jazz-black/90 backdrop-blur-md"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-sm bg-[#121212] border border-jazz-red/20 p-8 text-center"
+            >
+              <div className="w-16 h-16 bg-jazz-red/10 rounded-full flex items-center justify-center mx-auto mb-6 text-jazz-red">
+                <AlertTriangle size={32} />
+              </div>
+              <h3 className="text-xl font-serif italic text-white mb-2">Изтриване на резервация?</h3>
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-8">
+                Сигурни ли сте, че искате да изтриете резервацията на <span className="text-white">{resToDelete.name}</span>?
+              </p>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setResToDelete(null)}
+                  className="flex-1 py-4 bg-white/5 text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white/10 transition-colors"
+                >
+                  Отказ
+                </button>
+                <button 
+                  onClick={handleDeleteReservation}
+                  className="flex-1 py-4 bg-jazz-red text-white text-[10px] uppercase tracking-[0.2em] font-black hover:bg-red-600 transition-colors"
+                >
+                  Изтрий
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Booking Modal */}
       <AnimatePresence>
         {isBookingOpen && (
@@ -1799,14 +1849,6 @@ export default function App() {
                     >
                       <Wine size={12} />
                       {t.locationGarden}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setBookingLocation('bar')}
-                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === 'bar' ? 'bg-jazz-gold text-jazz-black' : 'text-white/40 hover:text-white/60'}`}
-                    >
-                      <GlassWater size={12} />
-                      {t.locationBar}
                     </button>
                   </div>
 
