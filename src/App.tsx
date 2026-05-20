@@ -79,17 +79,17 @@ const LANGUAGES = {
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "/src/assets/images/lampi.1.jpg"
       },
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "/src/assets/images/osnovna.zala.jpg"
       },
       {
         title: "Джаз Настроение",
         desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "/src/assets/images/zalaaa.jpg"
       }
     ],
     fullMenuTitle: "Цялата колекция",
@@ -382,17 +382,17 @@ const LANGUAGES = {
       {
         title: "Amber Glow",
         desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "/src/assets/images/lampi33.jpg"
       },
       {
         title: "The Inner Sanctum",
         desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "/src/assets/images/zala.3.jpg"
       },
       {
         title: "Jazz Reverie",
         desc: "A space where music and light merge into a single, immersive experience.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "/src/assets/images/zala.2.jpg"
       }
     ],
     fullMenuTitle: "The Full Collection",
