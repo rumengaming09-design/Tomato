@@ -152,6 +152,10 @@ const LANGUAGES = {
     resListEmpty: "Няма направени резервации",
     resListGuests: "гости",
     resNote: "Ще ви се обадим скоро за потвърждение на вашата маса.",
+    workingHoursLabel: "Работно Време",
+    workingHoursMonFri: "Пон – Пет: 08:00 – 18:00",
+    workingHoursSat: "Съб: 14:00 – 23:00",
+    workingHoursSun: "Нед: Почивен ден",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
     footerBuild: "Създадено чрез AI Studio Build",
@@ -451,6 +455,10 @@ const LANGUAGES = {
     resListEmpty: "No reservations found",
     resListGuests: "guests",
     resNote: "We will call you back shortly to confirm your table.",
+    workingHoursLabel: "Working Hours",
+    workingHoursMonFri: "Mon – Fri: 08:00 – 18:00",
+    workingHoursSat: "Sat: 14:00 – 23:00",
+    workingHoursSun: "Sun: Closed",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
     footerBuild: "Created with AI Studio Build",
@@ -1671,26 +1679,38 @@ export default function App() {
       {/* Location/Contact Section */}
       <section id="location" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex justify-center text-center">
-          <div className="max-w-2xl px-4 md:px-0">
+          <div className="max-w-4xl px-4 md:px-0">
             <span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-6 block font-bold">{t.visitTitle}</span>
             <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">
               {t.visitHeader.split(' ').slice(0, 2).join(' ')} <br /> {t.visitHeader.split(' ').slice(2).join(' ')}
             </h2>
             
-            <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
-              <div className="flex flex-col items-center gap-4">
-                <MapPin className="text-jazz-gold/60" size={32} />
+            <div className="flex flex-col md:flex-row gap-12 md:gap-16 justify-center items-center mb-16 px-4">
+              <div className="flex flex-col items-center gap-4 flex-1">
+                <MapPin className="text-jazz-gold/60 shrink-0" size={32} />
                 <div className="space-y-2">
                   <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p>
-                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p>
+                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">{t.addressValue}</p>
                 </div>
               </div>
               
-              <div className="flex flex-col items-center gap-4">
-                <Phone className="text-jazz-gold/60" size={32} />
+              <div className="flex flex-col items-center gap-4 flex-1">
+                <Clock className="text-jazz-gold/60 shrink-0" size={32} />
+                <div className="space-y-2">
+                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursLabel}</p>
+                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">
+                    {t.workingHoursMonFri} <br />
+                    {t.workingHoursSat} <br />
+                    <span className="opacity-50 text-sm block mt-1">{t.workingHoursSun}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-4 flex-1">
+                <Phone className="text-jazz-gold/60 shrink-0" size={32} />
                 <div className="space-y-2">
                   <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p>
-                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p>
+                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">089 637 0777</p>
                 </div>
               </div>
             </div>
