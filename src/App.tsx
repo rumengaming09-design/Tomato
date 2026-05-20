@@ -78,17 +78,17 @@ const LANGUAGES = {
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "/src/assets/images/lampi.1.jpg"
       },
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "/src/assets/images/osnovna.zala.jpg"
       },
       {
         title: "Джаз Настроение",
         desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "/src/assets/images/zala.2jpg"
       }
     ],
     fullMenuTitle: "Цялата колекция",
@@ -318,14 +318,14 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Майсторско приготвяне" },
-      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "Нови Моменти" },
-      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Интериор Tomato" },
-      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Вечерна магия" },
-      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Детайли от Tomato" },
-      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Кулинарно вдъхновение" },
-      { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Светлина и джаз" },
-      { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Атмосфера" }
+      { url: "/src/assets/images/cooker.jpg", title: "Майсторско приготвяне" },
+      { url: "/src/assets/images/salata.jpg", title: "Нови Моменти" },
+      { url: "/src/assets/images/salata2.jpg", title: "Интериор Tomato" },
+      { url: "/src/assets/images/desert.jpg", title: "Вечерна магия" },
+      { url: "/src/assets/images/gradina.vutre.jpg", title: "Детайли от Tomato" },
+      { url: "/src/assets/images/gradina10.jpg", title: "Кулинарно вдъхновение" },
+      { url: "/src/assets/images/gradina7.jpg", title: "Светлина и джаз" },
+      { url: "/src/assets/images/gradinaotvun.jpg", title: "Атмосфера" }
     ],
     reviews: [
       {
@@ -382,17 +382,17 @@ const LANGUAGES = {
       {
         title: "Amber Glow",
         desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "/src/assets/images/lampi33.jpg"
       },
       {
         title: "The Inner Sanctum",
         desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "/src/assets/images/zala.3.jpg"
       },
       {
         title: "Jazz Reverie",
         desc: "A space where music and light merge into a single, immersive experience.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "/src/assets/images/zala.2.jpg"
       }
     ],
     fullMenuTitle: "The Full Collection",
@@ -622,14 +622,14 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Masterly Preparation" },
-      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "New Moments" },
-      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Tomato Interior" },
-      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Evening Magic" },
-      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Tomato Details" },
-      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Culinary Inspiration" },
-      { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Light & Jazz" },
-      { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Atmosphere" }
+      { url: "/src/assets/images/cooker.png", title: "Masterly Preparation" },
+      { url: "/src/assets/images/salata.jpg", title: "New Moments" },
+      { url: "/src/assets/images/salata2.jpg", title: "Tomato Interior" },
+      { url: "/src/assets/images/desert.jpg", title: "Evening Magic" },
+      { url: "/src/assets/images/gradina.vutre.jpg.jpg", title: "Tomato Details" },
+      { url: "/src/assets/images/gradina10.jpg", title: "Culinary Inspiration" },
+      { url: "/src/assets/images/gradina7.jpg", title: "Light & Jazz" },
+      { url: "/src/assets/images/gradinaotvun.jpg", title: "Atmosphere" }
     ],
     reviews: [
       {
