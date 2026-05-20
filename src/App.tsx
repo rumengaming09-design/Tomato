@@ -21,8 +21,7 @@ import {
   Users,
   CalendarCheck,
   GlassWater,
-  Trash2,
-  AlertTriangle
+  Trash2
 } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { db, handleFirestoreError, OperationType } from "./lib/firebase";
@@ -79,17 +78,17 @@ const LANGUAGES = {
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "/src/assets/images/lampi.1.jpg"
+        image: "/src/assets/images/user_vip_bulbs.png"
       },
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "/src/assets/images/osnovna.zala.jpg"
+        image: "/src/assets/images/user_vip_interior.png"
       },
       {
         title: "Джаз Настроение",
         desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
-        image: "/src/assets/images/zalaaa.jpg"
+        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
       }
     ],
     fullMenuTitle: "Цялата колекция",
@@ -128,6 +127,10 @@ const LANGUAGES = {
     addressLabel: "Адрес",
     addressValue: "ул. \"Йоаким Груев\" 21, 4000 Център, Пловдив",
     resLabel: "Резервации",
+    workingHoursTitle: "Работно време",
+    workingHoursWeek: "Пон - Пет: 08:00 - 23:00",
+    workingHoursSat: "Събота: 14:00 - 23:00",
+    workingHoursSun: "Неделя: Почивен ден",
     directions: "Упътване",
     locationTag: "Бижуто на Капана",
     locationDesc: "Намираме се в историческото ядро на Пловдив. Последвайте ритъма на пианото до нашата врата.",
@@ -151,11 +154,8 @@ const LANGUAGES = {
     resListTitle: "Списък Резервации",
     resListEmpty: "Няма направени резервации",
     resListGuests: "гости",
+    resDelete: "Изтрий",
     resNote: "Ще ви се обадим скоро за потвърждение на вашата маса.",
-    workingHoursLabel: "Работно Време",
-    workingHoursMonFri: "Пон – Пет: 08:00 – 18:00",
-    workingHoursSat: "Съб: 14:00 – 23:00",
-    workingHoursSun: "Нед: Почивен ден",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
     footerBuild: "Създадено чрез AI Studio Build",
@@ -382,17 +382,17 @@ const LANGUAGES = {
       {
         title: "Amber Glow",
         desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "/src/assets/images/lampi33.jpg"
+        image: "/src/assets/images/user_vip_bulbs.png"
       },
       {
         title: "The Inner Sanctum",
         desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "/src/assets/images/zala.3.jpg"
+        image: "/src/assets/images/user_vip_interior.png"
       },
       {
         title: "Jazz Reverie",
         desc: "A space where music and light merge into a single, immersive experience.",
-        image: "/src/assets/images/zala.2.jpg"
+        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
       }
     ],
     fullMenuTitle: "The Full Collection",
@@ -431,6 +431,10 @@ const LANGUAGES = {
     addressLabel: "Address",
     addressValue: "21 Yoakim Gruev St, 4000 Center, Plovdiv",
     resLabel: "Reservations",
+    workingHoursTitle: "Working Hours",
+    workingHoursWeek: "Mon - Fri: 8:00 AM - 11:00 PM",
+    workingHoursSat: "Saturday: 2:00 PM - 11:00 PM",
+    workingHoursSun: "Sunday: Closed",
     directions: "Get Directions",
     locationTag: "Kapana Gem",
     locationDesc: "We are nestled in the historic core of Plovdiv. Follow the rhythm of the piano to our door.",
@@ -454,11 +458,8 @@ const LANGUAGES = {
     resListTitle: "Reservations List",
     resListEmpty: "No reservations found",
     resListGuests: "guests",
+    resDelete: "Delete",
     resNote: "We will call you back shortly to confirm your table.",
-    workingHoursLabel: "Working Hours",
-    workingHoursMonFri: "Mon – Fri: 08:00 – 18:00",
-    workingHoursSat: "Sat: 14:00 – 23:00",
-    workingHoursSun: "Sun: Closed",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
     footerBuild: "Created with AI Studio Build",
@@ -679,14 +680,11 @@ export default function App() {
   const [selectedHall, setSelectedHall] = useState<'main' | 'garden'>('main');
 
   // Admin Reservations State
-  const [isAdminAuth, setIsAdminAuth] = useState(() => {
-    return localStorage.getItem('isAdminAuth') === 'true';
-  });
+  const [isAdminAuth, setIsAdminAuth] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
   const [adminAuthError, setAdminAuthError] = useState(false);
   const [allReservations, setAllReservations] = useState<any[]>([]);
   const [isLoadingReservations, setIsLoadingReservations] = useState(false);
-  const [resToDelete, setResToDelete] = useState<any | null>(null);
 
   // Booking System State
   const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
@@ -747,13 +745,13 @@ export default function App() {
       return slots;
     }
     
-    if (day === 6) { // Sat: 2 PM to 12 AM
+    if (day === 6) { // Sat: 2 PM to 11 PM
       const slots = [];
-      for (let h = 14; h <= 23; h++) {
+      for (let h = 14; h <= 22; h++) {
         slots.push(`${h.toString().padStart(2, '0')}:00`);
         slots.push(`${h.toString().padStart(2, '0')}:30`);
       }
-      slots.push("00:00");
+      slots.push("23:00");
       return slots;
     }
     
@@ -851,23 +849,20 @@ export default function App() {
 
   function handleAdminLogin(e: any) {
     e.preventDefault();
-    const correctPassword = ((import.meta as any).env.VITE_RESERVATIONS_PASSWORD || "tomato_admin").trim();
-    if (adminPassword.trim() === correctPassword) {
+    const correctPassword = (import.meta as any).env.VITE_RESERVATIONS_PASSWORD || "tomato_admin";
+    if (adminPassword === correctPassword) {
       setIsAdminAuth(true);
       setAdminAuthError(false);
-      localStorage.setItem('isAdminAuth', 'true');
     } else {
       setAdminAuthError(true);
     }
   }
 
-  async function handleDeleteReservation() {
-    if (!resToDelete) return;
+  async function handleDeleteReservation(id: string) {
     try {
-      await deleteDoc(doc(db, "reservations", resToDelete.id));
-      setResToDelete(null);
+      await deleteDoc(doc(db, "reservations", id));
     } catch (e) {
-      handleFirestoreError(e, OperationType.DELETE, `reservations/${resToDelete.id}`);
+      handleFirestoreError(e, OperationType.DELETE, `reservations/${id}`);
     }
   }
 
@@ -1027,11 +1022,17 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex flex-col"
+          className="flex items-center gap-4 md:gap-6 group cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <h1 className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase cursor-pointer">TOMATO</h1>
-          <span className="text-[7px] md:text-[8px] tracking-[0.4em] md:tracking-[0.5em] uppercase opacity-40 font-bold">{t.subtitle}</span>
+          <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform duration-500">
+             <div className="absolute inset-0 bg-gradient-to-tr from-jazz-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+             <span className="text-[8px] text-jazz-gold/40 uppercase font-black tracking-widest leading-none">Logo</span>
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</h1>
+            <span className="text-[7px] md:text-[8px] tracking-[0.4em] md:tracking-[0.5em] uppercase opacity-40 font-bold">{t.subtitle}</span>
+          </div>
         </motion.div>
         
         <div className="flex items-center gap-4 md:gap-10">
@@ -1298,15 +1299,6 @@ export default function App() {
                   >
                     <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-12">
                       <h3 className="text-3xl md:text-5xl font-serif italic text-white tracking-tighter">{t.resListTitle}</h3>
-                      <button 
-                        onClick={() => {
-                          setIsAdminAuth(false);
-                          localStorage.removeItem('isAdminAuth');
-                        }}
-                        className="text-[10px] uppercase tracking-widest text-jazz-red hover:text-white transition-colors font-bold"
-                      >
-                        Logout
-                      </button>
                     </div>
 
                     {isLoadingReservations ? (
@@ -1337,11 +1329,10 @@ export default function App() {
                                 <Phone size={10} /> {res.phone}
                               </a>
                               <button 
-                                onClick={() => setResToDelete(res)}
-                                className="p-2 border border-white/10 text-white/40 hover:text-jazz-red hover:border-jazz-red/30 transition-all"
-                                title="Изтрий"
+                                onClick={() => handleDeleteReservation(res.id)}
+                                className="flex items-center gap-2 px-4 py-2 border border-red-500/20 text-[10px] uppercase tracking-widest font-bold text-red-500/60 hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/40 transition-all"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size={10} /> {t.resDelete}
                               </button>
                             </div>
                           </div>
@@ -1679,38 +1670,38 @@ export default function App() {
       {/* Location/Contact Section */}
       <section id="location" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex justify-center text-center">
-          <div className="max-w-4xl px-4 md:px-0">
+          <div className="max-w-2xl px-4 md:px-0">
             <span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-6 block font-bold">{t.visitTitle}</span>
             <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">
               {t.visitHeader.split(' ').slice(0, 2).join(' ')} <br /> {t.visitHeader.split(' ').slice(2).join(' ')}
             </h2>
             
-            <div className="flex flex-col md:flex-row gap-12 md:gap-16 justify-center items-center mb-16 px-4">
-              <div className="flex flex-col items-center gap-4 flex-1">
-                <MapPin className="text-jazz-gold/60 shrink-0" size={32} />
+            <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
+              <div className="flex flex-col items-center gap-4">
+                <MapPin className="text-jazz-gold/60" size={32} />
                 <div className="space-y-2">
                   <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p>
-                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">{t.addressValue}</p>
-                </div>
-              </div>
-              
-              <div className="flex flex-col items-center gap-4 flex-1">
-                <Clock className="text-jazz-gold/60 shrink-0" size={32} />
-                <div className="space-y-2">
-                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursLabel}</p>
-                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">
-                    {t.workingHoursMonFri} <br />
-                    {t.workingHoursSat} <br />
-                    <span className="opacity-50 text-sm block mt-1">{t.workingHoursSun}</span>
-                  </p>
+                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p>
                 </div>
               </div>
 
-              <div className="flex flex-col items-center gap-4 flex-1">
-                <Phone className="text-jazz-gold/60 shrink-0" size={32} />
+              <div className="flex flex-col items-center gap-4 text-center">
+                <Clock className="text-jazz-gold/60" size={32} />
+                <div className="space-y-2">
+                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p>
+                  <div className="text-xs font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest">
+                    <p>{t.workingHoursWeek}</p>
+                    <p>{t.workingHoursSat}</p>
+                    <p>{t.workingHoursSun}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center gap-4">
+                <Phone className="text-jazz-gold/60" size={32} />
                 <div className="space-y-2">
                   <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p>
-                  <p className="text-lg font-serif italic text-jazz-cream/80 leading-normal">089 637 0777</p>
+                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p>
                 </div>
               </div>
             </div>
@@ -1726,47 +1717,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      {/* Confirmation Modal for Deletion */}
-      <AnimatePresence>
-        {resToDelete && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-jazz-black/90 backdrop-blur-md"
-          >
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-sm bg-[#121212] border border-jazz-red/20 p-8 text-center"
-            >
-              <div className="w-16 h-16 bg-jazz-red/10 rounded-full flex items-center justify-center mx-auto mb-6 text-jazz-red">
-                <AlertTriangle size={32} />
-              </div>
-              <h3 className="text-xl font-serif italic text-white mb-2">Изтриване на резервация?</h3>
-              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-8">
-                Сигурни ли сте, че искате да изтриете резервацията на <span className="text-white">{resToDelete.name}</span>?
-              </p>
-              <div className="flex gap-4">
-                <button 
-                  onClick={() => setResToDelete(null)}
-                  className="flex-1 py-4 bg-white/5 text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white/10 transition-colors"
-                >
-                  Отказ
-                </button>
-                <button 
-                  onClick={handleDeleteReservation}
-                  className="flex-1 py-4 bg-jazz-red text-white text-[10px] uppercase tracking-[0.2em] font-black hover:bg-red-600 transition-colors"
-                >
-                  Изтрий
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Booking Modal */}
       <AnimatePresence>
