@@ -39,8 +39,9 @@ import {
 } from "firebase/firestore";
 
 const CAPACITIES: Record<string, number> = {
-  hall: 70,
-  garden: 30
+  hall: 30,
+  garden: 70,
+  bar: 25
 };
 const OWNER_PHONE = "089 637 0777";
 
@@ -51,7 +52,7 @@ const LANGUAGES = {
     heroTag: "Tomato Пловдив",
     heroTitle1: "Естетично",
     heroTitle2: "Бижу",
-    heroDesc: "Скрито в историческото сърце на Пловдив, Tomato е мястото, където майсторски приготвените вкусове срещат душевния ритъм на джаза.",
+    heroDesc: "Скрито в историческото сърце на Пловдив, Tomato е мястото, където майсторски приготвените вкусове срещат душевния ритъм на джаза. Добре дошли в Tomato",
     viewMenu: "Виж Менюто",
     bookNow: "Резервирай",
     langNameBG: "Български",
@@ -62,33 +63,39 @@ const LANGUAGES = {
       { 
         id: 'main', 
         name: 'Основна зала',
-        desc: "Добре дошли в нашата основна зала, където уютът среща изтънчения вкус. Със своя капацитет от 70 места, залата е перфектното място както за споделена вечеря с любими хора, така е и за организирани тържества. Интериорът умело съчетава очарованието на старинния стил с изчистения модерен дизайн. Живият огън на камината внася топлина и домашна атмосфера, а селектираната тиха джаз музика допълва усещането за спокойствие и уединение. Тук времето забавя своя ход, за да се насладите изцяло на момента.",
-        features: ["70 места", "Жива камина", "Джаз атмосфера"]
+        desc: "Добре дошли в нашата основна зала, където уютът среща изтънчения вкус. Със своя капацитет от 30 места, залата е перфектното място както за споделена вечеря с любими хора, така е и за организирани тържества. Интериорът умело съчетава очарованието на старинния стил с изчистения модерен дизайн. Живият огън на камината внася топлина и домашна атмосфера, а селектираната тиха джаз музика допълва усещането за спокойствие и уединение. Тук времето забавя своя ход, за да се насладите изцяло на момента.",
+        features: ["30 места", "Жива камина", "Джаз атмосфера"]
       },
       { 
         id: 'garden', 
         name: 'Градина',
-        desc: "Нашата градина е истински оазис сред шума на града. Със своите 30 места, тя предлага тишина и свежест през топлите летни вечери. Пространството може да се затваря в студени дни, за да се поддържа приятна атмосфера. Зеленината и дискретното осветление създават приказна обстановка за романтична вечеря или спокойна среща с приятели. Това е нашата зала за пушачи.",
-        features: ["30 места", "Свежа растителност", "Дискретно осветление"]
+        desc: "Нашата градина е истински оазис сред шума на града. Със своите 70 места, тя предлага тишина и свежест през топлите летни вечери. Пространството може да се затваря в студени дни, за да се поддържа приятна атмосфера. Зеленината и дискретното осветление създават приказна обстановка за романтична вечеря или спокойна среща с приятели. Това е нашата зала за пушачи.",
+        features: ["70 места", "Свежа растителност", "Дискретно осветление"]
+      },
+      {
+        id: 'bar',
+        name: 'Бар',
+        desc: "Нашият бар е пулсиращото сърце на Tomato, където изкуството на коктейлите среща джаз ритъма. Капацитетът на бара е 25 места, проектирани за перфектна близост и уединение край селекцията от премиум напитки. Тук нашите майстори бармани ще ви предложат уникални авторски коктейли и редки питиета, поднесени с много стил. Динамичната атмосфера край бар-плота, приглушеното осветление и приятните разговори правят това перфектното място за завършек на деня или начало на вълнуваща вечер.",
+        features: ["25 места", "Авторски коктейли", "Премиум уиски селекция"]
       }
     ],
     privateRoomDesc: "Нашата градина е истински оазис сред шума на града. Идеалното пространство за тези, които ценят спокойния разговор и свежия въздух в уютна джаз обстановка.",
-    privateRoomFeatures: ["30 места", "Свежа растителност", "Дискретно осветление"],
+    privateRoomFeatures: ["70 места", "Свежа растителност", "Дискретно осветление"],
     vipAtmosphere: [
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "/src/assets/images/lampi.1.jpg"
+        image: "/src/assets/images/user_vip_bulbs.png"
       },
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "/src/assets/images/osnovna.zala.jpg"
+        image: "/src/assets/images/user_vip_interior.png"
       },
       {
         title: "Джаз Настроение",
         desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
-        image: "/src/assets/images/zala.2jpg"
+        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
       }
     ],
     fullMenuTitle: "Цялата колекция",
@@ -117,8 +124,8 @@ const LANGUAGES = {
     galleryDesc: "Поглед към естетичната атмосфера и майсторските кулинарни творения в Tomato.",
     vibeTitle: "Атмосфера",
     vibeQuote: "Където вкусът среща душата",
-    vibeDesc: "Вярваме, че храненето е форма на изкуство. Всеки детайл, от приглушеното златно осветление до избора на плочи, е подбран, за да създаде момент на чист естетически екстаз.",
-    vibeLabels: { vibe: "Вайб", music: "Музика", vibeVal: "Изискан и емоционален", musicVal: "Пиано и нежен джаз" },
+    vibeDesc: "При нас ще откриете тиха, приятна и релаксираща музика от различни стилове (jazz, lounge, soulful house и други), перфектно допълваща нашето изискано меню. Всеки детайл, от приглушеното златно осветление до избора на селектирани ритми, е подбран, за да ви отведе в свят на абсолютен комфорт и удоволствие.",
+    vibeLabels: { vibe: "Вайб", music: "Музика", vibeVal: "Изискан и емоционален", musicVal: "Jazz, Lounge, Soulful House" },
     vibeRhythm: "Ритъмът на Пловдив",
     reviewTitle: "Истории от наши гости",
     reviewHeader: "Отзиви",
@@ -129,8 +136,9 @@ const LANGUAGES = {
     resLabel: "Резервации",
     workingHoursTitle: "Работно време",
     workingHoursWeek: "Пон - Пет: 08:00 - 23:00",
-    workingHoursSat: "Събота: 14:00 - 23:00",
+    workingHoursSat: "Събота: 16:00 - 21:00",
     workingHoursSun: "Неделя: Почивен ден",
+    summerHoursAnnouncement: "очаквайте лятно работно време",
     directions: "Упътване",
     locationTag: "Бижуто на Капана",
     locationDesc: "Намираме се в историческото ядро на Пловдив. Последвайте ритъма на пианото до нашата врата.",
@@ -146,6 +154,7 @@ const LANGUAGES = {
     confirmRes: "Потвърди резервацията",
     locationHall: "Зала",
     locationGarden: "Градина",
+    locationBar: "Бар",
     onlineResStat: "Вземете 10% отстъпка за резервации през сайта!",
     reservationsTab: "Резервации",
     resPasswordLabel: "Парола за достъп",
@@ -318,14 +327,14 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/cooker.jpg", title: "Майсторско приготвяне" },
-      { url: "/src/assets/images/salata.jpg", title: "Нови Моменти" },
-      { url: "/src/assets/images/salata2.jpg", title: "Интериор Tomato" },
-      { url: "/src/assets/images/desert.jpg", title: "Вечерна магия" },
-      { url: "/src/assets/images/gradina.vutre.jpg", title: "Детайли от Tomato" },
-      { url: "/src/assets/images/gradina10.jpg", title: "Кулинарно вдъхновение" },
-      { url: "/src/assets/images/gradina7.jpg", title: "Светлина и джаз" },
-      { url: "/src/assets/images/gradinaotvun.jpg", title: "Атмосфера" }
+      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Майсторско приготвяне" },
+      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "Нови Моменти" },
+      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Интериор Tomato" },
+      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Вечерна магия" },
+      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Детайли от Tomato" },
+      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Кулинарно вдъхновение" },
+      { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Светлина и джаз" },
+      { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Атмосфера" }
     ],
     reviews: [
       {
@@ -366,33 +375,39 @@ const LANGUAGES = {
       { 
         id: 'main', 
         name: 'Main Hall',
-        desc: "Welcome to our main hall, where comfort meets refined taste. With a capacity of 70 seats, the hall is the perfect place for both a shared dinner with loved ones and organized celebrations. The interior skillfully combines the charm of vintage style with clean modern design. The living fire of the fireplace brings warmth and a homey atmosphere, while the selected quiet jazz music completes the feeling of peace and privacy. Here, time slows down so you can fully enjoy the moment.",
-        features: ["70 Seats", "Live Fireplace", "Jazz Vibe"]
+        desc: "Welcome to our main hall, where comfort meets refined taste. With a capacity of 30 seats, the hall is the perfect place for both a shared dinner with loved ones and organized celebrations. The interior skillfully combines the charm of vintage style with clean modern design. The living fire of the fireplace brings warmth and a homey atmosphere, while the selected quiet jazz music completes the feeling of peace and privacy. Here, time slows down so you can fully enjoy the moment.",
+        features: ["30 Seats", "Live Fireplace", "Jazz Vibe"]
       },
       { 
         id: 'garden', 
         name: 'Garden',
-        desc: "Our garden is a true oasis amidst the city noise. With its 30 seats, it offers peace and freshness during warm summer evenings. The space can be enclosed during colder days to maintain a pleasant atmosphere. The greenery and discrete lighting create a fairytale setting for a romantic dinner or a quiet gathering. This is our smoking area.",
-        features: ["30 Seats", "Lush Greenery", "Mood Lighting"]
+        desc: "Our garden is a true oasis amidst the city noise. With its 70 seats, it offers peace and freshness during warm summer evenings. The space can be enclosed during colder days to maintain a pleasant atmosphere. The greenery and discrete lighting create a fairytale setting for a romantic dinner or a quiet gathering. This is our smoking area.",
+        features: ["70 Seats", "Lush Greenery", "Mood Lighting"]
+      },
+      {
+        id: 'bar',
+        name: 'Bar',
+        desc: "Our bar is the pulsing heart of Tomato, where the art of mixology meets the jazz rhythm. The bar capacity is 25 seats, designed for perfect closeness and privacy around our premium drink selection. Here, our master bartenders will offer you unique signature cocktails and rare spirits, served with style. The dynamic atmosphere, dim golden lighting, and engaging conversations make it the perfect spot to end your day or kickstart an exciting evening.",
+        features: ["25 Seats", "Signature Cocktails", "Premium Spirits"]
       }
     ],
     privateRoomDesc: "Our garden is a true oasis amidst the city noise. The perfect space for those who appreciate quiet conversation and fresh air in a cozy jazz environment.",
-    privateRoomFeatures: ["30 Seats", "Lush Greenery", "Mood Lighting"],
+    privateRoomFeatures: ["70 Seats", "Lush Greenery", "Mood Lighting"],
     vipAtmosphere: [
       {
         title: "Amber Glow",
         desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "/src/assets/images/lampi33.jpg"
+        image: "/src/assets/images/user_vip_bulbs.png"
       },
       {
         title: "The Inner Sanctum",
         desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "/src/assets/images/zala.3.jpg"
+        image: "/src/assets/images/user_vip_interior.png"
       },
       {
         title: "Jazz Reverie",
         desc: "A space where music and light merge into a single, immersive experience.",
-        image: "/src/assets/images/zala.2.jpg"
+        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
       }
     ],
     fullMenuTitle: "The Full Collection",
@@ -421,8 +436,8 @@ const LANGUAGES = {
     galleryDesc: "A glimpse into the aesthetic atmosphere and masterful culinary creations at Tomato.",
     vibeTitle: "Atmosphere",
     vibeQuote: "Where Taste Meets Soul",
-    vibeDesc: "We believe that dining is an art form. Every detail, from the dim golden lighting to the choice of vinyl, is curated to create a moment of pure aesthetic bliss.",
-    vibeLabels: { vibe: "Vibe", music: "Music", vibeVal: "Sophisticated & Moody", musicVal: "Piano & Smooth Jazz" },
+    vibeDesc: "Here you will find quiet, pleasant, and relaxing music from various styles (jazz, lounge, soulful house, and others), perfectly complementing our exquisite menu. Every detail, from the dim golden lighting to the choice of selected rhythms, is curated to bring you a world of ultimate comfort and pleasure.",
+    vibeLabels: { vibe: "Vibe", music: "Music", vibeVal: "Sophisticated & Moody", musicVal: "Jazz, Lounge, Soulful House" },
     vibeRhythm: "The Rhythm of Plovdiv",
     reviewTitle: "Stories from Guests",
     reviewHeader: "Reviews",
@@ -433,8 +448,9 @@ const LANGUAGES = {
     resLabel: "Reservations",
     workingHoursTitle: "Working Hours",
     workingHoursWeek: "Mon - Fri: 8:00 AM - 11:00 PM",
-    workingHoursSat: "Saturday: 2:00 PM - 11:00 PM",
+    workingHoursSat: "Saturday: 4:00 PM - 9:00 PM",
     workingHoursSun: "Sunday: Closed",
+    summerHoursAnnouncement: "summer working hours coming soon",
     directions: "Get Directions",
     locationTag: "Kapana Gem",
     locationDesc: "We are nestled in the historic core of Plovdiv. Follow the rhythm of the piano to our door.",
@@ -450,6 +466,7 @@ const LANGUAGES = {
     confirmRes: "Confirm Reservation",
     locationHall: "Main Hall",
     locationGarden: "Garden",
+    locationBar: "Bar",
     onlineResStat: "Get 10% OFF for reservations made through the website!",
     reservationsTab: "Reservations",
     resPasswordLabel: "Access Password",
@@ -622,14 +639,14 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/cooker.png", title: "Masterly Preparation" },
-      { url: "/src/assets/images/salata.jpg", title: "New Moments" },
-      { url: "/src/assets/images/salata2.jpg", title: "Tomato Interior" },
-      { url: "/src/assets/images/desert.jpg", title: "Evening Magic" },
-      { url: "/src/assets/images/gradina.vutre.jpg.jpg", title: "Tomato Details" },
-      { url: "/src/assets/images/gradina10.jpg", title: "Culinary Inspiration" },
-      { url: "/src/assets/images/gradina7.jpg", title: "Light & Jazz" },
-      { url: "/src/assets/images/gradinaotvun.jpg", title: "Atmosphere" }
+      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Masterly Preparation" },
+      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "New Moments" },
+      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Tomato Interior" },
+      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Evening Magic" },
+      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Tomato Details" },
+      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Culinary Inspiration" },
+      { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Light & Jazz" },
+      { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Atmosphere" }
     ],
     reviews: [
       {
@@ -677,7 +694,7 @@ export default function App() {
   const [overlayView, setOverlayView] = useState<'none' | 'full-menu' | 'gallery' | 'reservations'>('none');
   const [menuSection, setMenuSection] = useState<'drinks' | 'food'>('drinks');
   const [scrolled, setScrolled] = useState(false);
-  const [selectedHall, setSelectedHall] = useState<'main' | 'garden'>('main');
+  const [selectedHall, setSelectedHall] = useState<'main' | 'garden' | 'bar'>('main');
 
   // Admin Reservations State
   const [isAdminAuth, setIsAdminAuth] = useState(false);
@@ -689,14 +706,15 @@ export default function App() {
   // Booking System State
   const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
   const [bookingTime, setBookingTime] = useState("19:00");
-  const [bookingLocation, setBookingLocation] = useState<'hall' | 'garden'>('hall');
+  const [bookingLocation, setBookingLocation] = useState<'hall' | 'garden' | 'bar'>('hall');
   const [bookingName, setBookingName] = useState("");
   const [bookingPhone, setBookingPhone] = useState("");
   const [bookingGuests, setBookingGuests] = useState("2");
   const [availableSpots, setAvailableSpots] = useState<number | null>(null);
   const [liveSpots, setLiveSpots] = useState<Record<string, number | null>>({
     hall: null,
-    garden: null
+    garden: null,
+    bar: null
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
@@ -745,13 +763,13 @@ export default function App() {
       return slots;
     }
     
-    if (day === 6) { // Sat: 2 PM to 11 PM
+    if (day === 6) { // Sat: 4 PM to 9 PM
       const slots = [];
-      for (let h = 14; h <= 22; h++) {
+      for (let h = 16; h <= 20; h++) {
         slots.push(`${h.toString().padStart(2, '0')}:00`);
         slots.push(`${h.toString().padStart(2, '0')}:30`);
       }
-      slots.push("23:00");
+      slots.push("21:00");
       return slots;
     }
     
@@ -792,7 +810,7 @@ export default function App() {
       const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
       
       const updateLiveSpots = async () => {
-        const locations: ('hall' | 'garden')[] = ['hall', 'garden'];
+        const locations: ('hall' | 'garden' | 'bar')[] = ['hall', 'garden', 'bar'];
         const newSpots: any = {};
         
         for (const loc of locations) {
@@ -807,7 +825,7 @@ export default function App() {
       const interval = setInterval(updateLiveSpots, 300000); // 5 mins
       return () => clearInterval(interval);
     } else {
-      setLiveSpots({ hall: null, garden: null });
+      setLiveSpots({ hall: null, garden: null, bar: null });
     }
   }, [fetchCapacityForDateTime, getTimeSlotsForDate]);
 
@@ -1026,8 +1044,12 @@ export default function App() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform duration-500">
-             <div className="absolute inset-0 bg-gradient-to-tr from-jazz-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-             <span className="text-[8px] text-jazz-gold/40 uppercase font-black tracking-widest leading-none">Logo</span>
+             <img 
+               src="/src/assets/images/tomato_logo_sign_1779367887123.png" 
+               alt="Tomato Logo" 
+               className="w-full h-full object-cover"
+               referrerPolicy="no-referrer"
+             />
           </div>
           <div className="flex flex-col">
             <h1 className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</h1>
@@ -1314,8 +1336,14 @@ export default function App() {
                             <div className="space-y-1">
                               <div className="flex items-center gap-3">
                                 <h4 className="text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors">{res.name}</h4>
-                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${res.location === 'garden' ? 'bg-green-500/10 text-green-500' : 'bg-jazz-gold/10 text-jazz-gold'}`}>
-                                  {res.location === 'garden' ? t.locationGarden : t.locationHall}
+                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${
+                                  res.location === 'garden' 
+                                    ? 'bg-green-500/10 text-green-500' 
+                                    : res.location === 'bar'
+                                      ? 'bg-blue-500/10 text-blue-400'
+                                      : 'bg-jazz-gold/10 text-jazz-gold'
+                                }`}>
+                                  {res.location === 'garden' ? t.locationGarden : res.location === 'bar' ? t.locationBar : t.locationHall}
                                 </span>
                               </div>
                               <div className="flex items-center gap-4 text-white/40 text-[10px] uppercase tracking-widest font-medium">
@@ -1498,13 +1526,13 @@ export default function App() {
       <section id="private-room" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col mb-16">
-            <span className="text-jazz-gold text-[10px] uppercase tracking-[0.6em] font-bold block mb-6">{t.privateRoomTitle}</span>
+            <span className="text-jazz-gold text-lg md:text-2xl uppercase tracking-[0.4em] font-bold block mb-8">{t.privateRoomTitle}</span>
             <div className="flex flex-wrap gap-4 md:gap-8">
               {(t as any).halls.map((hall: any) => (
                 <button
                   key={hall.id}
                   onClick={() => setSelectedHall(hall.id)}
-                  className={`text-2xl md:text-5xl font-serif italic tracking-tighter transition-all ${selectedHall === hall.id ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
+                  className={`text-2xl md:text-5xl font-serif italic tracking-tighter transition-all ${selectedHall === hall.id ? 'text-jazz-gold font-bold' : 'text-white hover:text-jazz-gold/70'}`}
                 >
                   {hall.name}
                 </button>
@@ -1525,7 +1553,7 @@ export default function App() {
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
                   <img 
-                    src={selectedHall === 'main' ? "/src/assets/images/regenerated_image_1779207290851.jpg" : "/src/assets/images/regenerated_image_1779208466812.jpg"} 
+                    src={selectedHall === 'main' ? "/src/assets/images/regenerated_image_1779207290851.jpg" : selectedHall === 'garden' ? "/src/assets/images/regenerated_image_1779208466812.jpg" : "/src/assets/images/tomato_jazz_vibe_1779030976852.png"} 
                     alt={selectedHall} 
                     className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110"
                     referrerPolicy="no-referrer"
@@ -1562,7 +1590,7 @@ export default function App() {
                       <span className="text-[8px] uppercase tracking-widest text-white/40 font-bold">{lang === 'BG' ? 'Жива наличност' : 'Live Availability'}</span>
                       <span className="text-[10px] md:text-xs uppercase tracking-widest text-[#00ff88] font-black">
                         {(() => {
-                          const currentLoc = selectedHall === 'main' ? 'hall' : 'garden';
+                          const currentLoc = selectedHall === 'main' ? 'hall' : selectedHall === 'garden' ? 'garden' : 'bar';
                           return liveSpots[currentLoc] !== null 
                             ? `${liveSpots[currentLoc]} / ${CAPACITIES[currentLoc]} ${lang === 'BG' ? 'СВОБОДНИ' : 'FREE'}` 
                             : '...';
@@ -1694,6 +1722,9 @@ export default function App() {
                     <p>{t.workingHoursSat}</p>
                     <p>{t.workingHoursSun}</p>
                   </div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">
+                    {t.summerHoursAnnouncement}
+                  </p>
                 </div>
               </div>
               
@@ -1819,6 +1850,14 @@ export default function App() {
                     >
                       <Wine size={12} />
                       {t.locationGarden}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingLocation('bar')}
+                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === 'bar' ? 'bg-jazz-gold text-jazz-black' : 'text-white/40 hover:text-white/60'}`}
+                    >
+                      <GlassWater size={12} />
+                      {t.locationBar}
                     </button>
                   </div>
 
