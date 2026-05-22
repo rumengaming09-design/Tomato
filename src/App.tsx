@@ -327,14 +327,26 @@ Const LANGUAGES = {
       }
     ],
     Gallery: [
-      { url: https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg, title: „Майсторско приготвяне“ },
-      { url: https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg, title: „Нови Моменти“ },
-      { url: https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg, title: „Интериор Tomato“ },
-      { url: https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg, title: „Вечерна магия“ },
-      { url: https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg, title: „Детайли от Tomato“ },
-      { url: https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg, title: „Кулинарно вдъхновение“ },
-      { url: https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-25-06-168.jpg, title: „Светлина и джаз“ },
-      { url: https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg, title: „Атмосфера“ }
+      { url: https://i.postimg.cc/Gt7p61Mc/IMG-0692(1).jpg, title: „Майсторска подготовка“ },
+      { url: https://i.postimg.cc/L5CsGMys/IMG-0694(1).jpg, title: „Нови моменти“ },
+      { url: https://i.postimg.cc/6qjQFNHJ/viber-izobrazenie-2026-05-19-19-25-05-010.jpg, title: „Tomato интериор“ },
+      { url: https://i.postimg.cc/nrRLNt3y/viber-izobrazenie-2026-05-19-19-25-05-042.jpg, title: „Вечерна магия“ },
+      { url: https://i.postimg.cc/nrRLNtdt/viber-izobrazenie-2026-05-19-19-25-05-071.jpg, title: „Tomato детайли“ },
+      { url: https://i.postimg.cc/2yc5gfHN/viber-izobrazenie-2026-05-19-19-25-06-583.jpg, title: „Кулинарно вдъхновение“ },
+      { url: https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-25-06-168.jpg, title: „Светлина & Джаз“ },
+      { url: https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg, title: „Атмосфера“ },
+      { url: https://i.postimg.cc/2SX4hsmH/viber-izobrazenie-2026-05-19-19-25-06-204.jpg, title: „Майсторска подготовка“ },
+      { url: https://i.postimg.cc/s2Q5cTgz/viber-izobrazenie-2026-05-19-19-25-06-651.jpg, title: „Нови моменти“ },
+      { url: https://i.postimg.cc/MGM1D9pW/viber-izobrazenie-2026-05-19-19-25-06-774.jpg, title: „Tomato интериор“ },
+      { url: https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg, title: „Вечерна магия“ },
+      { url: https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg, title: „Tomato детайли“ },
+      { url: https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg, title: „Кулинарно вдъхновение“ },
+      { url: https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg, title: „Светлина & Джаз“ },
+      { url: https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg, title: „Атмосфера“ },
+      { url: https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg, title: „Майсторска подготовка“ },
+      { url: https://i.postimg.cc/HLcb26ks/IMG-0693(1).jpg, title: „Нови моменти“ },
+      { url: https://i.postimg.cc/R06wRgZ1/IMG-0691-(1)(1).jpg, title: „Tomato интериор“ },
+      { url: https://i.postimg.cc/0NM7fVyS/IMG-0689(1).jpg, title: „Вечерна магия“ }
     ],
     Reviews: [
       {
@@ -646,8 +658,20 @@ Const LANGUAGES = {
       { url: https://i.postimg.cc/nrRLNtdt/viber-izobrazenie-2026-05-19-19-25-05-071.jpg, title: „Tomato Details“ },
       { url: https://i.postimg.cc/2yc5gfHN/viber-izobrazenie-2026-05-19-19-25-06-583.jpg, title: „Culinary Inspiration“ },
       { url: https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-25-06-168.jpg, title: „Light & Jazz“ },
-      { url: https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg, title: „Atmosphere“ }
-    ],
+      { url: https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg, title: „Atmosphere“ },
+      { url: https://i.postimg.cc/2SX4hsmH/viber-izobrazenie-2026-05-19-19-25-06-204.jpg, title: „Masterly Preparation“ },
+      { url: https://i.postimg.cc/s2Q5cTgz/viber-izobrazenie-2026-05-19-19-25-06-651.jpg, title: „New Moments“ },
+      { url: https://i.postimg.cc/MGM1D9pW/viber-izobrazenie-2026-05-19-19-25-06-774.jpg, title: „Tomato Interior“ },
+      { url: https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg, title: „Evening Magic“ },
+      { url: https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg, title: „Tomato Details“ },
+      { url: https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg, title: „Culinary Inspiration“ },
+      { url: https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg, title: „Light & Jazz“ },
+      { url: https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg, title: „Atmosphere“ },
+      { url: https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg, title: „Masterly Preparation“ },
+      { url: https://i.postimg.cc/HLcb26ks/IMG-0693(1).jpg, title: „New Moments“ },
+      { url: https://i.postimg.cc/R06wRgZ1/IMG-0691-(1)(1).jpg, title: „Tomato Interior“ },
+      { url: https://i.postimg.cc/0NM7fVyS/IMG-0689(1).jpg, title: „Evening Magic“ }     
+  ],
     Reviews: [
       {
         Name: „Chefo“,
