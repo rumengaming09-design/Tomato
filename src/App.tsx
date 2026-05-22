@@ -85,17 +85,18 @@ const LANGUAGES = {
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "https://i.postimg.cc/pdwz1Kmg/IMG-0687(1).jpg"
       },
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "https://i.postimg.cc/R06wRgZ1/IMG-0691-(1)(1).jpg
+"
       },
       {
         title: "Джаз Настроение",
         desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "https://i.postimg.cc/HLcb26ks/IMG-0693(1).jpg"
       }
     ],
     fullMenuTitle: "Цялата колекция",
@@ -327,14 +328,14 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Майсторско приготвяне" },
-      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "Нови Моменти" },
-      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Интериор Tomato" },
-      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Вечерна магия" },
-      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Детайли от Tomato" },
-      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Кулинарно вдъхновение" },
-      { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Светлина и джаз" },
-      { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Атмосфера" }
+      { url: "https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg", title: "Майсторско приготвяне" },
+      { url: "https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg", title: "Нови Моменти" },
+      { url: "https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg", title: "Интериор Tomato" },
+      { url: "https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg", title: "Вечерна магия" },
+      { url: "https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg", title: "Детайли от Tomato" },
+      { url: "https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg", title: "Кулинарно вдъхновение" },
+      { url: "https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-25-06-168.jpg", title: "Светлина и джаз" },
+      { url: "https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg", title: "Атмосфера" }
     ],
     reviews: [
       {
@@ -397,17 +398,17 @@ const LANGUAGES = {
       {
         title: "Amber Glow",
         desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "/src/assets/images/user_vip_bulbs.png"
+        image: "https://i.postimg.cc/2SX4hsmH/viber-izobrazenie-2026-05-19-19-25-06-204.jpg"
       },
       {
         title: "The Inner Sanctum",
         desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "/src/assets/images/user_vip_interior.png"
+        image: "https://i.postimg.cc/s2Q5cTgz/viber-izobrazenie-2026-05-19-19-25-06-651.jpg"
       },
       {
         title: "Jazz Reverie",
         desc: "A space where music and light merge into a single, immersive experience.",
-        image: "/src/assets/images/luxury_private_lounge_jazz_1779030959899.png"
+        image: "https://i.postimg.cc/MGM1D9pW/viber-izobrazenie-2026-05-19-19-25-06-774.jpg"
       }
     ],
     fullMenuTitle: "The Full Collection",
@@ -639,12 +640,12 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "/src/assets/images/oven_chicken_1779213328576.png", title: "Masterly Preparation" },
-      { url: "/src/assets/images/regenerated_image_1779208466812.jpg", title: "New Moments" },
-      { url: "/src/assets/images/regenerated_image_1779207290851.jpg", title: "Tomato Interior" },
-      { url: "/src/assets/images/regenerated_image_1779206563326.jpg", title: "Evening Magic" },
-      { url: "/src/assets/images/regenerated_image_1779206232571.jpg", title: "Tomato Details" },
-      { url: "/src/assets/images/regenerated_image_1779205721798.jpg", title: "Culinary Inspiration" },
+      { url: "https://i.postimg.cc/Gt7p61Mc/IMG-0692(1).jpg", title: "Masterly Preparation" },
+      { url: "https://i.postimg.cc/L5CsGMys/IMG-0694(1).jpg", title: "New Moments" },
+      { url: "https://i.postimg.cc/6qjQFNHJ/viber-izobrazenie-2026-05-19-19-25-05-010.jpg", title: "Tomato Interior" },
+      { url: "https://i.postimg.cc/nrRLNt3y/viber-izobrazenie-2026-05-19-19-25-05-042.jpg", title: "Evening Magic" },
+      { url: "https://i.postimg.cc/nrRLNtdt/viber-izobrazenie-2026-05-19-19-25-05-071.jpg", title: "Tomato Details" },
+      { url: "https://i.postimg.cc/2yc5gfHN/viber-izobrazenie-2026-05-19-19-25-06-583.jpg", title: "Culinary Inspiration" },
       { url: "/src/assets/images/regenerated_image_1779205077239.jpg", title: "Light & Jazz" },
       { url: "/src/assets/images/regenerated_image_1779181743540.jpg", title: "Atmosphere" }
     ],
