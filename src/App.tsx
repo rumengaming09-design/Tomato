@@ -85,7 +85,7 @@ const LANGUAGES = {
       {
         title: "Кехлибарен Сияние",
         desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
-        image: "https://i.postimg.cc/pdwz1Kmg/IMG-0687(1).jpg"
+        image: "/images/kushta.jpg"
       },
       {
         title: "Вътрешното Светилище",
