@@ -90,8 +90,7 @@ const LANGUAGES = {
       {
         title: "Вътрешното Светилище",
         desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
-        image: "https://i.postimg.cc/R06wRgZ1/IMG-0691-(1)(1).jpg
-"
+        image: "https://i.postimg.cc/R06wRgZ1/IMG-0691-(1)(1).jpg"
       },
       {
         title: "Джаз Настроение",
