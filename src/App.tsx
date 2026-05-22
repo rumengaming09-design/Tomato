@@ -328,16 +328,16 @@ const LANGUAGES = {
       }
     ],
     gallery: [
-      { url: "https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg", title: "Майсторско приготвяне" },
-      { url: "https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg", title: "Нови Моменти" },
-      { url: "https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg", title: "Интериор Tomato" },
-      { url: "https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg", title: "Вечерна магия" },
-      { url: "https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg", title: "Детайли от Tomato" },
-      { url: "https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg", title: "Кулинарно вдъхновение" },
-      { url: "https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-25-06-168.jpg", title: "Светлина и джаз" },
-      { url: "https://i.postimg.cc/nLjqk3hZ/viber-izobrazenie-2026-05-19-19-25-06-188.jpg", title: "Атмосфера" }
-    ],
-    reviews: [
+    { url: "https://i.postimg.cc/Pqp14S5L/IMG-0695.jpg", title: "Майсторско приготвяне" },
+    { url: "https://i.postimg.cc/HkPQXqH6/viber-izobrazenie-2026-05-19-19-25-04-890.jpg", title: "Нови Моменти" },
+    { url: "https://i.postimg.cc/Z5DrpGZV/viber-izobrazenie-2026-05-19-19-25-04-913.jpg", title: "Интериор Tomato" },
+    { url: "https://i.postimg.cc/GmSkGWr7/viber-izobrazenie-2026-05-19-19-25-04-931.jpg", title: "Вечерна магия" },
+    { url: "https://i.postimg.cc/t4mhWKp9/viber-izobrazenie-2026-05-19-19-25-05-878.jpg", title: "Детайли от Tomato" },
+    { url: "https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-26-06-145.jpg", title: "Кулинарно вдъхновение" },
+    { url: "https://i.postimg.cc/Cx6jk3Sh/viber-izobrazenie-2026-05-19-19-26-06-168.jpg", title: "Светлина и джаз" },
+    { url: "https://i.postimg.cc/nLjgk3hZ/viber-izobrazenie-2026-05-19-19-26-06-188.jpg", title: "Атмосфера" }
+  ],
+  reviews: [
       {
         name: "Чефо",
         source: "Германия",
@@ -395,22 +395,22 @@ const LANGUAGES = {
     privateRoomDesc: "Our garden is a true oasis amidst the city noise. The perfect space for those who appreciate quiet conversation and fresh air in a cozy jazz environment.",
     privateRoomFeatures: ["70 Seats", "Lush Greenery", "Mood Lighting"],
     vipAtmosphere: [
-      {
-        title: "Amber Glow",
-        desc: "Hand-selected vintage filaments against a raw concrete ceiling, setting a sophisticated jazz mood.",
-        image: "https://i.postimg.cc/2SX4hsmH/viber-izobrazenie-2026-05-19-19-25-06-204.jpg"
-      },
-      {
-        title: "The Inner Sanctum",
-        desc: "Brick walls and fireplace warmth meet the rhythm of silence and prestige.",
-        image: "https://i.postimg.cc/s2Q5cTgz/viber-izobrazenie-2026-05-19-19-25-06-651.jpg"
-      },
-      {
-        title: "Jazz Reverie",
-        desc: "A space where music and light merge into a single, immersive experience.",
-        image: "https://i.postimg.cc/MGM1D9pW/viber-izobrazenie-2026-05-19-19-25-06-774.jpg"
-      }
-    ],
+    {
+      title: "Кехлибарен Сияние",
+      desc: "Ръчно подбрани винтидж нишки на фона на суров бетон, които задават ритъма на вечерта.",
+      image: "https://i.postimg.cc/pdwz1Kmg/IMG-0687.jpg"
+    },
+    {
+      title: "Вътрешното Светилище",
+      desc: "Тухлени стени и топлината на камината срещат престижа на пълното уединение.",
+      image: "https://i.postimg.cc/R06wRgz1/IMG-0691.jpg"
+    },
+    {
+      title: "Джаз Настроение",
+      desc: "Пространство, където музиката и светлината се сливат в едно изживяване.",
+      image: "https://i.postimg.cc/HLcb26ks/IMG-0693.jpg"
+    }
+  ],
     fullMenuTitle: "The Full Collection",
     vipMenuTitle: "Bar Offers",
     vipPackages: [
