@@ -357,9 +357,6 @@ const LANGUAGES = {
           {
             name: "BBQ",
             items: [
-              { name: "BBQ дъска за 1 човек", price: "10,00€", info: "250 гр" },
-              { name: "BBQ дъска за 2 души", price: "20,00€", info: "500 гр" },
-              { name: "BBQ дъска за 4 души", price: "40,00€", info: "1,5 кг" },
               { name: "Нашите три кюфтета", price: "8,50€", info: "300 гр /със салца и картофи/" },
               { name: "Свински ребра", price: "13,50€", info: "450 гр" },
               { name: "Телешка наденица", price: "8,50€", info: "300 гр" },
@@ -654,15 +651,40 @@ const LANGUAGES = {
               { name: "Village Salad with Grilled Veggies", price: "7,00€", info: "300 g" },
               { name: "Meshalale Salad", price: "7,00€", info: "300 g" },
               { name: "Chicken & Bacon Caesar", price: "8,70€", info: "300 g" },
-              { name: "Grilled Tomato & Mozzarella Salad", price: "7,70€", info: "300 g" }
+              { name: "Grilled Tomato & Mozzarella Salad", price: "7,70€", info: "300 g" },
             ]
+          },
+          {
+            name: "Appetizers",
+            items: [
+              { name: "Salmon mousse with green salad and baguette", price: "6,70€", info: "200 гр" },
+              { name: "Trio of appetizers of hummus, marinated olives with Feta cheese and mutabal", price: "7,70€", info: "300 гр" },
+              { name: "Breaded Scamorza with blueberries", price: "8,50€", info: "200 гр" },
+              { name: "Beef tongue with butter and mushrooms", price: "9,30€", info: "250 гр" },
+              { name: "Beef tongue with butter and mushrooms", price: "7,70€", info: "250 гр /телешки език, шкембе, дроб, гъби и вино/" },
+              { name: "Shrimp with cream", price: "10,50€", info: "200 гр" },
+              { name: "Beef liver with egg and pickles", price: "6,00€", info: "250 гр" },
+              { name: "Pig ears", price: "6,00€", info: "250 гр" },
+              { name: "chicken wings", price: "6,60€", info: "300 гр" },
+              { name: "Crispy chicken bites with garlic sauce", price: "7,20€", info: "250 гр" },
+              { name: "Popped potatoes with pancetta and yellow cheese", price: "6,70€", info: "250 гр" },
+              { name: "French fries with parmesan and truffle", price: "5,00€", info: "200 гр" },
+              { name: "French fries", price: "3,60€", info: "200 гр" },
+              { name: "Parlenka with garlic", price: "1,50€", info: "100 гр" },
+              { name: "Parlenka with yellow cheese", price: "3,00€", info: "140 гр" },
+            ],
+          },
+          {
+            name: "Tomato Promo Offers",
+            items: [
+              { name: "BBQ board for 1 person", price: "10,00€", info: "250 гр" },
+              { name: "BBQ board for 2 people", price: "20,00€", info: "500 гр" },
+              { name: "BBQ board for 4 people", price: "40,00€", info: "1,5 кг" },
+            ],
           },
           {
             name: "BBQ",
             items: [
-              { name: "BBQ Board for 1", price: "10,00€", info: "250 g" },
-              { name: "BBQ Board for 2", price: "20,00€", info: "500 g" },
-              { name: "BBQ Board for 4", price: "40,00€", info: "1.5 kg" },
               { name: "Our Three Meatballs", price: "8,50€", info: "300 g /with salsa and potatoes/" },
               { name: "Pork Ribs", price: "13,50€", info: "450 g" },
               { name: "Beef Sausage", price: "8,50€", info: "300 g" },
