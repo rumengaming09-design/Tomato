@@ -6,13 +6,13 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import {
   MapPin, Phone, Clock, ChevronRight, Star, Instagram, Facebook, Music,
-  UtensilsCrossed, Wine, Quote, X, Calendar, Users, CalendarCheck, GlassWater, Trash2, ChevronLeft, Check, XCircle
+  UtensilsCrossed, Wine, Quote, X, Calendar, Users, CalendarCheck, GlassWater, Trash2, ChevronLeft
 } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { db, handleFirestoreError, OperationType } from "./lib/firebase";
 import {
   deleteDoc, doc, getDoc, collection, runTransaction, serverTimestamp,
-  getDocs, query, orderBy, onSnapshot, updateDoc, where
+  getDocs, query, orderBy, onSnapshot, updateDoc
 } from "firebase/firestore";
 
 const CAPACITIES: Record<string, number> = {
@@ -66,7 +66,7 @@ const allGalleryImages = [
   "https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg"
 ];
 
-// Hero rotating background images
+// Hero rotating background images (fixed)
 const heroImages = [
   "https://i.postimg.cc/Y08JGw5P/20260516-160857.jpg",
   "https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg",
@@ -75,7 +75,7 @@ const heroImages = [
 
 const LANGUAGES = {
   BG: {
-    nav: ["Начало", "Меню", "Зали", "Атмосфера", "Галерия", "Отзиви", "Проверка"],
+    nav: ["Начало", "Меню", "Зали", "Атмосфера", "Галерия", "Отзиви"],
     subtitle: "Plovdiv · От 2012",
     heroTag: "Tomato Пловдив",
     heroTitle1: "Естетично",
@@ -97,8 +97,8 @@ const LANGUAGES = {
       {
         id: "garden",
         name: "Градина",
-        desc: "Нашата градина е истински оазис сред шума на града. Със своите 70 места, тя предлага тишина и свежест през топлите летни вечери. Пространството може да се затваря в студени дни, за да се поддържа приятна атмосфера. Зеленината и дискретното осветление създават приказна обстановка за романтична вечеря или спокойна среща с приятели. Това е нашата зала за пушачи. Градината разполага и с телевизор, на който можете да проследите вълнуващи спортни събития, както и всякакви други предавания.",
-        features: ["70 места", "Свежа растителност", "Дискретно осветление", "Телевизор"]
+        desc: "Нашата градина е истински оазис сред шума на града. Със своите 70 места, тя предлага тишина и свежест през топлите летни вечери. Пространството може да се затваря в студени дни, за да се поддържа приятна атмосфера. Зеленината и дискретното осветление създават приказна обстановка за романтична вечеря или спокойна среща с приятели. Това е нашата зала за пушачи.",
+        features: ["70 места", "Свежа растителност", "Дискретно осветление"]
       },
       {
         id: "bar",
@@ -185,13 +185,6 @@ const LANGUAGES = {
     locationBar: "Бар",
     onlineResStat: "Вземете 10% отстъпка за резервации през сайта!",
     reservationsTab: "Резервации",
-    checkStatusTitle: "Проверка на резервация",
-    checkStatusPlaceholder: "Въведете вашия 5-цифрен код",
-    checkStatusButton: "Провери",
-    statusPending: "Изчаква потвърждение",
-    statusApproved: "Приета ✓",
-    statusRejected: "Отхвърлена ✗",
-    adminPanelTitle: "Администраторски панел",
     resPasswordLabel: "Парола за достъп",
     resPasswordPlaceholder: "Въведете парола",
     resAuthError: "Грешна парола",
@@ -199,8 +192,6 @@ const LANGUAGES = {
     resListEmpty: "Няма направени резервации",
     resListGuests: "гости",
     resDelete: "Изтрий",
-    resApprove: "Приеми",
-    resReject: "Отхвърли",
     resNote: "Ще ви се обадим скоро за потвърждение на вашата маса.",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
@@ -387,7 +378,7 @@ const LANGUAGES = {
     quote: "Естетично бижу, скрито в сърцето на Пловдив."
   },
   EN: {
-    nav: ["Home", "Menu", "Halls", "Vibe", "Gallery", "Reviews", "Check"],
+    nav: ["Home", "Menu", "Halls", "Vibe", "Gallery", "Reviews"],
     subtitle: "Plovdiv · Since 2012",
     heroTag: "Tomato Plovdiv",
     heroTitle1: "Aesthetic",
@@ -409,8 +400,8 @@ const LANGUAGES = {
       {
         id: "garden",
         name: "Garden",
-        desc: "Our garden is a true oasis amidst the city noise. With its 70 seats, it offers peace and freshness during warm summer evenings. The space can be enclosed during colder days to maintain a pleasant atmosphere. The greenery and discrete lighting create a fairytale setting for a romantic dinner or a quiet gathering. This is our smoking area. The garden also features a TV, where you can watch exciting sports events and any other programs.",
-        features: ["70 Seats", "Lush Greenery", "Mood Lighting", "TV"]
+        desc: "Our garden is a true oasis amidst the city noise. With its 70 seats, it offers peace and freshness during warm summer evenings. The space can be enclosed during colder days to maintain a pleasant atmosphere. The greenery and discrete lighting create a fairytale setting for a romantic dinner or a quiet gathering. This is our smoking area.",
+        features: ["70 Seats", "Lush Greenery", "Mood Lighting"]
       },
       {
         id: "bar",
@@ -497,13 +488,6 @@ const LANGUAGES = {
     locationBar: "Bar",
     onlineResStat: "Get 10% OFF for reservations made through the website!",
     reservationsTab: "Reservations",
-    checkStatusTitle: "Check Reservation",
-    checkStatusPlaceholder: "Enter your 5-digit code",
-    checkStatusButton: "Check",
-    statusPending: "Pending",
-    statusApproved: "Approved ✓",
-    statusRejected: "Rejected ✗",
-    adminPanelTitle: "Admin Panel",
     resPasswordLabel: "Access Password",
     resPasswordPlaceholder: "Enter password",
     resAuthError: "Incorrect password",
@@ -511,8 +495,6 @@ const LANGUAGES = {
     resListEmpty: "No reservations found",
     resListGuests: "guests",
     resDelete: "Delete",
-    resApprove: "Approve",
-    resReject: "Reject",
     resNote: "We will call you back shortly to confirm your table.",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
@@ -700,15 +682,26 @@ const LANGUAGES = {
   }
 };
 
-function generateReservationCode(): string {
-  return Math.floor(10000 + Math.random() * 90000).toString();
-}
+const NAV_LINKS_MAP: Record<string, string> = {
+  "Начало": "home",
+  "Меню": "menu",
+  "Зали": "private-room",
+  "Атмосфера": "vibe",
+  "Галерия": "gallery",
+  "Отзиви": "reviews",
+  "Home": "home",
+  "Menu": "menu",
+  "Halls": "private-room",
+  "Vibe": "vibe",
+  "Gallery": "gallery",
+  "Reviews": "reviews"
+};
 
 export default function App() {
   const [lang, setLang] = useState<"BG" | "EN">("BG");
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery" | "reservations" | "check-status">("none");
+  const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery" | "reservations">("none");
   const [menuSection, setMenuSection] = useState<"drinks" | "food">("drinks");
   const [scrolled, setScrolled] = useState(false);
   const [selectedHall, setSelectedHall] = useState<"main" | "garden" | "bar">("main");
@@ -717,17 +710,15 @@ export default function App() {
     garden: 0,
     bar: 0
   });
+  // Hero background carousel
   const [heroIndex, setHeroIndex] = useState(0);
 
-  // Admin & Check status
+  // Admin Reservations State
   const [isAdminAuth, setIsAdminAuth] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
   const [adminAuthError, setAdminAuthError] = useState(false);
   const [allReservations, setAllReservations] = useState<any[]>([]);
   const [isLoadingReservations, setIsLoadingReservations] = useState(false);
-  const [checkCode, setCheckCode] = useState("");
-  const [checkedReservation, setCheckedReservation] = useState<any>(null);
-  const [checkError, setCheckError] = useState<string | null>(null);
 
   // Booking System State
   const [bookingDate, setBookingDate] = useState(new Date().toISOString().split("T")[0]);
@@ -745,8 +736,8 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
-  const [lastGeneratedCode, setLastGeneratedCode] = useState<string>("");
 
+  // Auto-rotate hero background every 3.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
@@ -767,6 +758,7 @@ export default function App() {
         return false;
       }
     });
+
     for (const res of toDelete) {
       try {
         await deleteDoc(doc(db, "reservations", res.id));
@@ -793,7 +785,9 @@ export default function App() {
     if (!dateString) return [];
     const date = new Date(dateString);
     const day = date.getDay();
+
     if (day === 0) return [];
+
     if (day >= 1 && day <= 5) {
       const slots = [];
       for (let h = 8; h <= 22; h++) {
@@ -803,6 +797,7 @@ export default function App() {
       slots.push("23:00");
       return slots;
     }
+
     if (day === 6) {
       const slots = [];
       for (let h = 16; h <= 20; h++) {
@@ -812,14 +807,17 @@ export default function App() {
       slots.push("21:00");
       return slots;
     }
+
     return [];
   }, []);
 
   const fetchCapacityForDateTime = useCallback(async (date: string, time: string, location: "hall" | "garden" | "bar", setTarget: (val: number) => void) => {
     if (!date || !time) return;
+
     try {
       const dayRef = doc(db, "daily_capacity", date);
       const daySnap = await getDoc(dayRef);
+
       let spots = CAPACITIES[location];
       if (daySnap.exists()) {
         const slotsKey = `slots_${location}`;
@@ -836,13 +834,19 @@ export default function App() {
   useEffect(() => {
     const dateStr = new Date().toISOString().split("T")[0];
     const slots = getTimeSlotsForDate(dateStr);
+
     if (slots.length > 0) {
       const now = new Date();
-      const currentTimeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+      const currentH = now.getHours();
+      const currentM = now.getMinutes();
+      const currentTimeStr = `${currentH.toString().padStart(2, "0")}:${currentM.toString().padStart(2, "0")}`;
+
       const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
+
       const updateLiveSpots = async () => {
         const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
         const newSpots: any = {};
+
         for (const loc of locations) {
           await fetchCapacityForDateTime(dateStr, displayTime, loc, (val) => {
             newSpots[loc] = val;
@@ -850,6 +854,7 @@ export default function App() {
         }
         setLiveSpots(newStore => ({ ...newStore, ...newSpots }));
       };
+
       updateLiveSpots();
       const interval = setInterval(updateLiveSpots, 300000);
       return () => clearInterval(interval);
@@ -860,10 +865,12 @@ export default function App() {
 
   useEffect(() => {
     const slots = getTimeSlotsForDate(bookingDate);
-    if (slots.length > 0 && !slots.includes(bookingTime)) {
-      setBookingTime(slots[0]);
+    if (slots.length > 0) {
+      if (!slots.includes(bookingTime)) {
+        setBookingTime(slots[0]);
+      }
     }
-  }, [bookingDate, getTimeSlotsForDate]);
+  }, [bookingDate, getTimeSlotsForDate, bookingTime]);
 
   useEffect(() => {
     if (bookingDate && bookingTime) {
@@ -902,29 +909,10 @@ export default function App() {
     }
   }
 
-  async function handleUpdateReservationStatus(id: string, newStatus: "pending" | "approved" | "rejected") {
-    try {
-      await updateDoc(doc(db, "reservations", id), { status: newStatus });
-      const today = new Date().toISOString().split("T")[0];
-      const now = new Date();
-      const currentTimeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-      const slots = getTimeSlotsForDate(today);
-      const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
-      const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
-      for (const loc of locations) {
-        fetchCapacityForDateTime(today, displayTime, loc, (val) => {
-          setLiveSpots(prev => ({ ...prev, [loc]: val }));
-        });
-      }
-    } catch (e) {
-      console.error("Update status error:", e);
-      alert("Грешка при обновяване на статуса.");
-    }
-  }
-
   async function handleDeleteReservation(id: string) {
     if (!window.confirm("Сигурни ли сте, че искате да изтриете тази резервация?")) return;
     try {
+      // Get reservation data to update capacity
       const resRef = doc(db, "reservations", id);
       const resSnap = await getDoc(resRef);
       if (resSnap.exists()) {
@@ -941,7 +929,9 @@ export default function App() {
           }
         }
       }
+      // Delete the reservation document
       await deleteDoc(doc(db, "reservations", id));
+      // Refresh live spots if today
       const today = new Date().toISOString().split("T")[0];
       const now = new Date();
       const currentTimeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
@@ -959,42 +949,21 @@ export default function App() {
     }
   }
 
-  async function handleCheckReservation(e: any) {
-    e.preventDefault();
-    setCheckError(null);
-    setCheckedReservation(null);
-    if (!checkCode) return;
-    if (checkCode === "tomato_admin") {
-      setOverlayView("reservations");
-      setCheckCode("");
-      return;
-    }
-    try {
-      const q = query(collection(db, "reservations"), where("code", "==", checkCode));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        setCheckError("Невалиден код или няма резервация с този код.");
-        return;
-      }
-      const docSnap = querySnapshot.docs[0];
-      setCheckedReservation({ id: docSnap.id, ...docSnap.data() });
-    } catch (err) {
-      console.error(err);
-      setCheckError("Грешка при проверка. Моля, опитайте отново.");
-    }
-  }
-
   async function handleBooking(e: any) {
     e.preventDefault();
     setBookingError(null);
+
     if (!bookingTime) {
       setBookingError("ERROR");
       return;
     }
+
     setIsSubmitting(true);
+
     const guestsCount = parseInt(bookingGuests) || 2;
     const hour = parseInt(bookingTime.split(":")[0]);
     const daySlots = getTimeSlotsForDate(bookingDate);
+
     let affectedSlots: string[] = [];
     if (hour >= 19 || bookingTime === "00:00") {
       affectedSlots = daySlots.filter(s => s >= bookingTime);
@@ -1002,6 +971,7 @@ export default function App() {
       const [h, m] = bookingTime.split(":").map(Number);
       const totalMinutesStart = h * 60 + m;
       const totalMinutesEnd = totalMinutesStart + 120;
+
       affectedSlots = daySlots.filter(s => {
         const [sh, sm] = s.split(":").map(Number);
         const slotMinutes = sh * 60 + sm;
@@ -1010,20 +980,25 @@ export default function App() {
     }
 
     try {
-      const newCode = generateReservationCode();
       await runTransaction(db, async (transaction) => {
         const dayRef = doc(db, "daily_capacity", bookingDate);
         const daySnap = await transaction.get(dayRef);
+
         const slotsKey = `slots_${bookingLocation}`;
         let allData: any = {};
-        if (daySnap.exists()) allData = daySnap.data();
+        if (daySnap.exists()) {
+          allData = daySnap.data();
+        }
+
         const slots = allData[slotsKey] || {};
+
         for (const slot of affectedSlots) {
           const bookedAtSlot = (slots as any)[slot] || 0;
           if (bookedAtSlot + guestsCount > CAPACITIES[bookingLocation]) {
             throw new Error("FULLY_BOOKED");
           }
         }
+
         const resRef = doc(collection(db, "reservations"));
         transaction.set(resRef, {
           name: bookingName,
@@ -1034,28 +1009,30 @@ export default function App() {
           location: bookingLocation,
           duration: hour >= 19 || bookingTime === "00:00" ? "night" : "2h",
           affectedSlots,
-          code: newCode,
-          status: "pending",
           createdAt: serverTimestamp()
         });
+
         const newSlots = { ...slots };
         for (const slot of affectedSlots) {
           (newSlots as any)[slot] = ((newSlots as any)[slot] || 0) + guestsCount;
         }
+
         if (daySnap.exists()) {
           transaction.update(dayRef, { [slotsKey]: newSlots });
         } else {
           transaction.set(dayRef, { [slotsKey]: newSlots });
         }
       });
-      setLastGeneratedCode(newCode);
+
       setBookingSuccess(true);
       fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
+
       const dateStr = new Date().toISOString().split("T")[0];
       if (bookingDate === dateStr) {
         const slots = getTimeSlotsForDate(dateStr);
         const now = new Date();
         const displayTime = slots.find(s => s >= `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`) || slots[0];
+
         if (bookingTime === displayTime || affectedSlots.includes(displayTime)) {
           const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
           for (const loc of locations) {
@@ -1065,83 +1042,161 @@ export default function App() {
           }
         }
       }
+
       setTimeout(() => {
         setIsBookingOpen(false);
         setBookingSuccess(false);
         setBookingName("");
         setBookingPhone("");
-        setLastGeneratedCode("");
-      }, 5000);
+      }, 3000);
+
+      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
     } catch (e: any) {
       console.error("Booking failed:", e);
-      if (e.message === "FULLY_BOOKED") setBookingError("FULL");
-      else setBookingError("ERROR");
+      if (e.message === "FULLY_BOOKED") {
+        setBookingError("FULL");
+      } else {
+        try {
+          handleFirestoreError(e, OperationType.WRITE, "reservations");
+        } catch (err: any) {
+          const errorMsg = String(err.message || err);
+          if (errorMsg.includes("permission-denied") || errorMsg.includes("permissions")) {
+            setBookingError("PERMISSION_ERROR");
+          } else {
+            setBookingError("ERROR");
+          }
+        }
+      }
     } finally {
       setIsSubmitting(false);
     }
   }
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
+
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
 
   return (
     <div ref={containerRef} className="relative bg-jazz-black selection:bg-jazz-gold selection:text-jazz-black min-h-screen">
-      {/* Navbar */}
+      {/* Navbar / Header */}
       <nav className={`fixed top-0 left-0 w-full z-[80] flex justify-between items-center px-6 md:px-16 py-6 transition-all duration-500 ${scrolled ? "backdrop-blur-md border-b border-white/5 bg-jazz-black/50" : "bg-transparent border-transparent"}`}>
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-4 md:gap-6 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-4 md:gap-6 group cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform duration-500">
-            <img src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg" alt="Tomato Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <img
+              src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg"
+              alt="Tomato Logo"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <div className="flex flex-col">
             <h1 className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</h1>
             <span className="text-[7px] md:text-[8px] tracking-[0.4em] md:tracking-[0.5em] uppercase opacity-40 font-bold">{t.subtitle}</span>
           </div>
         </motion.div>
+
         <div className="flex items-center gap-4 md:gap-10">
           <div className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-full px-4 py-2">
-            <button onClick={() => setLang("BG")} className={`text-[10px] font-black tracking-widest transition-colors ${lang === "BG" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}>BG</button>
+            <button
+              onClick={() => setLang("BG")}
+              className={`text-[10px] font-black tracking-widest transition-colors ${lang === "BG" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}
+            >
+              BG
+            </button>
             <div className="w-[1px] h-3 bg-white/10" />
-            <button onClick={() => setLang("EN")} className={`text-[10px] font-black tracking-widest transition-colors ${lang === "EN" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}>EN</button>
+            <button
+              onClick={() => setLang("EN")}
+              className={`text-[10px] font-black tracking-widest transition-colors ${lang === "EN" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}
+            >
+              EN
+            </button>
           </div>
+
           <div className="hidden sm:flex flex-col items-end gap-1">
-            <button onClick={() => setIsBookingOpen(true)} className="flex items-center gap-3 px-6 py-2.5 bg-jazz-gold text-jazz-black text-[9px] uppercase tracking-[0.2em] font-black hover:bg-white transition-colors duration-500 shadow-lg group">
+            <button
+              onClick={() => setIsBookingOpen(true)}
+              className="flex items-center gap-3 px-6 py-2.5 bg-jazz-gold text-jazz-black text-[9px] uppercase tracking-[0.2em] font-black hover:bg-white transition-colors duration-500 shadow-lg group"
+            >
               {t.bookNow}
-              {liveSpots.hall !== null && <span className="flex items-center gap-1.5 pl-3 border-l border-jazz-black/10 text-jazz-black/60 group-hover:text-jazz-black transition-colors"><Users size={10} />{liveSpots.hall}</span>}
+              {liveSpots.hall !== null && (
+                <span className="flex items-center gap-1.5 pl-3 border-l border-jazz-black/10 text-jazz-black/60 group-hover:text-jazz-black transition-colors">
+                  <Users size={10} />
+                  {liveSpots.hall}
+                </span>
+              )}
             </button>
             <span className="text-xs uppercase tracking-widest text-[#00ff88] animate-pulse font-black">{t.onlineResStat}</span>
           </div>
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex flex-col gap-1.5 p-2 group cursor-pointer">
-            <motion.div animate={isMenuOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }} className="w-6 h-[1.5px] bg-jazz-gold transition-transform" />
-            <motion.div animate={isMenuOpen ? { rotate: -45, y: -4, width: "1.5rem" } : { rotate: 0, y: 0, width: "1rem" }} className="w-4 h-[1.5px] bg-jazz-gold self-end transition-all" />
+
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex flex-col gap-1.5 p-2 group cursor-pointer"
+          >
+            <motion.div
+              animate={isMenuOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
+              className="w-6 h-[1.5px] bg-jazz-gold transition-transform"
+            />
+            <motion.div
+              animate={isMenuOpen ? { rotate: -45, y: -4, width: "1.5rem" } : { rotate: 0, y: 0, width: "1rem" }}
+              className="w-4 h-[1.5px] bg-jazz-gold self-end transition-all"
+            />
           </button>
         </div>
       </nav>
 
-      {/* Menu Overlay */}
+      {/* Primary Menu Overlay */}
       <AnimatePresence mode="wait">
         {isMenuOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] bg-jazz-black flex flex-col items-center justify-center p-8 backdrop-blur-3xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] bg-jazz-black flex flex-col items-center justify-center p-8 backdrop-blur-3xl"
+          >
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+
             <div className="relative z-10 flex flex-col items-center justify-center gap-8 md:gap-14 w-full">
-              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="flex flex-col items-center gap-4">
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                className="flex flex-col items-center gap-4"
+              >
                 <div className="flex items-center gap-4 py-2 px-4 bg-white/5 rounded-full border border-white/5">
-                  <button onClick={() => { setLang("BG"); setIsMenuOpen(false); }} className={`text-[10px] font-black tracking-[0.3em] transition-colors ${lang === "BG" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}>BG</button>
+                  <button
+                    onClick={() => { setLang("BG"); setIsMenuOpen(false); }}
+                    className={`text-[10px] font-black tracking-[0.3em] transition-colors ${lang === "BG" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}
+                  >
+                    BG
+                  </button>
                   <div className="w-[1px] h-3 bg-white/10" />
-                  <button onClick={() => { setLang("EN"); setIsMenuOpen(false); }} className={`text-[10px] font-black tracking-[0.3em] transition-colors ${lang === "EN" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}>EN</button>
+                  <button
+                    onClick={() => { setLang("EN"); setIsMenuOpen(false); }}
+                    className={`text-[10px] font-black tracking-[0.3em] transition-colors ${lang === "EN" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}
+                  >
+                    EN
+                  </button>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <p className="text-[10px] uppercase tracking-[0.6em] text-jazz-gold/40 font-black">Tomato Plovdiv</p>
                   <div className="w-8 h-[1px] bg-jazz-gold/20"></div>
                 </div>
               </motion.div>
+
               <div className="flex flex-col items-center gap-3 md:gap-6 w-full max-w-xl mx-auto px-6 text-center">
                 {[
                   { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
@@ -1150,27 +1205,53 @@ export default function App() {
                   { label: t.gallerySubtitle, action: () => { setOverlayView("gallery"); setIsMenuOpen(false); } },
                   { label: t.vibeTitle, action: () => { document.getElementById("vibe")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
                   { label: t.visitTitle, action: () => { document.getElementById("location")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
-                  { label: t.checkStatusTitle, action: () => { setOverlayView("check-status"); setIsMenuOpen(false); } },
+                  { label: t.reservationsTab, action: () => { setOverlayView("reservations"); setIsMenuOpen(false); } },
                 ].map((item, i) => (
-                  <motion.button key={item.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} onClick={item.action} className="text-3xl md:text-5xl font-serif italic text-white hover:text-jazz-gold transition-all tracking-tight group w-full text-center py-1 md:py-2 block">
+                  <motion.button
+                    key={item.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    onClick={item.action}
+                    className="text-3xl md:text-5xl font-serif italic text-white hover:text-jazz-gold transition-all tracking-tight group w-full text-center py-1 md:py-2 block"
+                  >
                     {item.label}
                   </motion.button>
                 ))}
               </div>
-              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} onClick={() => { setIsBookingOpen(true); setIsMenuOpen(false); }} className="mt-4 md:mt-8 w-full max-w-md py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.5em] font-black shadow-2xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-3">
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                onClick={() => { setIsBookingOpen(true); setIsMenuOpen(false); }}
+                className="mt-4 md:mt-8 w-full max-w-md py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.5em] font-black shadow-2xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-3"
+              >
                 {t.bookNow}
-                {liveSpots.hall !== null && <span className="opacity-40 text-[8px] border-l border-jazz-black/20 pl-3">{liveSpots.hall} {lang === "BG" ? "СВОБОДНИ" : "AVAILABLE"}</span>}
+                {liveSpots.hall !== null && (
+                  <span className="opacity-40 text-[8px] border-l border-jazz-black/20 pl-3">
+                    {liveSpots.hall} {lang === "BG" ? "СВОБОДНИ" : "AVAILABLE"}
+                  </span>
+                )}
               </motion.button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Overlays */}
+      {/* Sub-menu Overlays (Menu, Gallery, Reservations) */}
       <AnimatePresence>
         {overlayView !== "none" && (
-          <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.1 }} className="fixed inset-0 z-[95] bg-jazz-black overflow-y-auto">
-            <button onClick={() => setOverlayView("none")} className="fixed top-8 right-8 z-[110] p-4 bg-jazz-black/50 backdrop-blur-md border border-white/10 text-jazz-gold rounded-full hover:bg-jazz-gold hover:text-jazz-black transition-all shadow-2xl group">
+          <motion.div
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            className="fixed inset-0 z-[95] bg-jazz-black overflow-y-auto"
+          >
+            <button
+              onClick={() => setOverlayView("none")}
+              className="fixed top-8 right-8 z-[110] p-4 bg-jazz-black/50 backdrop-blur-md border border-white/10 text-jazz-gold rounded-full hover:bg-jazz-gold hover:text-jazz-black transition-all shadow-2xl group"
+            >
               <X size={24} className="group-hover:rotate-90 transition-transform duration-500" />
             </button>
 
@@ -1178,33 +1259,71 @@ export default function App() {
               <div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
                 <div className="text-center mb-12">
                   <span className="text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-6 block font-bold opacity-60">{t.fullMenuTitle}</span>
-                  <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none mb-12">{t.menuHeader.split(" ").slice(0, 1)} <br /> {t.menuHeader.split(" ").slice(1).join(" ")}</h2>
+                  <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none mb-12">
+                    {t.menuHeader.split(" ").slice(0, 1)} <br /> {t.menuHeader.split(" ").slice(1).join(" ")}
+                  </h2>
                 </div>
+
                 <div className="flex flex-wrap justify-center gap-4 mb-20">
-                  <button onClick={() => setMenuSection("drinks")} className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "drinks" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}>{lang === "BG" ? "Напитки" : "Drinks"}</button>
-                  <button onClick={() => setMenuSection("food")} className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "food" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}>{lang === "BG" ? "Кухня" : "Food"}</button>
+                  <button
+                    onClick={() => setMenuSection("drinks")}
+                    className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "drinks" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
+                  >
+                    {lang === "BG" ? "Напитки" : "Drinks"}
+                  </button>
+                  <button
+                    onClick={() => setMenuSection("food")}
+                    className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "food" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
+                  >
+                    {lang === "BG" ? "Кухня" : "Food"}
+                  </button>
                 </div>
+
                 <div className="space-y-32">
-                  {t.fullMenu.filter((group, idx) => (menuSection === "drinks" ? idx === 0 : idx === 1)).map((group, gIdx) => (
-                    <motion.div key={group.title} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                      <div className="flex flex-col items-center mb-16 px-4"><div className="w-12 h-[1px] bg-jazz-gold/30 mb-6"></div><h3 className="text-3xl md:text-6xl font-serif text-white italic tracking-tighter text-center">{group.title}</h3></div>
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24">
-                        {group.categories.map((section, idx) => (
-                          <motion.div key={section.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="space-y-12">
-                            <h4 className="text-jazz-gold text-xs uppercase tracking-[0.5em] font-bold pb-6 border-b border-jazz-gold/20 italic">{section.name}</h4>
-                            <div className="space-y-12">
-                              {section.items.map((item) => (
-                                <div key={item.name} className="group cursor-pointer">
-                                  <div className="flex justify-between items-start mb-3 gap-4"><h5 className="text-xl md:text-2xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors leading-tight">{item.name}</h5><span className="text-[11px] text-jazz-gold/40 italic whitespace-nowrap pt-2 font-bold">{item.price}</span></div>
-                                  <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] leading-relaxed max-w-[80%]">{item.info}</p>
-                                </div>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
+                  {t.fullMenu
+                    .filter((group, idx) => (menuSection === "drinks" ? idx === 0 : idx === 1))
+                    .map((group, gIdx) => (
+                      <motion.div
+                        key={group.title}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="flex flex-col items-center mb-16 px-4">
+                          <div className="w-12 h-[1px] bg-jazz-gold/30 mb-6"></div>
+                          <h3 className="text-3xl md:text-6xl font-serif text-white italic tracking-tighter text-center">
+                            {group.title}
+                          </h3>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24">
+                          {group.categories.map((section, idx) => (
+                            <motion.div
+                              key={section.name}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: idx * 0.1 }}
+                              className="space-y-12"
+                            >
+                              <h4 className="text-jazz-gold text-xs uppercase tracking-[0.5em] font-bold pb-6 border-b border-jazz-gold/20 italic">
+                                {section.name}
+                              </h4>
+                              <div className="space-y-12">
+                                {section.items.map((item) => (
+                                  <div key={item.name} className="group cursor-pointer">
+                                    <div className="flex justify-between items-start mb-3 gap-4">
+                                      <h5 className="text-xl md:text-2xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors leading-tight">{item.name}</h5>
+                                      <span className="text-[11px] text-jazz-gold/40 italic whitespace-nowrap pt-2 font-bold">{item.price}</span>
+                                    </div>
+                                    <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] leading-relaxed max-w-[80%]">{item.info}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    ))}
                 </div>
               </div>
             )}
@@ -1212,22 +1331,49 @@ export default function App() {
             {overlayView === "reservations" && (
               <div className="py-24 px-6 md:px-16 max-w-4xl mx-auto">
                 {!isAdminAuth ? (
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md mx-auto bg-white/[0.02] border border-white/10 p-8 md:p-12 mt-12">
-                    <h3 className="text-2xl font-serif italic text-white mb-8 text-center">{t.adminPanelTitle}</h3>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="max-w-md mx-auto bg-white/[0.02] border border-white/10 p-8 md:p-12 mt-12"
+                  >
+                    <h3 className="text-2xl font-serif italic text-white mb-8 text-center">{t.reservationsTab}</h3>
                     <form onSubmit={handleAdminLogin} className="space-y-6">
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.resPasswordLabel}</label>
-                        <input type="password" value={adminPassword} onChange={(e) => setAdminPassword(e.target.value)} placeholder={t.resPasswordPlaceholder} className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white text-sm focus:outline-none focus:border-jazz-gold/50 transition-colors" required />
+                        <input
+                          type="password"
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                          placeholder={t.resPasswordPlaceholder}
+                          className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white text-sm focus:outline-none focus:border-jazz-gold/50 transition-colors"
+                          required
+                        />
                       </div>
-                      {adminAuthError && <p className="text-jazz-red text-[10px] uppercase tracking-widest text-center">{t.resAuthError}</p>}
-                      <button type="submit" className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl">Login</button>
+                      {adminAuthError && (
+                        <p className="text-jazz-red text-[10px] uppercase tracking-widest text-center">{t.resAuthError}</p>
+                      )}
+                      <button
+                        type="submit"
+                        className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl"
+                      >
+                        Login
+                      </button>
                     </form>
                   </motion.div>
                 ) : (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                    <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-12"><h3 className="text-3xl md:text-5xl font-serif italic text-white tracking-tighter">{t.resListTitle}</h3></div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-8"
+                  >
+                    <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-12">
+                      <h3 className="text-3xl md:text-5xl font-serif italic text-white tracking-tighter">{t.resListTitle}</h3>
+                    </div>
+
                     {isLoadingReservations ? (
-                      <div className="flex flex-col items-center py-20 gap-4"><div className="w-8 h-8 border-2 border-jazz-gold border-t-transparent rounded-full animate-spin"></div></div>
+                      <div className="flex flex-col items-center py-20 gap-4">
+                        <div className="w-8 h-8 border-2 border-jazz-gold border-t-transparent rounded-full animate-spin"></div>
+                      </div>
                     ) : allReservations.length === 0 ? (
                       <div className="text-center py-20 opacity-40 text-[10px] uppercase tracking-[0.3em]">{t.resListEmpty}</div>
                     ) : (
@@ -1237,24 +1383,32 @@ export default function App() {
                             <div className="space-y-1">
                               <div className="flex items-center gap-3">
                                 <h4 className="text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors">{res.name}</h4>
-                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${res.location === "garden" ? "bg-green-500/10 text-green-500" : res.location === "bar" ? "bg-blue-500/10 text-blue-400" : "bg-jazz-gold/10 text-jazz-gold"}`}>{res.location === "garden" ? t.locationGarden : res.location === "bar" ? t.locationBar : t.locationHall}</span>
-                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${res.status === "approved" ? "bg-green-500/20 text-green-400" : res.status === "rejected" ? "bg-red-500/20 text-red-400" : "bg-yellow-500/20 text-yellow-400"}`}>{res.status === "approved" ? t.statusApproved : res.status === "rejected" ? t.statusRejected : t.statusPending}</span>
+                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${
+                                  res.location === "garden"
+                                    ? "bg-green-500/10 text-green-500"
+                                    : res.location === "bar"
+                                      ? "bg-blue-500/10 text-blue-400"
+                                      : "bg-jazz-gold/10 text-jazz-gold"
+                                }`}>
+                                  {res.location === "garden" ? t.locationGarden : res.location === "bar" ? t.locationBar : t.locationHall}
+                                </span>
                               </div>
                               <div className="flex items-center gap-4 text-white/40 text-[10px] uppercase tracking-widest font-medium">
                                 <span className="flex items-center gap-1.5"><Calendar size={10} /> {res.date}</span>
                                 <span className="flex items-center gap-1.5"><Clock size={10} /> {res.time}</span>
                                 <span className="flex items-center gap-1.5"><Users size={10} /> {res.guests} {t.resListGuests}</span>
-                                <span className="flex items-center gap-1.5 font-mono text-jazz-gold">Код: {res.code}</span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              {res.status !== "approved" && (
-                                <button onClick={() => handleUpdateReservationStatus(res.id, "approved")} className="flex items-center gap-2 px-3 py-2 bg-green-500/20 hover:bg-green-500/40 text-green-400 text-[10px] uppercase tracking-widest font-bold rounded transition-all"><Check size={12} /> {t.resApprove}</button>
-                              )}
-                              {res.status !== "rejected" && (
-                                <button onClick={() => handleUpdateReservationStatus(res.id, "rejected")} className="flex items-center gap-2 px-3 py-2 bg-red-500/20 hover:bg-red-500/40 text-red-400 text-[10px] uppercase tracking-widest font-bold rounded transition-all"><XCircle size={12} /> {t.resReject}</button>
-                              )}
-                              <button onClick={() => handleDeleteReservation(res.id)} className="flex items-center gap-2 px-3 py-2 border border-red-500/20 text-[10px] uppercase tracking-widest font-bold text-red-500/60 hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/40 transition-all rounded"><Trash2 size={10} /> {t.resDelete}</button>
+                            <div className="flex items-center gap-4">
+                              <a href={`tel:${res.phone}`} className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] uppercase tracking-widest font-bold text-white/60 hover:text-white hover:border-white/30 transition-all">
+                                <Phone size={10} /> {res.phone}
+                              </a>
+                              <button
+                                onClick={() => handleDeleteReservation(res.id)}
+                                className="flex items-center gap-2 px-4 py-2 border border-red-500/20 text-[10px] uppercase tracking-widest font-bold text-red-500/60 hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/40 transition-all"
+                              >
+                                <Trash2 size={10} /> {t.resDelete}
+                              </button>
                             </div>
                           </div>
                         ))}
@@ -1265,50 +1419,33 @@ export default function App() {
               </div>
             )}
 
-            {overlayView === "check-status" && (
-              <div className="py-24 px-6 md:px-16 max-w-2xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl md:text-6xl font-serif text-white italic tracking-tighter">{t.checkStatusTitle}</h2>
-                </div>
-                <form onSubmit={handleCheckReservation} className="bg-white/[0.02] border border-white/10 p-8 md:p-12 rounded-sm">
-                  <div className="space-y-2 mb-6">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.checkStatusTitle}</label>
-                    <input type="text" value={checkCode} onChange={(e) => setCheckCode(e.target.value)} placeholder={t.checkStatusPlaceholder} className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white text-sm focus:outline-none focus:border-jazz-gold/50 transition-colors text-center font-mono text-2xl tracking-widest" maxLength={5} />
-                  </div>
-                  <button type="submit" className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl">{t.checkStatusButton}</button>
-                </form>
-                {checkError && <p className="text-jazz-red text-center mt-6 text-sm">{checkError}</p>}
-                {checkedReservation && (
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-12 bg-white/[0.03] border border-white/10 p-8 rounded-sm">
-                    <h3 className="text-2xl font-serif italic text-jazz-gold mb-6 text-center">Детайли на резервацията</h3>
-                    <div className="space-y-3 text-white/80">
-                      <p><strong>Име:</strong> {checkedReservation.name}</p>
-                      <p><strong>Телефон:</strong> {checkedReservation.phone}</p>
-                      <p><strong>Гости:</strong> {checkedReservation.guests}</p>
-                      <p><strong>Дата:</strong> {checkedReservation.date}</p>
-                      <p><strong>Час:</strong> {checkedReservation.time}</p>
-                      <p><strong>Зала:</strong> {checkedReservation.location === "garden" ? t.locationGarden : checkedReservation.location === "bar" ? t.locationBar : t.locationHall}</p>
-                      <p><strong>Статус:</strong> <span className={`font-bold ${checkedReservation.status === "approved" ? "text-green-400" : checkedReservation.status === "rejected" ? "text-red-400" : "text-yellow-400"}`}>{checkedReservation.status === "approved" ? t.statusApproved : checkedReservation.status === "rejected" ? t.statusRejected : t.statusPending}</span></p>
-                      {checkedReservation.status === "pending" && <p className="text-jazz-gold text-sm mt-4">Вашата резервация е изчаква потвърждение. Ще получите имейл или обаждане скоро.</p>}
-                      {checkedReservation.status === "approved" && <p className="text-green-400 text-sm mt-4">Резервацията е потвърдена! Очакваме ви.</p>}
-                      {checkedReservation.status === "rejected" && <p className="text-red-400 text-sm mt-4">За съжаление резервацията не можа да бъде потвърдена. Моля, свържете се с нас за повече информация.</p>}
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            )}
-
             {overlayView === "gallery" && (
               <div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
                 <div className="text-center mb-20">
                   <span className="text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-6 block font-bold opacity-60">{t.galleryTitle}</span>
-                  <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none">{t.gallerySubtitle.split(" ").slice(0, 1)} <br /> {t.gallerySubtitle.split(" ").slice(1).join(" ")}</h2>
-                  <p className="mt-8 text-white/40 text-sm max-w-lg mx-auto font-light leading-relaxed italic">{t.galleryDesc}</p>
+                  <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none">
+                    {t.gallerySubtitle.split(" ").slice(0, 1)} <br /> {t.gallerySubtitle.split(" ").slice(1).join(" ")}
+                  </h2>
+                  <p className="mt-8 text-white/40 text-sm max-w-lg mx-auto font-light leading-relaxed italic">
+                    {t.galleryDesc}
+                  </p>
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 px-4 md:px-12">
                   {allGalleryImages.map((url, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} className="relative aspect-[4/5] overflow-hidden group border border-white/5">
-                      <img src={url} alt={`Tomato gallery ${i}`} className="w-full h-full object-cover grayscale-[0.8] group-hover:grayscale-0 sepia-[0.4] group-hover:sepia-0 contrast-125 scale-110 group-hover:scale-100 transition-all duration-[2s] ease-in-out" referrerPolicy="no-referrer" />
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="relative aspect-[4/5] overflow-hidden group border border-white/5"
+                    >
+                      <img
+                        src={url}
+                        alt={`Tomato gallery ${i}`}
+                        className="w-full h-full object-cover grayscale-[0.8] group-hover:grayscale-0 sepia-[0.4] group-hover:sepia-0 contrast-125 scale-110 group-hover:scale-100 transition-all duration-[2s] ease-in-out"
+                        referrerPolicy="no-referrer"
+                      />
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-1000 pointer-events-none mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/p6.png')]"></div>
                       <div className="absolute inset-x-6 bottom-6 py-4 px-6 bg-jazz-black/90 backdrop-blur-md translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex flex-col gap-1 border-l-2 border-jazz-gold">
                         <span className="text-xs font-serif italic text-white">Tomato</span>
@@ -1323,12 +1460,24 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section */}
+      {/* Hero Section with rotating background */}
       <section id="home" className="relative h-screen flex flex-col justify-center items-center pt-20">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <AnimatePresence mode="wait">
-            <motion.div key={heroIndex} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.5, ease: "easeInOut" }}>
-              <img src={heroImages[heroIndex]} alt="Hero Background" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <motion.div
+              key={heroIndex}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            >
+              <img
+                src={heroImages[heroIndex]}
+                alt="Hero Background"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-jazz-black/60 via-jazz-black/40 to-jazz-black z-10" />
@@ -1338,35 +1487,59 @@ export default function App() {
             <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-transparent via-jazz-gold/20 to-transparent" />
           </div>
         </div>
+
         <div className="relative z-20 text-center px-4 mt-20 md:mt-32">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div className="flex items-center justify-center gap-4 md:gap-6 mb-12">
-              <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40"></div>
+              <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40" />
               <span className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] md:tracking-[0.8em] text-jazz-gold font-bold">{t.heroTag}</span>
-              <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40"></div>
+              <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40" />
             </div>
+
             <h1 className="text-6xl md:text-[12rem] font-serif text-white mb-10 md:mb-12 tracking-tighter leading-none relative group px-2">
-              <span className="relative z-10">{t.heroTitle1}</span><br />
+              <span className="relative z-10">{t.heroTitle1}</span>
+              <br />
               <span className="italic text-jazz-gold relative z-10">{t.heroTitle2}</span>
-              <div className="absolute -inset-10 bg-jazz-gold/10 blur-[120px] rounded-full -z-10 opacity-50"></div>
+              <div className="absolute -inset-10 bg-jazz-gold/10 blur-[120px] rounded-full -z-10 opacity-50" />
             </h1>
-            <p className="max-w-2xl mx-auto text-jazz-cream/60 text-base md:text-xl font-light leading-relaxed mb-16 italic tracking-wide px-4">{t.heroDesc}</p>
+
+            <p className="max-w-2xl mx-auto text-jazz-cream/60 text-base md:text-xl font-light leading-relaxed mb-16 italic tracking-wide px-4">
+              {t.heroDesc}
+            </p>
+
             <div className="mt-16 flex flex-col items-center gap-8 w-full px-4">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center items-center w-full max-w-[320px] md:max-w-none">
-                <button onClick={() => setOverlayView("full-menu")} className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]">
-                  <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500"></div>
+                <button
+                  onClick={() => setOverlayView("full-menu")}
+                  className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]"
+                >
+                  <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 group-hover:text-jazz-black whitespace-nowrap">{t.viewMenu}</span>
                 </button>
-                <button onClick={() => setIsBookingOpen(true)} className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all shadow-2xl flex items-center justify-center min-w-[200px]">
-                  <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500"></div>
+                <button
+                  onClick={() => setIsBookingOpen(true)}
+                  className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all shadow-2xl flex items-center justify-center min-w-[200px]"
+                >
+                  <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 whitespace-nowrap">{t.bookNow}</span>
                 </button>
               </div>
-              <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#00ff88] font-black animate-pulse text-center">{t.onlineResStat}</span>
+              <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#00ff88] font-black animate-pulse text-center">
+                {t.onlineResStat}
+              </span>
             </div>
           </motion.div>
         </div>
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-6 md:bottom-10 z-20 flex flex-col items-center gap-2 opacity-20">
+
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="absolute bottom-6 md:bottom-10 z-20 flex flex-col items-center gap-2 opacity-20"
+        >
           <span className="text-[9px] uppercase tracking-[0.2em] md:tracking-[0.4em]">{t.scroll}</span>
           <div className="w-[1px] h-12 md:h-16 bg-white shrink-0" />
         </motion.div>
@@ -1376,15 +1549,18 @@ export default function App() {
       <section id="menu" className="py-24 md:py-32 px-6 md:px-16 max-w-7xl mx-auto flex justify-center">
         <div className="w-full max-w-4xl relative group overflow-hidden bg-white/[0.02] border border-white/5 flex items-center justify-center min-h-[400px] md:min-h-[600px] p-6 md:p-12">
           <div className="absolute inset-0 bg-gradient-to-t from-jazz-black via-transparent to-transparent z-10" />
+
           <div className="relative flex flex-col items-center z-20 w-full max-w-[250px] md:max-w-none">
             <div className="w-full md:w-72 h-80 md:h-96 border border-jazz-gold/20 rotate-3 absolute -z-10 translate-x-1 md:translate-x-4" />
             <div className="w-full md:w-72 h-80 md:h-96 border border-jazz-gold/30 -rotate-2 absolute -z-10 -translate-x-1 md:-translate-x-2" />
             <div className="w-full md:w-72 h-72 md:h-96 bg-jazz-red flex items-center justify-center shadow-2xl relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-700">
               <div className="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
               <div className="text-center space-y-6 px-8 relative z-10">
-                <div className="w-16 h-[1px] bg-jazz-gold mx-auto opacity-50"></div>
+                <div className="w-16 h-[1px] bg-jazz-gold mx-auto opacity-50" />
                 <Quote size={24} className="mx-auto text-jazz-gold/30" />
-                <p className="text-xl md:text-3xl font-serif italic text-white leading-tight">{t.quote}</p>
+                <p className="text-xl md:text-3xl font-serif italic text-white leading-tight">
+                  {t.quote}
+                </p>
                 <div className="space-y-1">
                   <p className="text-[10px] tracking-[0.3em] uppercase text-jazz-gold font-bold">{lang === "BG" ? "Данаил Ангелов" : "Danail Angelov"}</p>
                   <p className="text-[9px] tracking-widest uppercase text-white/40">Local Guide</p>
@@ -1392,6 +1568,7 @@ export default function App() {
               </div>
             </div>
           </div>
+
           <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
             <p className="text-[9px] uppercase tracking-[0.5em] text-jazz-gold font-bold mb-2 opacity-60">{t.vibeTitle}</p>
             <p className="text-sm md:text-lg font-serif italic text-jazz-cream/80">{t.addressValue}</p>
@@ -1399,60 +1576,112 @@ export default function App() {
         </div>
       </section>
 
-      {/* Halls Section */}
+      {/* Halls Section with carousels */}
       <section id="private-room" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col mb-16">
             <span className="text-jazz-gold text-lg md:text-2xl uppercase tracking-[0.4em] font-bold block mb-8">{t.privateRoomTitle}</span>
             <div className="flex flex-wrap gap-4 md:gap-8">
               {(t as any).halls.map((hall: any) => (
-                <button key={hall.id} onClick={() => setSelectedHall(hall.id)} className={`text-2xl md:text-5xl font-serif italic tracking-tighter transition-all ${selectedHall === hall.id ? "text-jazz-gold font-bold" : "text-white hover:text-jazz-gold/70"}`}>{hall.name}</button>
+                <button
+                  key={hall.id}
+                  onClick={() => setSelectedHall(hall.id)}
+                  className={`text-2xl md:text-5xl font-serif italic tracking-tighter transition-all ${selectedHall === hall.id ? "text-jazz-gold font-bold" : "text-white hover:text-jazz-gold/70"}`}
+                >
+                  {hall.name}
+                </button>
               ))}
             </div>
           </div>
+
           <AnimatePresence mode="wait">
-            <motion.div key={selectedHall} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5, ease: "easeOut" }} className="flex flex-col lg:flex-row gap-16 items-center">
+            <motion.div
+              key={selectedHall}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="flex flex-col lg:flex-row gap-16 items-center"
+            >
+              {/* Carousel */}
               <div className="w-full lg:w-1/2 relative group">
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
-                  <img src={hallImages[selectedHall as keyof typeof hallImages][hallIndex[selectedHall]]} alt={selectedHall} className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110" referrerPolicy="no-referrer" />
+                  <img
+                    src={hallImages[selectedHall as keyof typeof hallImages][hallIndex[selectedHall]]}
+                    alt={selectedHall}
+                    className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110"
+                    referrerPolicy="no-referrer"
+                  />
                   <div className="absolute inset-0 bg-jazz-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/p6.png')]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-jazz-black/80 to-transparent" />
                   <div className="absolute bottom-8 left-8 z-10">
                     <span className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold block mb-2">{(t as any).halls.find((h: any) => h.id === selectedHall)?.name}</span>
                     <p className="text-white/40 text-[9px] uppercase tracking-widest italic">Tomato Experience</p>
                   </div>
-                  <button onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] - 1 + hallImages[selectedHall as keyof typeof hallImages].length) % hallImages[selectedHall as keyof typeof hallImages].length }))} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"><ChevronLeft size={24} /></button>
-                  <button onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] + 1) % hallImages[selectedHall as keyof typeof hallImages].length }))} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"><ChevronRight size={24} /></button>
+                  <button
+                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] - 1 + hallImages[selectedHall as keyof typeof hallImages].length) % hallImages[selectedHall as keyof typeof hallImages].length }))}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] + 1) % hallImages[selectedHall as keyof typeof hallImages].length }))}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                     {hallImages[selectedHall as keyof typeof hallImages].map((_, idx) => (
-                      <button key={idx} onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: idx }))} className={`w-2 h-2 rounded-full transition-all ${idx === hallIndex[selectedHall] ? "bg-jazz-gold w-4" : "bg-white/40"}`} />
+                      <button
+                        key={idx}
+                        onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: idx }))}
+                        className={`w-2 h-2 rounded-full transition-all ${idx === hallIndex[selectedHall] ? "bg-jazz-gold w-4" : "bg-white/40"}`}
+                      />
                     ))}
                   </div>
                 </div>
               </div>
+
               <div className="w-full lg:w-1/2 space-y-10">
                 <div>
-                  <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tighter italic leading-tight mb-8">{(t as any).halls.find((h: any) => h.id === selectedHall)?.name}</h2>
-                  <p className="text-white/60 text-base md:text-xl font-light leading-relaxed max-w-xl">{(t as any).halls.find((h: any) => h.id === selectedHall)?.desc}</p>
+                  <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tighter italic leading-tight mb-8">
+                    {(t as any).halls.find((h: any) => h.id === selectedHall)?.name}
+                  </h2>
+                  <p className="text-white/60 text-base md:text-xl font-light leading-relaxed max-w-xl">
+                    {(t as any).halls.find((h: any) => h.id === selectedHall)?.desc}
+                  </p>
                 </div>
+
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 py-8 border-y border-white/5">
                   {(t as any).halls.find((h: any) => h.id === selectedHall)?.features.map((feature: string, i: number) => (
-                    <div key={i} className="flex items-center gap-4 group"><div className="w-1.5 h-1.5 bg-jazz-gold rounded-full group-hover:scale-150 transition-transform"></div><span className="text-[10px] md:text-xs uppercase tracking-widest text-white/80 font-medium group-hover:text-jazz-gold transition-colors">{feature}</span></div>
+                    <div key={i} className="flex items-center gap-4 group">
+                      <div className="w-1.5 h-1.5 bg-jazz-gold rounded-full group-hover:scale-150 transition-transform" />
+                      <span className="text-[10px] md:text-xs uppercase tracking-widest text-white/80 font-medium group-hover:text-jazz-gold transition-colors">{feature}</span>
+                    </div>
                   ))}
                   <div className="flex items-center gap-4 group col-span-2 sm:col-span-1">
                     <div className="w-1.5 h-1.5 bg-[#00ff88] rounded-full animate-pulse" />
                     <div className="flex flex-col">
                       <span className="text-[8px] uppercase tracking-widest text-white/40 font-bold">{lang === "BG" ? "Жива наличност" : "Live Availability"}</span>
                       <span className="text-[10px] md:text-xs uppercase tracking-widest text-[#00ff88] font-black">
-                        {(() => { const currentLoc = selectedHall === "main" ? "hall" : selectedHall === "garden" ? "garden" : "bar"; return liveSpots[currentLoc] !== null ? `${liveSpots[currentLoc]} / ${CAPACITIES[currentLoc]} ${lang === "BG" ? "СВОБОДНИ" : "FREE"}` : "..."; })()}
+                        {(() => {
+                          const currentLoc = selectedHall === "main" ? "hall" : selectedHall === "garden" ? "garden" : "bar";
+                          return liveSpots[currentLoc] !== null
+                            ? `${liveSpots[currentLoc]} / ${CAPACITIES[currentLoc]} ${lang === "BG" ? "СВОБОДНИ" : "FREE"}`
+                            : "...";
+                        })()}
                       </span>
                     </div>
                   </div>
                 </div>
+
                 <div className="flex flex-col sm:flex-row gap-3 mt-12">
-                  <button onClick={() => setIsBookingOpen(true)} className="group relative inline-flex px-8 py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-black overflow-hidden transition-all shadow-2xl flex items-center gap-3">
-                    <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500"></div>
+                  <button
+                    onClick={() => setIsBookingOpen(true)}
+                    className="group relative inline-flex px-8 py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-black overflow-hidden transition-all shadow-2xl flex items-center gap-3"
+                  >
+                    <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
                     <span className="relative z-10">{t.bookNow}</span>
                   </button>
                 </div>
@@ -1466,59 +1695,372 @@ export default function App() {
       <section id="vibe" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20 items-center text-center md:text-left">
           <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-[4/5] bg-zinc-900 overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000">
-            <img src="https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg" alt="Jazz atmosphere" className="w-full h-full object-cover opacity-80 border border-black" referrerPolicy="no-referrer" />
+            <img
+              src="https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg"
+              alt="Jazz atmosphere"
+              className="w-full h-full object-cover opacity-80 border border-black"
+              referrerPolicy="no-referrer"
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-jazz-black/80 to-transparent" />
-            <div className="absolute bottom-10 left-6 md:bottom-12 md:left-12 text-left"><Music size={48} className="text-jazz-gold/40 mb-6" /><h2 className="text-3xl md:text-6xl font-serif italic text-white tracking-tighter leading-none">{t.vibeRhythm.split(" ").slice(0, 1)} <br /> {t.vibeRhythm.split(" ").slice(1).join(" ")}</h2></div>
+            <div className="absolute bottom-10 left-6 md:bottom-12 md:left-12 text-left">
+              <Music size={48} className="text-jazz-gold/40 mb-6" />
+              <h2 className="text-3xl md:text-6xl font-serif italic text-white tracking-tighter leading-none">{t.vibeRhythm.split(" ").slice(0, 1)} <br /> {t.vibeRhythm.split(" ").slice(1).join(" ")}</h2>
+            </div>
           </div>
           <div className="w-full md:w-1/2 space-y-10 px-4 md:px-0">
-            <div><span className="text-jazz-gold text-[10px] uppercase tracking-[0.5em] mb-4 block font-bold">{t.vibeTitle}</span><h2 className="text-3xl md:text-6xl font-serif text-white tracking-tighter leading-[1] mb-8 italic">{t.vibeQuote.split(" ").slice(0, 2).join(" ")} <br /> {t.vibeQuote.split(" ").slice(2).join(" ")}</h2><p className="text-jazz-cream/40 text-lg font-light leading-relaxed italic max-w-lg mx-auto md:mx-0">{t.vibeDesc}</p></div>
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10"><div className="space-y-4"><p className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold">{t.vibeLabels.vibe}</p><p className="text-lg md:text-xl font-serif italic text-white/80">{t.vibeLabels.vibeVal}</p></div><div className="space-y-4"><p className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold">{t.vibeLabels.music}</p><p className="text-lg md:text-xl font-serif italic text-white/80">{t.vibeLabels.musicVal}</p></div></div>
+            <div>
+              <span className="text-jazz-gold text-[10px] uppercase tracking-[0.5em] mb-4 block font-bold">{t.vibeTitle}</span>
+              <h2 className="text-3xl md:text-6xl font-serif text-white tracking-tighter leading-[1] mb-8 italic">{t.vibeQuote.split(" ").slice(0, 2).join(" ")} <br /> {t.vibeQuote.split(" ").slice(2).join(" ")}</h2>
+              <p className="text-jazz-cream/40 text-lg font-light leading-relaxed italic max-w-lg mx-auto md:mx-0">
+                {t.vibeDesc}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
+              <div className="space-y-4">
+                <p className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold">{t.vibeLabels.vibe}</p>
+                <p className="text-lg md:text-xl font-serif italic text-white/80">{t.vibeLabels.vibeVal}</p>
+              </div>
+              <div className="space-y-4">
+                <p className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold">{t.vibeLabels.music}</p>
+                <p className="text-lg md:text-xl font-serif italic text-white/80">{t.vibeLabels.musicVal}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Reviews Section */}
       <section id="reviews" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5 bg-[#050505]">
-        <div className="max-w-7xl mx-auto"><div className="text-center mb-16 md:mb-24 px-4"><span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-4 block font-bold">{t.reviewTitle}</span><h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter italic">{t.reviewHeader}</h2></div><div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">{t.reviews.map((review, i) => (<motion.div key={review.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="p-8 md:p-10 border border-white/5 bg-white/[0.02] relative group hover:border-jazz-gold/30 transition-all duration-500"><Quote size={32} className="absolute top-6 right-6 text-jazz-gold/10 group-hover:text-jazz-gold/20 transition-colors" /><div className="flex gap-1 mb-8">{[...Array(review.rating)].map((_, i) => (<Star key={i} size={12} className="fill-jazz-gold text-jazz-gold opacity-60" />))}</div><p className="text-jazz-cream/70 text-base md:text-lg font-light leading-relaxed mb-10 italic">"{review.text}"</p><div className="flex items-center gap-4"><div className="w-10 h-10 rounded-full border border-jazz-gold/20 flex items-center justify-center font-serif italic text-jazz-gold">{review.name[0]}</div><div><h4 className="text-white text-sm font-medium">{review.name}</h4><p className="text-[9px] uppercase tracking-widest text-white/30 font-bold">{review.source}</p></div></div></motion.div>))}</div></div>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 md:mb-24 px-4">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-4 block font-bold">{t.reviewTitle}</span>
+            <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter italic">{t.reviewHeader}</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {t.reviews.map((review, i) => (
+              <motion.div
+                key={review.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="p-8 md:p-10 border border-white/5 bg-white/[0.02] relative group hover:border-jazz-gold/30 transition-all duration-500"
+              >
+                <Quote size={32} className="absolute top-6 right-6 text-jazz-gold/10 group-hover:text-jazz-gold/20 transition-colors" />
+                <div className="flex gap-1 mb-8">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <Star key={i} size={12} className="fill-jazz-gold text-jazz-gold opacity-60" />
+                  ))}
+                </div>
+                <p className="text-jazz-cream/70 text-base md:text-lg font-light leading-relaxed mb-10 italic">
+                  "{review.text}"
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full border border-jazz-gold/20 flex items-center justify-center font-serif italic text-jazz-gold">
+                    {review.name[0]}
+                  </div>
+                  <div>
+                    <h4 className="text-white text-sm font-medium">{review.name}</h4>
+                    <p className="text-[9px] uppercase tracking-widest text-white/30 font-bold">{review.source}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Location Section */}
+      {/* Location/Contact Section */}
       <section id="location" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex justify-center text-center"><div className="max-w-2xl px-4 md:px-0"><span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-6 block font-bold">{t.visitTitle}</span><h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">{t.visitHeader.split(" ").slice(0, 2).join(" ")} <br /> {t.visitHeader.split(" ").slice(2).join(" ")}</h2><div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4"><div className="flex flex-col items-center gap-4"><MapPin className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p></div></div><div className="flex flex-col items-center gap-4 text-center"><Clock className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p><div className="text-xs font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest"><p>{t.workingHoursWeek}</p><p>{t.workingHoursSat}</p><p>{t.workingHoursSun}</p></div><p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">{t.summerHoursAnnouncement}</p></div></div><div className="flex flex-col items-center gap-4"><Phone className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p></div></div></div><a href="https://www.google.com/maps/dir/?api=1&destination=ul.+Yoakim+Gruev+21,+4000+Plovdiv" target="_blank" rel="noopener noreferrer" className="inline-block px-8 md:px-12 py-5 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-black hover:bg-jazz-gold hover:text-jazz-black transition-all duration-500 shadow-xl">{t.directions}</a></div></div>
+        <div className="max-w-7xl mx-auto flex justify-center text-center">
+          <div className="max-w-2xl px-4 md:px-0">
+            <span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-6 block font-bold">{t.visitTitle}</span>
+            <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">
+              {t.visitHeader.split(" ").slice(0, 2).join(" ")} <br /> {t.visitHeader.split(" ").slice(2).join(" ")}
+            </h2>
+
+            <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
+              <div className="flex flex-col items-center gap-4">
+                <MapPin className="text-jazz-gold/60" size={32} />
+                <div className="space-y-2">
+                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p>
+                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-4 text-center">
+                <Clock className="text-jazz-gold/60" size={32} />
+                <div className="space-y-2">
+                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p>
+                  <div className="text-xs font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest">
+                    <p>{t.workingHoursWeek}</p>
+                    <p>{t.workingHoursSat}</p>
+                    <p>{t.workingHoursSun}</p>
+                  </div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">
+                    {t.summerHoursAnnouncement}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center gap-4">
+                <Phone className="text-jazz-gold/60" size={32} />
+                <div className="space-y-2">
+                  <p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p>
+                  <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=ul.+Yoakim+Gruev+21,+4000+Plovdiv"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 md:px-12 py-5 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-black hover:bg-jazz-gold hover:text-jazz-black transition-all duration-500 shadow-xl"
+            >
+              {t.directions}
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* Booking Modal */}
       <AnimatePresence>
         {isBookingOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-jazz-black/95 backdrop-blur-md">
-            <motion.div initial={{ scale: 0.9, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 20 }} className="w-full max-w-xl bg-[#0d0d0d] border border-jazz-gold/20 p-8 md:p-12 relative overflow-hidden max-h-[90vh] overflow-y-auto">
-              <button onClick={() => setIsBookingOpen(false)} className="absolute top-8 right-8 text-white/30 hover:text-jazz-gold transition-colors"><X size={24} /></button>
-              <div className="text-center mb-10"><h3 className="text-jazz-gold text-[10px] uppercase tracking-[0.5em] font-bold mb-4 block">{t.bookingTitle}</h3><h2 className="text-4xl md:text-5xl font-serif text-white italic tracking-tighter">{t.bookingHeader}</h2>{bookingDate && bookingTime && availableSpots !== null && (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 inline-flex flex-col items-center gap-2 px-6 py-3 bg-white/5 border border-white/5 rounded-sm"><span className="text-[10px] uppercase tracking-widest text-white/40">{lang === "BG" ? `Свободни места за ${bookingTime}` : `Available spots for ${bookingTime}`}</span><span className={`text-2xl font-serif italic ${availableSpots !== null && availableSpots < 10 ? "text-jazz-red" : "text-jazz-gold"}`}>{availableSpots} / {CAPACITIES[bookingLocation]}</span></motion.div>)}</div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-jazz-black/95 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="w-full max-w-xl bg-[#0d0d0d] border border-jazz-gold/20 p-8 md:p-12 relative overflow-hidden max-h-[90vh] overflow-y-auto"
+            >
+              <button
+                onClick={() => setIsBookingOpen(false)}
+                className="absolute top-8 right-8 text-white/30 hover:text-jazz-gold transition-colors"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="text-center mb-10">
+                <h3 className="text-jazz-gold text-[10px] uppercase tracking-[0.5em] font-bold mb-4 block">{t.bookingTitle}</h3>
+                <h2 className="text-4xl md:text-5xl font-serif text-white italic tracking-tighter">{t.bookingHeader}</h2>
+                {bookingDate && bookingTime && availableSpots !== null && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-6 inline-flex flex-col items-center gap-2 px-6 py-3 bg-white/5 border border-white/5 rounded-sm"
+                  >
+                    <span className="text-[10px] uppercase tracking-widest text-white/40">{lang === "BG" ? `Свободни места за ${bookingTime}` : `Available spots for ${bookingTime}`}</span>
+                    <span className={`text-2xl font-serif italic ${availableSpots !== null && availableSpots < 10 ? "text-jazz-red" : "text-jazz-gold"}`}>
+                      {availableSpots} / {CAPACITIES[bookingLocation]}
+                    </span>
+                  </motion.div>
+                )}
+              </div>
+
               {bookingSuccess ? (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-20">
-                  <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8"><Star className="text-green-500 fill-green-500" size={32} /></div>
-                  <h3 className="text-3xl font-serif italic text-white mb-4">{lang === "BG" ? "Резервацията е приета!" : "Booking Received!"}</h3>
-                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em]">{t.resNote}</p>
-                  {lastGeneratedCode && (<div className="mt-6 p-4 bg-jazz-gold/10 border border-jazz-gold/30 rounded-sm"><p className="text-[10px] uppercase tracking-widest text-jazz-gold">Вашият код за проверка:</p><p className="text-3xl font-mono font-bold text-jazz-gold tracking-wider">{lastGeneratedCode}</p><p className="text-white/40 text-[9px] mt-2">Запазете този код! С него ще можете да проверите статуса на резервацията си.</p></div>)}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20"
+                >
+                  <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <Star className="text-green-500 fill-green-500" size={32} />
+                  </div>
+                  <h3 className="text-3xl font-serif italic text-white mb-4">
+                    {lang === "BG" ? "Резервацията е приета!" : "Booking Received!"}
+                  </h3>
+                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em]">
+                    {t.resNote}
+                  </p>
                 </motion.div>
               ) : bookingError === "FULL" ? (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-10">
-                  <div className="w-16 h-16 bg-jazz-red/20 rounded-full flex items-center justify-center mx-auto mb-6"><X className="text-jazz-red" size={32} /></div>
-                  <h3 className="text-2xl font-serif italic text-white mb-6 leading-tight">{lang === "BG" ? `За съжаление нямаме свободни места за ${bookingTime} на тази дата.` : `Unfortunately, we are fully booked for ${bookingTime} on this date.`}</h3>
-                  <div className="p-6 border border-jazz-gold/30 bg-jazz-gold/5 space-y-4"><p className="text-[10px] uppercase tracking-[0.4em] text-jazz-gold font-bold">{lang === "BG" ? "Свържете се с управител" : "Contact Manager"}</p><p className="text-3xl font-serif italic text-white">089 637 0777</p></div>
-                  <button onClick={() => { setBookingError(null); setBookingDate(""); }} className="mt-8 text-[10px] uppercase tracking-widest text-jazz-gold underline underline-offset-4">{lang === "BG" ? "Избери друга дата" : "Choose another date"}</button>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-10"
+                >
+                  <div className="w-16 h-16 bg-jazz-red/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <X className="text-jazz-red" size={32} />
+                  </div>
+                  <h3 className="text-2xl font-serif italic text-white mb-6 leading-tight">
+                    {lang === "BG"
+                      ? `За съжаление нямаме свободни места за ${bookingTime} на тази дата.`
+                      : `Unfortunately, we are fully booked for ${bookingTime} on this date.`}
+                  </h3>
+                  <div className="p-6 border border-jazz-gold/30 bg-jazz-gold/5 space-y-4">
+                    <p className="text-[10px] uppercase tracking-[0.4em] text-jazz-gold font-bold">
+                      {lang === "BG" ? "Свържете се с управител" : "Contact Manager"}
+                    </p>
+                    <p className="text-3xl font-serif italic text-white">089 637 0777</p>
+                  </div>
+                  <button
+                    onClick={() => { setBookingError(null); setBookingDate(""); }}
+                    className="mt-8 text-[10px] uppercase tracking-widest text-jazz-gold underline underline-offset-4"
+                  >
+                    {lang === "BG" ? "Избери друга дата" : "Choose another date"}
+                  </button>
                 </motion.div>
               ) : (
                 <form className="space-y-6" onSubmit={handleBooking}>
                   <div className="flex flex-wrap gap-2 p-1 bg-white/[0.03] border border-white/10 mb-6">
-                    <button type="button" onClick={() => setBookingLocation("hall")} className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "hall" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}><UtensilsCrossed size={12} />{t.locationHall}</button>
-                    <button type="button" onClick={() => setBookingLocation("garden")} className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "garden" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}><Wine size={12} />{t.locationGarden}</button>
-                    <button type="button" onClick={() => setBookingLocation("bar")} className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "bar" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}><GlassWater size={12} />{t.locationBar}</button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingLocation("hall")}
+                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "hall" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
+                    >
+                      <UtensilsCrossed size={12} />
+                      {t.locationHall}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingLocation("garden")}
+                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "garden" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
+                    >
+                      <Wine size={12} />
+                      {t.locationGarden}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingLocation("bar")}
+                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "bar" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
+                    >
+                      <GlassWater size={12} />
+                      {t.locationBar}
+                    </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.nameLabel}</label><input type="text" required value={bookingName} onChange={(e) => setBookingName(e.target.value)} placeholder={t.namePlaceholder} className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic" /></div><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.phoneLabel}</label><input type="tel" required value={bookingPhone} onChange={(e) => setBookingPhone(e.target.value)} placeholder={t.phonePlaceholder} className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic" /></div></div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.dateTimeLabel} - {lang === "BG" ? "Дата" : "Date"}</label><div className="relative"><Calendar size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" /><input type="date" required value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} min={new Date().toISOString().split("T")[0]} className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic appearance-none" /></div></div><div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{lang === "BG" ? "Час" : "Hour"}</label><div className="relative"><Clock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" /><select required value={bookingTime} onChange={(e) => setBookingTime(e.target.value)} disabled={getTimeSlotsForDate(bookingDate).length === 0} className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic disabled:opacity-50 disabled:cursor-not-allowed">{getTimeSlotsForDate(bookingDate).length > 0 ? getTimeSlotsForDate(bookingDate).map(time => (<option key={time} value={time} className="bg-jazz-black">{time}</option>)) : (<option value="" className="bg-jazz-black">{lang === "BG" ? "Затворено" : "Closed"}</option>)}</select></div></div></div>
-                  <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.guestsLabel}</label><div className="relative"><Users size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" /><select required value={bookingGuests} onChange={(e) => setBookingGuests(e.target.value)} className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic">{ [1,2,3,4,5,6,7,8,9,10].map(n => (<option key={n} value={n} className="bg-jazz-black">{n} {lang === "BG" ? (n === 1 ? "човек" : "души") : (n === 1 ? "person" : "people")}</option>)) }<option value="15" className="bg-jazz-black">10-20 {lang === "BG" ? "души" : "people"}</option><option value="30" className="bg-jazz-black">20-50 {lang === "BG" ? "души" : "people"}</option></select></div></div>
-                  <div className="pt-6"><div className="mb-6 py-3 border-y border-white/5 text-center"><span className="text-xs uppercase tracking-[0.2em] text-[#00ff88] font-black animate-pulse">{t.onlineResStat}</span></div><div className="mt-8 space-y-4">{bookingError && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center p-6 bg-jazz-red/10 border border-jazz-red/20 space-y-2"><p className="text-jazz-red text-[11px] uppercase tracking-[0.3em] font-black">{bookingError === "FULL" ? (lang === "BG" ? "Няма свободни места" : "Fully booked") : (lang === "BG" ? "Грешка при резервацията" : "Booking error")}</p><p className="text-white/40 text-[9px] uppercase tracking-widest leading-relaxed">Моля, опитайте отново или се свържете с нас.</p></motion.div>)}<button type="submit" disabled={isSubmitting || (availableSpots !== null && availableSpots <= 0)} className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl disabled:opacity-50 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3">{isSubmitting ? (<motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="w-3 h-3 border-2 border-jazz-black border-t-transparent rounded-full" />) : (<CalendarCheck size={14} />)}{t.confirmRes}</button></div><p className="text-[10px] text-center mt-6 text-white/20 uppercase tracking-[0.2em]">{t.resNote}</p></div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.nameLabel}</label>
+                      <input
+                        type="text"
+                        required
+                        value={bookingName}
+                        onChange={(e) => setBookingName(e.target.value)}
+                        placeholder={t.namePlaceholder}
+                        className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.phoneLabel}</label>
+                      <input
+                        type="tel"
+                        required
+                        value={bookingPhone}
+                        onChange={(e) => setBookingPhone(e.target.value)}
+                        placeholder={t.phonePlaceholder}
+                        className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.dateTimeLabel} - {lang === "BG" ? "Дата" : "Date"}</label>
+                      <div className="relative">
+                        <Calendar size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
+                        <input
+                          type="date"
+                          required
+                          value={bookingDate}
+                          onChange={(e) => setBookingDate(e.target.value)}
+                          min={new Date().toISOString().split("T")[0]}
+                          className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic appearance-none"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{lang === "BG" ? "Час" : "Hour"}</label>
+                      <div className="relative">
+                        <Clock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
+                        <select
+                          required
+                          value={bookingTime}
+                          onChange={(e) => setBookingTime(e.target.value)}
+                          disabled={getTimeSlotsForDate(bookingDate).length === 0}
+                          className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {getTimeSlotsForDate(bookingDate).length > 0 ? (
+                            getTimeSlotsForDate(bookingDate).map(time => (
+                              <option key={time} value={time} className="bg-jazz-black">{time}</option>
+                            ))
+                          ) : (
+                            <option value="" className="bg-jazz-black">
+                              {lang === "BG" ? "Затворено" : "Closed"}
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.guestsLabel}</label>
+                    <div className="relative">
+                      <Users size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
+                      <select
+                        required
+                        value={bookingGuests}
+                        onChange={(e) => setBookingGuests(e.target.value)}
+                        className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic"
+                      >
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                          <option key={n} value={n} className="bg-jazz-black">{n} {lang === "BG" ? (n === 1 ? "човек" : "души") : (n === 1 ? "person" : "people")}</option>
+                        ))}
+                        <option value="15" className="bg-jazz-black">10-20 {lang === "BG" ? "души" : "people"}</option>
+                        <option value="30" className="bg-jazz-black">20-50 {lang === "BG" ? "души" : "people"}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="pt-6">
+                    <div className="mb-6 py-3 border-y border-white/5 text-center">
+                      <span className="text-xs uppercase tracking-[0.2em] text-[#00ff88] font-black animate-pulse">
+                        {t.onlineResStat}
+                      </span>
+                    </div>
+                    <div className="mt-8 space-y-4">
+                      {bookingError && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-center p-6 bg-jazz-red/10 border border-jazz-red/20 space-y-2"
+                        >
+                          <p className="text-jazz-red text-[11px] uppercase tracking-[0.3em] font-black">
+                            {bookingError === "FULL" ? (lang === "BG" ? "Няма свободни места" : "Fully booked") : (bookingError === "PERMISSION_ERROR" ? "Database Error" : (lang === "BG" ? "Грешка при резервацията" : "Booking error"))}
+                          </p>
+                          <p className="text-white/40 text-[9px] uppercase tracking-widest leading-relaxed">
+                            {bookingError === "PERMISSION_ERROR"
+                              ? "The booking system encountered a permission issue. Please contact 089 637 0777 directly."
+                              : "Please check your connection and ensuring all fields are filled correctly."}
+                          </p>
+                        </motion.div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting || (availableSpots !== null && availableSpots <= 0)}
+                        className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl disabled:opacity-50 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
+                      >
+                        {isSubmitting ? (
+                          <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="w-3 h-3 border-2 border-jazz-black border-t-transparent rounded-full" />
+                        ) : (
+                          <CalendarCheck size={14} />
+                        )}
+                        {t.confirmRes}
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-center mt-6 text-white/20 uppercase tracking-[0.2em]">
+                      {t.resNote}
+                    </p>
+                  </div>
                 </form>
               )}
             </motion.div>
@@ -1529,10 +2071,33 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-white/10 pt-20 pb-16 px-8 md:px-16 bg-jazz-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 mb-20">
-          <div className="flex flex-col"><h2 className="text-4xl font-serif text-jazz-gold tracking-tighter uppercase mb-6">TOMATO</h2><div className="flex gap-10 text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold"><a href="#" className="hover:text-jazz-gold transition-colors">Instagram</a><a href="#" className="hover:text-jazz-gold transition-colors">{t.spotifyPlaylist}</a><a href="#" className="hover:text-jazz-gold transition-colors">{t.bookingTitle}</a></div></div>
-          <div className="flex items-center gap-6"><div className="text-right"><p className="text-[9px] uppercase tracking-[0.4em] opacity-40 mb-2 font-bold">{t.footerContact}</p><p className="text-xl font-sans text-jazz-gold tracking-tighter">089 637 0777</p></div><div className="w-14 h-14 border border-jazz-gold flex items-center justify-center group cursor-pointer hover:bg-jazz-gold transition-colors"><div className="w-1.5 h-1.5 bg-jazz-gold rounded-full group-hover:bg-jazz-black transition-colors" /></div></div>
+          <div className="flex flex-col">
+            <h2 className="text-4xl font-serif text-jazz-gold tracking-tighter uppercase mb-6">TOMATO</h2>
+            <div className="flex gap-10 text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">
+              <a href="#" className="hover:text-jazz-gold transition-colors">Instagram</a>
+              <a href="#" className="hover:text-jazz-gold transition-colors">{t.spotifyPlaylist}</a>
+              <a href="#" className="hover:text-jazz-gold transition-colors">{t.bookingTitle}</a>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="text-right">
+              <p className="text-[9px] uppercase tracking-[0.4em] opacity-40 mb-2 font-bold">{t.footerContact}</p>
+              <p className="text-xl font-sans text-jazz-gold tracking-tighter">089 637 0777</p>
+            </div>
+            <div className="w-14 h-14 border border-jazz-gold flex items-center justify-center group cursor-pointer hover:bg-jazz-gold transition-colors">
+              <div className="w-1.5 h-1.5 bg-jazz-gold rounded-full group-hover:bg-jazz-black transition-colors" />
+            </div>
+          </div>
         </div>
-        <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6"><p className="text-[9px] uppercase tracking-[0.3em] text-white/20">{t.footerCopyright}</p><div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic"><span>{t.footerBuild}</span><span>{t.footerRights}</span></div></div>
+
+        <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[9px] uppercase tracking-[0.3em] text-white/20">{t.footerCopyright}</p>
+          <div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic">
+            <span>{t.footerBuild}</span>
+            <span>{t.footerRights}</span>
+          </div>
+        </div>
       </footer>
     </div>
   );
