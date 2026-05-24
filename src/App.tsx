@@ -195,7 +195,7 @@ const LANGUAGES = {
     resNote: "Ще ви се обадим скоро за потвърждение на вашата маса.",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
-    footerBuild: "Създадено чрез AI Studio Build",
+    footerBuild: "Създадено от AR Studio",
     footerRights: "Всички права запазени",
     scroll: "Надолу",
     spotifyPlaylist: "Spotify Плейлист",
@@ -498,7 +498,7 @@ const LANGUAGES = {
     resNote: "We will call you back shortly to confirm your table.",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
-    footerBuild: "Created with AI Studio Build",
+    footerBuild: "Created by AR Studio",
     footerRights: "All Rights Reserved",
     scroll: "Scroll",
     spotifyPlaylist: "Spotify Playlist",
@@ -737,11 +737,11 @@ export default function App() {
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
-  // Auto-rotate hero background every 3.5 seconds
+  // Auto-rotate hero background every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 3500);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
