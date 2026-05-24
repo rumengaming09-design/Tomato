@@ -324,7 +324,35 @@ const LANGUAGES = {
               { name: "Салата Мешалале", price: "7,00€", info: "300 гр" },
               { name: "Салата 'Цезар' с пиле и бекон", price: "8,70€", info: "300 гр" },
               { name: "Салата с гриловани домати и моцарела", price: "7,70€", info: "300 гр" }
-            ]
+            ],
+          },
+          {
+            name: "Мезета",
+            items: [
+              { name: "Мус ог сьомга със зелена салата и багета", price: "6,70€", info: "200 гр" },
+              { name: "Трио разядки от хумус, мариновани маслини с Фета сирене и мутабал", price: "7,70€", info: "300 гр" },
+              { name: "Панирана Скаморца с боровинки", price: "8,50€", info: "200 гр" },
+              { name: "Телешки език с масло и гъби", price: "9,30€", info: "250 гр" },
+              { name: "Касапско тиганче", price: "7,70€", info: "250 гр /телешки език, шкембе, дроб, гъби и вино/" },
+              { name: "Скариди със сметана", price: "10,50€", info: "200 гр" },
+              { name: "Телешки дроб с яйце и кисели краставички", price: "6,00€", info: "250 гр" },
+              { name: "Свински уши", price: "6,00€", info: "250 гр" },
+              { name: "Пилешки крилца", price: "6,60€", info: "300 гр" },
+              { name: "Хрупкави пилешки хапки с чеснов сос", price: "7,20€", info: "250 гр" },
+              { name: "Пукани картофи с панчета и кашкавал", price: "6,70€", info: "250 гр" },
+              { name: "Пържени картофи с пармеджано и труфел", price: "5,00€", info: "200 гр" },
+              { name: "Пържени картофи", price: "3,60€", info: "200 гр" },
+              { name: "Пърленка с чесън", price: "1,50€", info: "100 гр" },
+              { name: "Пърленка с кашкавал", price: "3,00€", info: "140 гр" },
+            ],
+          },
+          {
+            name: "Tomato Промо Предложения",
+            items: [
+              { name: "BBQ дъска за 1 човек", price: "10,00€", info: "250 гр" },
+              { name: "BBQ дъска за 2 души", price: "20,00€", info: "500 гр" },
+              { name: "BBQ дъска за 4 човека", price: "40,00€", info: "1,5 кг" },
+            ],
           },
           {
             name: "BBQ",
@@ -498,7 +526,7 @@ const LANGUAGES = {
     resNote: "We will call you back shortly to confirm your table.",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
-    footerBuild: "Created by AR Studio",
+    footerBuild: "Website created by AR Studio",
     footerRights: "All Rights Reserved",
     scroll: "Scroll",
     spotifyPlaylist: "Spotify Playlist",
@@ -737,11 +765,11 @@ export default function App() {
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
-  // Auto-rotate hero background every 5 seconds
+  // Auto-rotate hero background every 3.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
+    }, 3500);
     return () => clearInterval(interval);
   }, []);
 
@@ -2102,4 +2130,3 @@ export default function App() {
     </div>
   );
 }
-
