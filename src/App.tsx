@@ -999,83 +999,128 @@ export default function App() {
     }
   }
 
-  const handleBooking = async (e: React.FormEvent) => {
+  async function handleBooking(e: any) {
     e.preventDefault();
-    if (!location || !nameInput.trim() || !phoneInput.trim() || !selectedDate || !selectedTime || !selectedGuests) return;
+    setBookingError(null);
 
-    const dateTimeStr = `${selectedDate} ${selectedTime}`;
-    setIsBookingLoading(true);
+    if (!bookingTime) {
+      setBookingError("ERROR");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const guestsCount = parseInt(bookingGuests) || 2;
+    const hour = parseInt(bookingTime.split(":")[0]);
+    const daySlots = getTimeSlotsForDate(bookingDate);
+
+    let affectedSlots: string[] = [];
+    if (hour >= 19 || bookingTime === "00:00") {
+      affectedSlots = daySlots.filter(s => s >= bookingTime);
+    } else {
+      const [h, m] = bookingTime.split(":").map(Number);
+      const totalMinutesStart = h * 60 + m;
+      const totalMinutesEnd = totalMinutesStart + 120;
+
+      affectedSlots = daySlots.filter(s => {
+        const [sh, sm] = s.split(":").map(Number);
+        const slotMinutes = sh * 60 + sm;
+        return slotMinutes >= totalMinutesStart && slotMinutes < totalMinutesEnd;
+      });
+    }
 
     try {
       await runTransaction(db, async (transaction) => {
-        const dateDocRef = doc(db, "capacity", selectedDate);
-        const dateDocSnap = await transaction.get(dateDocRef);
+        const dayRef = doc(db, "daily_capacity", bookingDate);
+        const daySnap = await transaction.get(dayRef);
 
-        let currentData = dateDocSnap.exists() ? dateDocSnap.data() : {};
-        let timeData = currentData[selectedTime] || {};
-        let locationGuests = timeData[selectedLocation] || 0;
-
-        const capacityLimit = CAPACITIES[selectedLocation];
-        const requestedGuests = parseInt(selectedGuests);
-
-        if (locationGuests + requestedGuests > capacityLimit) {
-          throw new Error("NOT_ENOUGH_CAPACITY");
+        const slotsKey = `slots_${bookingLocation}`;
+        let allData: any = {};
+        if (daySnap.exists()) {
+          allData = daySnap.data();
         }
 
-        if (!currentData[selectedTime]) {
-          currentData[selectedTime] = {};
-        }
-        currentData[selectedTime][selectedLocation] = locationGuests + requestedGuests;
+        const slots = allData[slotsKey] || {};
 
-        transaction.set(dateDocRef, currentData, { merge: true });
+        for (const slot of affectedSlots) {
+          const bookedAtSlot = (slots as any)[slot] || 0;
+          if (bookedAtSlot + guestsCount > CAPACITIES[bookingLocation]) {
+            throw new Error("FULLY_BOOKED");
+          }
+        }
 
         const resRef = doc(collection(db, "reservations"));
         transaction.set(resRef, {
-          name: nameInput,
-          phone: phoneInput,
-          date: selectedDate,
-          time: selectedTime,
-          guests: requestedGuests,
-          location: selectedLocation,
-          createdAt: serverTimestamp(),
+          name: bookingName,
+          phone: bookingPhone,
+          guests: guestsCount,
+          date: bookingDate,
+          time: bookingTime,
+          location: bookingLocation,
+          duration: hour >= 19 || bookingTime === "00:00" ? "night" : "2h",
+          affectedSlots,
+          createdAt: serverTimestamp()
         });
+
+        const newSlots = { ...slots };
+        for (const slot of affectedSlots) {
+          (newSlots as any)[slot] = ((newSlots as any)[slot] || 0) + guestsCount;
+        }
+
+        if (daySnap.exists()) {
+          transaction.update(dayRef, { [slotsKey]: newSlots });
+        } else {
+          transaction.set(dayRef, { [slotsKey]: newSlots });
+        }
       });
 
-      // Известяване в Telegram след успешен запис във Firebase
-      try {
-        await fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: nameInput,
-            phone: phoneInput,
-            guests: selectedGuests,
-            dateTime: dateTimeStr,
-            location: location
-          }),
-        });
-      } catch (telegramError) {
-        console.error("Telegram notification failed:", telegramError);
+      setBookingSuccess(true);
+      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
+
+      const dateStr = new Date().toISOString().split("T")[0];
+      if (bookingDate === dateStr) {
+        const slots = getTimeSlotsForDate(dateStr);
+        const now = new Date();
+        const displayTime = slots.find(s => s >= `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`) || slots[0];
+
+        if (bookingTime === displayTime || affectedSlots.includes(displayTime)) {
+          const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
+          for (const loc of locations) {
+            fetchCapacityForDateTime(dateStr, displayTime, loc, (val) => {
+              setLiveSpots(prev => ({ ...prev, [loc]: val }));
+            });
+          }
+        }
       }
 
-      alert("Резервацията е успешна!");
-      setNameInput("");
-      setPhoneInput("");
-      setSelectedDate("");
-      setSelectedTime("");
-      setSelectedGuests("");
-      setShowBookingModal(false);
-    } catch (error: any) {
-      console.error(error);
-      if (error.message === "NOT_ENOUGH_CAPACITY") {
-        alert("Съжаляваме, няма достатъчно свободни места за тази зона в избрания час.");
+      setTimeout(() => {
+        setIsBookingOpen(false);
+        setBookingSuccess(false);
+        setBookingName("");
+        setBookingPhone("");
+      }, 3000);
+
+      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
+    } catch (e: any) {
+      console.error("Booking failed:", e);
+      if (e.message === "FULLY_BOOKED") {
+        setBookingError("FULL");
       } else {
-        handleFirestoreError(error, OperationType.WRITE);
+        try {
+          handleFirestoreError(e, OperationType.WRITE, "reservations");
+        } catch (err: any) {
+          const errorMsg = String(err.message || err);
+          if (errorMsg.includes("permission-denied") || errorMsg.includes("permissions")) {
+            setBookingError("PERMISSION_ERROR");
+          } else {
+            setBookingError("ERROR");
+          }
+        }
       }
     } finally {
-      setIsBookingLoading(false);
+      setIsSubmitting(false);
     }
-  };
+  }
 
   useEffect(() => {
     const handleScroll = () => {
