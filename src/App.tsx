@@ -1001,7 +1001,7 @@ export default function App() {
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedLocation || !nameInput.trim() || !phoneInput.trim() || !selectedDate || !selectedTime || !selectedGuests) return;
+    if (!location || !nameInput.trim() || !phoneInput.trim() || !selectedDate || !selectedTime || !selectedGuests) return;
 
     const dateTimeStr = `${selectedDate} ${selectedTime}`;
     setIsBookingLoading(true);
@@ -1051,7 +1051,7 @@ export default function App() {
             phone: phoneInput,
             guests: selectedGuests,
             dateTime: dateTimeStr,
-            location: selectedLocation
+            location: location
           }),
         });
       } catch (telegramError) {
