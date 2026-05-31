@@ -174,7 +174,7 @@ const LANGUAGES = {
     locationHall: "Зала",
     locationGarden: "Градина",
     locationBar: "Бар",
-    onlineResStat: "Резервирайте лесно през Google!",
+    onlineResStat: "10% отстъпка за резервации през сайта",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
     footerBuild: "Създадено от AR Studio",
