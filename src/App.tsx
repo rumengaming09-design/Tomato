@@ -3,24 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   MapPin, Phone, Clock, ChevronRight, Star, Instagram, Facebook, Music,
-  UtensilsCrossed, Wine, Quote, X, Calendar, Users, CalendarCheck, GlassWater, Trash2, ChevronLeft
+  UtensilsCrossed, Wine, Quote, X, Calendar, Users, CalendarCheck,
+  GlassWater, ChevronLeft
 } from "lucide-react";
-import { useRef, useState, useEffect, useCallback } from "react";
-import { db, handleFirestoreError, OperationType } from "./lib/firebase";
-import {
-  deleteDoc, doc, getDoc, collection, runTransaction, serverTimestamp,
-  getDocs, query, orderBy, onSnapshot, updateDoc
-} from "firebase/firestore";
-
-const CAPACITIES: Record<string, number> = {
-  hall: 30,
-  garden: 70,
-  bar: 25
-};
-const OWNER_PHONE = "089 637 0777";
+import { useRef, useState, useEffect } from "react";
 
 // Carousel images for halls
 const hallImages = {
@@ -66,12 +55,14 @@ const allGalleryImages = [
   "https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg"
 ];
 
-// Hero rotating background images (fixed)
+// Hero rotating background images
 const heroImages = [
   "https://i.postimg.cc/Y08JGw5P/20260516-160857.jpg",
   "https://i.postimg.cc/g2Bv8CmY/viber-izobrazenie-2026-05-19-19-25-06-145.jpg",
   "https://i.postimg.cc/Gt7p61Mc/IMG-0692(1).jpg"
 ];
+
+const RESERVATION_LINK = "https://www.google.com/maps/reserve/v/dine/c/cLjMFkgllLM?source=pa&opi=89978449&hl=en-BG&gei=14gcarvWJM2Mxc8PhfSl0QQ&gsas=1&ahbb=1&sourceurl=https://www.google.com/search?hl%3Den-US%26ram_mb%3D7225%26aos%3D18%26ampcct%3D7778%26cs%3D1%26q%3Dtomato%2Brestaurant%26agsai%3Dsg8HwFfHgBc%26padt%3D117%26rdid%3D40711b74-5722-41e3-a90c-bade1d5929b5%26client%3Dms-android-samsung-ss%26gs_ssp%3DeJzj4tVP1zc0TKnISU_KKEo2YLRSMagwNElMTjFMSjFPSUq0NEwxtjKoMDOwNDYySzY0NbUwTU1L8xIsyc9NLMlXKEotLkksLUrMKwEAFNwWtw%26source%3Dand.gsa.launcher.icon%26pf%3Dop";
 
 const LANGUAGES = {
   BG: {
@@ -183,16 +174,7 @@ const LANGUAGES = {
     locationHall: "Зала",
     locationGarden: "Градина",
     locationBar: "Бар",
-    onlineResStat: "Вземете 10% отстъпка за резервации през сайта!",
-    reservationsTab: "Резервации",
-    resPasswordLabel: "Парола за достъп",
-    resPasswordPlaceholder: "Въведете парола",
-    resAuthError: "Грешна парола",
-    resListTitle: "Списък Резервации",
-    resListEmpty: "Няма направени резервации",
-    resListGuests: "гости",
-    resDelete: "Изтрий",
-    resNote: "Ще ви се обадим скоро за потвърждение на вашата маса.",
+    onlineResStat: "Резервирайте лесно през Google!",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
     footerBuild: "Създадено от AR Studio",
@@ -511,16 +493,7 @@ const LANGUAGES = {
     locationHall: "Main Hall",
     locationGarden: "Garden",
     locationBar: "Bar",
-    onlineResStat: "Get 10% OFF for reservations made through the website!",
-    reservationsTab: "Reservations",
-    resPasswordLabel: "Access Password",
-    resPasswordPlaceholder: "Enter password",
-    resAuthError: "Incorrect password",
-    resListTitle: "Reservations List",
-    resListEmpty: "No reservations found",
-    resListGuests: "guests",
-    resDelete: "Delete",
-    resNote: "We will call you back shortly to confirm your table.",
+    onlineResStat: "Book easily through Google!",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
     footerBuild: "Website created by AR Studio",
@@ -749,9 +722,8 @@ const NAV_LINKS_MAP: Record<string, string> = {
 
 export default function App() {
   const [lang, setLang] = useState<"BG" | "EN">("BG");
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery" | "reservations">("none");
+  const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery">("none");
   const [menuSection, setMenuSection] = useState<"drinks" | "food">("drinks");
   const [scrolled, setScrolled] = useState(false);
   const [selectedHall, setSelectedHall] = useState<"main" | "garden" | "bar">("main");
@@ -760,34 +732,8 @@ export default function App() {
     garden: 0,
     bar: 0
   });
-  // Hero background carousel
   const [heroIndex, setHeroIndex] = useState(0);
 
-  // Admin Reservations State
-  const [isAdminAuth, setIsAdminAuth] = useState(false);
-  const [adminPassword, setAdminPassword] = useState("");
-  const [adminAuthError, setAdminAuthError] = useState(false);
-  const [allReservations, setAllReservations] = useState<any[]>([]);
-  const [isLoadingReservations, setIsLoadingReservations] = useState(false);
-
-  // Booking System State
-  const [bookingDate, setBookingDate] = useState(new Date().toISOString().split("T")[0]);
-  const [bookingTime, setBookingTime] = useState("19:00");
-  const [bookingLocation, setBookingLocation] = useState<"hall" | "garden" | "bar">("hall");
-  const [bookingName, setBookingName] = useState("");
-  const [bookingPhone, setBookingPhone] = useState("");
-  const [bookingGuests, setBookingGuests] = useState("2");
-  const [availableSpots, setAvailableSpots] = useState<number | null>(null);
-  const [liveSpots, setLiveSpots] = useState<Record<string, number | null>>({
-    hall: null,
-    garden: null,
-    bar: null
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [bookingError, setBookingError] = useState<string | null>(null);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-
-  // Auto-rotate hero background every 3.5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
@@ -795,332 +741,11 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const cleanupExpiredReservations = useCallback(async (reservations: any[]) => {
-    const now = new Date();
-    const toDelete = reservations.filter(res => {
-      try {
-        const [year, month, day] = res.date.split("-").map(Number);
-        const [hour, min] = res.time.split(":").map(Number);
-        const resTime = new Date(year, month - 1, day, hour, min);
-        const expireTime = new Date(resTime.getTime() + 30 * 60000);
-        return now > expireTime;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    for (const res of toDelete) {
-      try {
-        await deleteDoc(doc(db, "reservations", res.id));
-        const dayRef = doc(db, "daily_capacity", res.date);
-        const daySnap = await getDoc(dayRef);
-        if (daySnap.exists()) {
-          const slotsKey = `slots_${res.location}`;
-          const currentSlots = daySnap.data()[slotsKey] || {};
-          if (currentSlots[res.time]) {
-            const newSlots = { ...currentSlots };
-            newSlots[res.time] = Math.max(0, (newSlots[res.time] || 0) - res.guests);
-            await updateDoc(dayRef, { [slotsKey]: newSlots });
-          }
-        }
-      } catch (e) {
-        console.error("Cleanup error:", e);
-      }
-    }
-  }, []);
-
   const t = LANGUAGES[lang];
 
-  const getTimeSlotsForDate = useCallback((dateString: string) => {
-    if (!dateString) return [];
-    const date = new Date(dateString);
-    const day = date.getDay();
-
-    if (day === 0) return [];
-
-    if (day >= 1 && day <= 5) {
-      const slots = [];
-      for (let h = 8; h <= 22; h++) {
-        slots.push(`${h.toString().padStart(2, "0")}:00`);
-        slots.push(`${h.toString().padStart(2, "0")}:30`);
-      }
-      slots.push("23:00");
-      return slots;
-    }
-
-    if (day === 6) {
-      const slots = [];
-      for (let h = 16; h <= 20; h++) {
-        slots.push(`${h.toString().padStart(2, "0")}:00`);
-        slots.push(`${h.toString().padStart(2, "0")}:30`);
-      }
-      slots.push("21:00");
-      return slots;
-    }
-
-    return [];
-  }, []);
-
-  const fetchCapacityForDateTime = useCallback(async (date: string, time: string, location: "hall" | "garden" | "bar", setTarget: (val: number) => void) => {
-    if (!date || !time) return;
-
-    try {
-      const dayRef = doc(db, "daily_capacity", date);
-      const daySnap = await getDoc(dayRef);
-
-      let spots = CAPACITIES[location];
-      if (daySnap.exists()) {
-        const slotsKey = `slots_${location}`;
-        const slots = daySnap.data()[slotsKey] || {};
-        const bookedAtTime = slots[time] || 0;
-        spots = CAPACITIES[location] - bookedAtTime;
-      }
-      setTarget(spots);
-    } catch (e) {
-      handleFirestoreError(e, OperationType.GET, `daily_capacity/${date}`);
-    }
-  }, []);
-
-  useEffect(() => {
-    const dateStr = new Date().toISOString().split("T")[0];
-    const slots = getTimeSlotsForDate(dateStr);
-
-    if (slots.length > 0) {
-      const now = new Date();
-      const currentH = now.getHours();
-      const currentM = now.getMinutes();
-      const currentTimeStr = `${currentH.toString().padStart(2, "0")}:${currentM.toString().padStart(2, "0")}`;
-
-      const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
-
-      const updateLiveSpots = async () => {
-        const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
-        const newSpots: any = {};
-
-        for (const loc of locations) {
-          await fetchCapacityForDateTime(dateStr, displayTime, loc, (val) => {
-            newSpots[loc] = val;
-          });
-        }
-        setLiveSpots(newStore => ({ ...newStore, ...newSpots }));
-      };
-
-      updateLiveSpots();
-      const interval = setInterval(updateLiveSpots, 300000);
-      return () => clearInterval(interval);
-    } else {
-      setLiveSpots({ hall: null, garden: null, bar: null });
-    }
-  }, [fetchCapacityForDateTime, getTimeSlotsForDate]);
-
-  useEffect(() => {
-    const slots = getTimeSlotsForDate(bookingDate);
-    if (slots.length > 0) {
-      if (!slots.includes(bookingTime)) {
-        setBookingTime(slots[0]);
-      }
-    }
-  }, [bookingDate, getTimeSlotsForDate, bookingTime]);
-
-  useEffect(() => {
-    if (bookingDate && bookingTime) {
-      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
-    }
-  }, [bookingDate, bookingTime, bookingLocation, fetchCapacityForDateTime]);
-
-  useEffect(() => {
-    let unsubscribe: (() => void) | undefined;
-    if (isAdminAuth && overlayView === "reservations") {
-      setIsLoadingReservations(true);
-      const q = query(collection(db, "reservations"), orderBy("date", "desc"), orderBy("time", "desc"));
-      unsubscribe = onSnapshot(q, (snap) => {
-        const resData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setAllReservations(resData);
-        setIsLoadingReservations(false);
-        cleanupExpiredReservations(resData);
-      }, (e) => {
-        handleFirestoreError(e, OperationType.GET, "reservations");
-        setIsLoadingReservations(false);
-      });
-    }
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, [isAdminAuth, overlayView, cleanupExpiredReservations]);
-
-  function handleAdminLogin(e: any) {
-    e.preventDefault();
-    const correctPassword = (import.meta as any).env.VITE_RESERVATIONS_PASSWORD || "tomato_admin";
-    if (adminPassword === correctPassword) {
-      setIsAdminAuth(true);
-      setAdminAuthError(false);
-    } else {
-      setAdminAuthError(true);
-    }
-  }
-
-  async function handleDeleteReservation(id: string) {
-    if (!window.confirm("Сигурни ли сте, че искате да изтриете тази резервация?")) return;
-    try {
-      // Get reservation data to update capacity
-      const resRef = doc(db, "reservations", id);
-      const resSnap = await getDoc(resRef);
-      if (resSnap.exists()) {
-        const resData = resSnap.data();
-        const dayRef = doc(db, "daily_capacity", resData.date);
-        const daySnap = await getDoc(dayRef);
-        if (daySnap.exists()) {
-          const slotsKey = `slots_${resData.location}`;
-          const currentSlots = daySnap.data()[slotsKey] || {};
-          if (currentSlots[resData.time]) {
-            const newSlots = { ...currentSlots };
-            newSlots[resData.time] = Math.max(0, (newSlots[resData.time] || 0) - resData.guests);
-            await updateDoc(dayRef, { [slotsKey]: newSlots });
-          }
-        }
-      }
-      // Delete the reservation document
-      await deleteDoc(doc(db, "reservations", id));
-      // Refresh live spots if today
-      const today = new Date().toISOString().split("T")[0];
-      const now = new Date();
-      const currentTimeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-      const slots = getTimeSlotsForDate(today);
-      const displayTime = slots.find(s => s >= currentTimeStr) || slots[0];
-      const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
-      for (const loc of locations) {
-        fetchCapacityForDateTime(today, displayTime, loc, (val) => {
-          setLiveSpots(prev => ({ ...prev, [loc]: val }));
-        });
-      }
-    } catch (e) {
-      console.error("Delete error:", e);
-      alert("Възникна грешка при изтриването.");
-    }
-  }
-
-  async function handleBooking(e: any) {
-    e.preventDefault();
-    setBookingError(null);
-
-    if (!bookingTime) {
-      setBookingError("ERROR");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    const guestsCount = parseInt(bookingGuests) || 2;
-    const hour = parseInt(bookingTime.split(":")[0]);
-    const daySlots = getTimeSlotsForDate(bookingDate);
-
-    let affectedSlots: string[] = [];
-    if (hour >= 19 || bookingTime === "00:00") {
-      affectedSlots = daySlots.filter(s => s >= bookingTime);
-    } else {
-      const [h, m] = bookingTime.split(":").map(Number);
-      const totalMinutesStart = h * 60 + m;
-      const totalMinutesEnd = totalMinutesStart + 120;
-
-      affectedSlots = daySlots.filter(s => {
-        const [sh, sm] = s.split(":").map(Number);
-        const slotMinutes = sh * 60 + sm;
-        return slotMinutes >= totalMinutesStart && slotMinutes < totalMinutesEnd;
-      });
-    }
-
-    try {
-      await runTransaction(db, async (transaction) => {
-        const dayRef = doc(db, "daily_capacity", bookingDate);
-        const daySnap = await transaction.get(dayRef);
-
-        const slotsKey = `slots_${bookingLocation}`;
-        let allData: any = {};
-        if (daySnap.exists()) {
-          allData = daySnap.data();
-        }
-
-        const slots = allData[slotsKey] || {};
-
-        for (const slot of affectedSlots) {
-          const bookedAtSlot = (slots as any)[slot] || 0;
-          if (bookedAtSlot + guestsCount > CAPACITIES[bookingLocation]) {
-            throw new Error("FULLY_BOOKED");
-          }
-        }
-
-        const resRef = doc(collection(db, "reservations"));
-        transaction.set(resRef, {
-          name: bookingName,
-          phone: bookingPhone,
-          guests: guestsCount,
-          date: bookingDate,
-          time: bookingTime,
-          location: bookingLocation,
-          duration: hour >= 19 || bookingTime === "00:00" ? "night" : "2h",
-          affectedSlots,
-          createdAt: serverTimestamp()
-        });
-
-        const newSlots = { ...slots };
-        for (const slot of affectedSlots) {
-          (newSlots as any)[slot] = ((newSlots as any)[slot] || 0) + guestsCount;
-        }
-
-        if (daySnap.exists()) {
-          transaction.update(dayRef, { [slotsKey]: newSlots });
-        } else {
-          transaction.set(dayRef, { [slotsKey]: newSlots });
-        }
-      });
-
-      setBookingSuccess(true);
-      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
-
-      const dateStr = new Date().toISOString().split("T")[0];
-      if (bookingDate === dateStr) {
-        const slots = getTimeSlotsForDate(dateStr);
-        const now = new Date();
-        const displayTime = slots.find(s => s >= `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`) || slots[0];
-
-        if (bookingTime === displayTime || affectedSlots.includes(displayTime)) {
-          const locations: ("hall" | "garden" | "bar")[] = ["hall", "garden", "bar"];
-          for (const loc of locations) {
-            fetchCapacityForDateTime(dateStr, displayTime, loc, (val) => {
-              setLiveSpots(prev => ({ ...prev, [loc]: val }));
-            });
-          }
-        }
-      }
-
-      setTimeout(() => {
-        setIsBookingOpen(false);
-        setBookingSuccess(false);
-        setBookingName("");
-        setBookingPhone("");
-      }, 3000);
-
-      fetchCapacityForDateTime(bookingDate, bookingTime, bookingLocation, setAvailableSpots);
-    } catch (e: any) {
-      console.error("Booking failed:", e);
-      if (e.message === "FULLY_BOOKED") {
-        setBookingError("FULL");
-      } else {
-        try {
-          handleFirestoreError(e, OperationType.WRITE, "reservations");
-        } catch (err: any) {
-          const errorMsg = String(err.message || err);
-          if (errorMsg.includes("permission-denied") || errorMsg.includes("permissions")) {
-            setBookingError("PERMISSION_ERROR");
-          } else {
-            setBookingError("ERROR");
-          }
-        }
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  const handleReservationClick = () => {
+    window.open(RESERVATION_LINK, "_blank");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1132,7 +757,6 @@ export default function App() {
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
-
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
 
@@ -1176,23 +800,15 @@ export default function App() {
               EN
             </button>
           </div>
-
           <div className="hidden sm:flex flex-col items-end gap-1">
             <button
-              onClick={() => setIsBookingOpen(true)}
+              onClick={handleReservationClick}
               className="flex items-center gap-3 px-6 py-2.5 bg-jazz-gold text-jazz-black text-[9px] uppercase tracking-[0.2em] font-black hover:bg-white transition-colors duration-500 shadow-lg group"
             >
               {t.bookNow}
-              {liveSpots.hall !== null && (
-                <span className="flex items-center gap-1.5 pl-3 border-l border-jazz-black/10 text-jazz-black/60 group-hover:text-jazz-black transition-colors">
-                  <Users size={10} />
-                  {liveSpots.hall}
-                </span>
-              )}
             </button>
             <span className="text-xs uppercase tracking-widest text-[#00ff88] animate-pulse font-black">{t.onlineResStat}</span>
           </div>
-
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex flex-col gap-1.5 p-2 group cursor-pointer"
@@ -1219,7 +835,6 @@ export default function App() {
             className="fixed inset-0 z-[70] bg-jazz-black flex flex-col items-center justify-center p-8 backdrop-blur-3xl"
           >
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-
             <div className="relative z-10 flex flex-col items-center justify-center gap-8 md:gap-14 w-full">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
@@ -1246,7 +861,6 @@ export default function App() {
                   <div className="w-8 h-[1px] bg-jazz-gold/20"></div>
                 </div>
               </motion.div>
-
               <div className="flex flex-col items-center gap-3 md:gap-6 w-full max-w-xl mx-auto px-6 text-center">
                 {[
                   { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
@@ -1255,7 +869,6 @@ export default function App() {
                   { label: t.gallerySubtitle, action: () => { setOverlayView("gallery"); setIsMenuOpen(false); } },
                   { label: t.vibeTitle, action: () => { document.getElementById("vibe")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
                   { label: t.visitTitle, action: () => { document.getElementById("location")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
-                  { label: t.reservationsTab, action: () => { setOverlayView("reservations"); setIsMenuOpen(false); } },
                 ].map((item, i) => (
                   <motion.button
                     key={item.label}
@@ -1269,27 +882,21 @@ export default function App() {
                   </motion.button>
                 ))}
               </div>
-
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                onClick={() => { setIsBookingOpen(true); setIsMenuOpen(false); }}
+                onClick={handleReservationClick}
                 className="mt-4 md:mt-8 w-full max-w-md py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.5em] font-black shadow-2xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-3"
               >
                 {t.bookNow}
-                {liveSpots.hall !== null && (
-                  <span className="opacity-40 text-[8px] border-l border-jazz-black/20 pl-3">
-                    {liveSpots.hall} {lang === "BG" ? "СВОБОДНИ" : "AVAILABLE"}
-                  </span>
-                )}
               </motion.button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Sub-menu Overlays (Menu, Gallery, Reservations) */}
+      {/* Sub-menu Overlays (Menu, Gallery) */}
       <AnimatePresence>
         {overlayView !== "none" && (
           <motion.div
@@ -1313,7 +920,6 @@ export default function App() {
                     {t.menuHeader.split(" ").slice(0, 1)} <br /> {t.menuHeader.split(" ").slice(1).join(" ")}
                   </h2>
                 </div>
-
                 <div className="flex flex-wrap justify-center gap-4 mb-20">
                   <button
                     onClick={() => setMenuSection("drinks")}
@@ -1328,7 +934,6 @@ export default function App() {
                     {lang === "BG" ? "Кухня" : "Food"}
                   </button>
                 </div>
-
                 <div className="space-y-32">
                   {t.fullMenu
                     .filter((group, idx) => (menuSection === "drinks" ? idx === 0 : idx === 1))
@@ -1345,7 +950,6 @@ export default function App() {
                             {group.title}
                           </h3>
                         </div>
-
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24">
                           {group.categories.map((section, idx) => (
                             <motion.div
@@ -1378,97 +982,6 @@ export default function App() {
               </div>
             )}
 
-            {overlayView === "reservations" && (
-              <div className="py-24 px-6 md:px-16 max-w-4xl mx-auto">
-                {!isAdminAuth ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="max-w-md mx-auto bg-white/[0.02] border border-white/10 p-8 md:p-12 mt-12"
-                  >
-                    <h3 className="text-2xl font-serif italic text-white mb-8 text-center">{t.reservationsTab}</h3>
-                    <form onSubmit={handleAdminLogin} className="space-y-6">
-                      <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.resPasswordLabel}</label>
-                        <input
-                          type="password"
-                          value={adminPassword}
-                          onChange={(e) => setAdminPassword(e.target.value)}
-                          placeholder={t.resPasswordPlaceholder}
-                          className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white text-sm focus:outline-none focus:border-jazz-gold/50 transition-colors"
-                          required
-                        />
-                      </div>
-                      {adminAuthError && (
-                        <p className="text-jazz-red text-[10px] uppercase tracking-widest text-center">{t.resAuthError}</p>
-                      )}
-                      <button
-                        type="submit"
-                        className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl"
-                      >
-                        Login
-                      </button>
-                    </form>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="space-y-8"
-                  >
-                    <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-12">
-                      <h3 className="text-3xl md:text-5xl font-serif italic text-white tracking-tighter">{t.resListTitle}</h3>
-                    </div>
-
-                    {isLoadingReservations ? (
-                      <div className="flex flex-col items-center py-20 gap-4">
-                        <div className="w-8 h-8 border-2 border-jazz-gold border-t-transparent rounded-full animate-spin"></div>
-                      </div>
-                    ) : allReservations.length === 0 ? (
-                      <div className="text-center py-20 opacity-40 text-[10px] uppercase tracking-[0.3em]">{t.resListEmpty}</div>
-                    ) : (
-                      <div className="space-y-4">
-                        {allReservations.map((res: any) => (
-                          <div key={res.id} className="bg-white/[0.02] border border-white/5 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-white/10 transition-colors group">
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-3">
-                                <h4 className="text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors">{res.name}</h4>
-                                <span className={`px-2 py-0.5 text-[8px] uppercase tracking-widest font-bold rounded-sm ${
-                                  res.location === "garden"
-                                    ? "bg-green-500/10 text-green-500"
-                                    : res.location === "bar"
-                                      ? "bg-blue-500/10 text-blue-400"
-                                      : "bg-jazz-gold/10 text-jazz-gold"
-                                }`}>
-                                  {res.location === "garden" ? t.locationGarden : res.location === "bar" ? t.locationBar : t.locationHall}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-4 text-white/40 text-[10px] uppercase tracking-widest font-medium">
-                                <span className="flex items-center gap-1.5"><Calendar size={10} /> {res.date}</span>
-                                <span className="flex items-center gap-1.5"><Clock size={10} /> {res.time}</span>
-                                <span className="flex items-center gap-1.5"><Users size={10} /> {res.guests} {t.resListGuests}</span>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <a href={`tel:${res.phone}`} className="flex items-center gap-2 px-4 py-2 border border-white/10 text-[10px] uppercase tracking-widest font-bold text-white/60 hover:text-white hover:border-white/30 transition-all">
-                                <Phone size={10} /> {res.phone}
-                              </a>
-                              <button
-                                onClick={() => handleDeleteReservation(res.id)}
-                                className="flex items-center gap-2 px-4 py-2 border border-red-500/20 text-[10px] uppercase tracking-widest font-bold text-red-500/60 hover:text-red-500 hover:bg-red-500/5 hover:border-red-500/40 transition-all"
-                              >
-                                <Trash2 size={10} /> {t.resDelete}
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </div>
-            )}
-
             {overlayView === "gallery" && (
               <div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
                 <div className="text-center mb-20">
@@ -1480,7 +993,6 @@ export default function App() {
                     {t.galleryDesc}
                   </p>
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 px-4 md:px-12">
                   {allGalleryImages.map((url, i) => (
                     <motion.div
@@ -1510,7 +1022,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section with rotating background */}
+      {/* Hero Section */}
       <section id="home" className="relative h-screen flex flex-col justify-center items-center pt-20">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <AnimatePresence mode="wait">
@@ -1537,7 +1049,6 @@ export default function App() {
             <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-transparent via-jazz-gold/20 to-transparent" />
           </div>
         </div>
-
         <div className="relative z-20 text-center px-4 mt-20 md:mt-32">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1549,18 +1060,15 @@ export default function App() {
               <span className="text-[10px] md:text-[12px] uppercase tracking-[0.4em] md:tracking-[0.8em] text-jazz-gold font-bold">{t.heroTag}</span>
               <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40" />
             </div>
-
             <h1 className="text-6xl md:text-[12rem] font-serif text-white mb-10 md:mb-12 tracking-tighter leading-none relative group px-2">
               <span className="relative z-10">{t.heroTitle1}</span>
               <br />
               <span className="italic text-jazz-gold relative z-10">{t.heroTitle2}</span>
               <div className="absolute -inset-10 bg-jazz-gold/10 blur-[120px] rounded-full -z-10 opacity-50" />
             </h1>
-
             <p className="max-w-2xl mx-auto text-jazz-cream/60 text-base md:text-xl font-light leading-relaxed mb-16 italic tracking-wide px-4">
               {t.heroDesc}
             </p>
-
             <div className="mt-16 flex flex-col items-center gap-8 w-full px-4">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center items-center w-full max-w-[320px] md:max-w-none">
                 <button
@@ -1571,7 +1079,7 @@ export default function App() {
                   <span className="relative z-10 group-hover:text-jazz-black whitespace-nowrap">{t.viewMenu}</span>
                 </button>
                 <button
-                  onClick={() => setIsBookingOpen(true)}
+                  onClick={handleReservationClick}
                   className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all shadow-2xl flex items-center justify-center min-w-[200px]"
                 >
                   <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
@@ -1584,7 +1092,6 @@ export default function App() {
             </div>
           </motion.div>
         </div>
-
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
@@ -1599,7 +1106,6 @@ export default function App() {
       <section id="menu" className="py-24 md:py-32 px-6 md:px-16 max-w-7xl mx-auto flex justify-center">
         <div className="w-full max-w-4xl relative group overflow-hidden bg-white/[0.02] border border-white/5 flex items-center justify-center min-h-[400px] md:min-h-[600px] p-6 md:p-12">
           <div className="absolute inset-0 bg-gradient-to-t from-jazz-black via-transparent to-transparent z-10" />
-
           <div className="relative flex flex-col items-center z-20 w-full max-w-[250px] md:max-w-none">
             <div className="w-full md:w-72 h-80 md:h-96 border border-jazz-gold/20 rotate-3 absolute -z-10 translate-x-1 md:translate-x-4" />
             <div className="w-full md:w-72 h-80 md:h-96 border border-jazz-gold/30 -rotate-2 absolute -z-10 -translate-x-1 md:-translate-x-2" />
@@ -1618,7 +1124,6 @@ export default function App() {
               </div>
             </div>
           </div>
-
           <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
             <p className="text-[9px] uppercase tracking-[0.5em] text-jazz-gold font-bold mb-2 opacity-60">{t.vibeTitle}</p>
             <p className="text-sm md:text-lg font-serif italic text-jazz-cream/80">{t.addressValue}</p>
@@ -1626,7 +1131,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Halls Section with carousels */}
+      {/* Halls Section */}
       <section id="private-room" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col mb-16">
@@ -1643,7 +1148,6 @@ export default function App() {
               ))}
             </div>
           </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedHall}
@@ -1653,7 +1157,6 @@ export default function App() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="flex flex-col lg:flex-row gap-16 items-center"
             >
-              {/* Carousel */}
               <div className="w-full lg:w-1/2 relative group">
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
@@ -1692,7 +1195,6 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
               <div className="w-full lg:w-1/2 space-y-10">
                 <div>
                   <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tighter italic leading-tight mb-8">
@@ -1702,7 +1204,6 @@ export default function App() {
                     {(t as any).halls.find((h: any) => h.id === selectedHall)?.desc}
                   </p>
                 </div>
-
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 py-8 border-y border-white/5">
                   {(t as any).halls.find((h: any) => h.id === selectedHall)?.features.map((feature: string, i: number) => (
                     <div key={i} className="flex items-center gap-4 group">
@@ -1710,25 +1211,10 @@ export default function App() {
                       <span className="text-[10px] md:text-xs uppercase tracking-widest text-white/80 font-medium group-hover:text-jazz-gold transition-colors">{feature}</span>
                     </div>
                   ))}
-                  <div className="flex items-center gap-4 group col-span-2 sm:col-span-1">
-                    <div className="w-1.5 h-1.5 bg-[#00ff88] rounded-full animate-pulse" />
-                    <div className="flex flex-col">
-                      <span className="text-[8px] uppercase tracking-widest text-white/40 font-bold">{lang === "BG" ? "Жива наличност" : "Live Availability"}</span>
-                      <span className="text-[10px] md:text-xs uppercase tracking-widest text-[#00ff88] font-black">
-                        {(() => {
-                          const currentLoc = selectedHall === "main" ? "hall" : selectedHall === "garden" ? "garden" : "bar";
-                          return liveSpots[currentLoc] !== null
-                            ? `${liveSpots[currentLoc]} / ${CAPACITIES[currentLoc]} ${lang === "BG" ? "СВОБОДНИ" : "FREE"}`
-                            : "...";
-                        })()}
-                      </span>
-                    </div>
-                  </div>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-3 mt-12">
                   <button
-                    onClick={() => setIsBookingOpen(true)}
+                    onClick={handleReservationClick}
                     className="group relative inline-flex px-8 py-5 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-black overflow-hidden transition-all shadow-2xl flex items-center gap-3"
                   >
                     <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
@@ -1786,7 +1272,6 @@ export default function App() {
             <span className="text-[10px] uppercase tracking-[0.5em] text-jazz-gold mb-4 block font-bold">{t.reviewTitle}</span>
             <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter italic">{t.reviewHeader}</h2>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {t.reviews.map((review, i) => (
               <motion.div
@@ -1821,7 +1306,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Location/Contact Section */}
+      {/* Location Section */}
       <section id="location" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex justify-center text-center">
           <div className="max-w-2xl px-4 md:px-0">
@@ -1829,7 +1314,6 @@ export default function App() {
             <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">
               {t.visitHeader.split(" ").slice(0, 2).join(" ")} <br /> {t.visitHeader.split(" ").slice(2).join(" ")}
             </h2>
-
             <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
               <div className="flex flex-col items-center gap-4">
                 <MapPin className="text-jazz-gold/60" size={32} />
@@ -1838,7 +1322,6 @@ export default function App() {
                   <p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p>
                 </div>
               </div>
-
               <div className="flex flex-col items-center gap-4 text-center">
                 <Clock className="text-jazz-gold/60" size={32} />
                 <div className="space-y-2">
@@ -1853,7 +1336,6 @@ export default function App() {
                   </p>
                 </div>
               </div>
-
               <div className="flex flex-col items-center gap-4">
                 <Phone className="text-jazz-gold/60" size={32} />
                 <div className="space-y-2">
@@ -1862,7 +1344,6 @@ export default function App() {
                 </div>
               </div>
             </div>
-
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=ul.+Yoakim+Gruev+21,+4000+Plovdiv"
               target="_blank"
@@ -1875,249 +1356,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Booking Modal */}
-      <AnimatePresence>
-        {isBookingOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-jazz-black/95 backdrop-blur-md"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="w-full max-w-xl bg-[#0d0d0d] border border-jazz-gold/20 p-8 md:p-12 relative overflow-hidden max-h-[90vh] overflow-y-auto"
-            >
-              <button
-                onClick={() => setIsBookingOpen(false)}
-                className="absolute top-8 right-8 text-white/30 hover:text-jazz-gold transition-colors"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="text-center mb-10">
-                <h3 className="text-jazz-gold text-[10px] uppercase tracking-[0.5em] font-bold mb-4 block">{t.bookingTitle}</h3>
-                <h2 className="text-4xl md:text-5xl font-serif text-white italic tracking-tighter">{t.bookingHeader}</h2>
-                {bookingDate && bookingTime && availableSpots !== null && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-6 inline-flex flex-col items-center gap-2 px-6 py-3 bg-white/5 border border-white/5 rounded-sm"
-                  >
-                    <span className="text-[10px] uppercase tracking-widest text-white/40">{lang === "BG" ? `Свободни места за ${bookingTime}` : `Available spots for ${bookingTime}`}</span>
-                    <span className={`text-2xl font-serif italic ${availableSpots !== null && availableSpots < 10 ? "text-jazz-red" : "text-jazz-gold"}`}>
-                      {availableSpots} / {CAPACITIES[bookingLocation]}
-                    </span>
-                  </motion.div>
-                )}
-              </div>
-
-              {bookingSuccess ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-20"
-                >
-                  <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <Star className="text-green-500 fill-green-500" size={32} />
-                  </div>
-                  <h3 className="text-3xl font-serif italic text-white mb-4">
-                    {lang === "BG" ? "Резервацията е приета!" : "Booking Received!"}
-                  </h3>
-                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em]">
-                    {t.resNote}
-                  </p>
-                </motion.div>
-              ) : bookingError === "FULL" ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-10"
-                >
-                  <div className="w-16 h-16 bg-jazz-red/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <X className="text-jazz-red" size={32} />
-                  </div>
-                  <h3 className="text-2xl font-serif italic text-white mb-6 leading-tight">
-                    {lang === "BG"
-                      ? `За съжаление нямаме свободни места за ${bookingTime} на тази дата.`
-                      : `Unfortunately, we are fully booked for ${bookingTime} on this date.`}
-                  </h3>
-                  <div className="p-6 border border-jazz-gold/30 bg-jazz-gold/5 space-y-4">
-                    <p className="text-[10px] uppercase tracking-[0.4em] text-jazz-gold font-bold">
-                      {lang === "BG" ? "Свържете се с управител" : "Contact Manager"}
-                    </p>
-                    <p className="text-3xl font-serif italic text-white">089 637 0777</p>
-                  </div>
-                  <button
-                    onClick={() => { setBookingError(null); setBookingDate(""); }}
-                    className="mt-8 text-[10px] uppercase tracking-widest text-jazz-gold underline underline-offset-4"
-                  >
-                    {lang === "BG" ? "Избери друга дата" : "Choose another date"}
-                  </button>
-                </motion.div>
-              ) : (
-                <form className="space-y-6" onSubmit={handleBooking}>
-                  <div className="flex flex-wrap gap-2 p-1 bg-white/[0.03] border border-white/10 mb-6">
-                    <button
-                      type="button"
-                      onClick={() => setBookingLocation("hall")}
-                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "hall" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
-                    >
-                      <UtensilsCrossed size={12} />
-                      {t.locationHall}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setBookingLocation("garden")}
-                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "garden" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
-                    >
-                      <Wine size={12} />
-                      {t.locationGarden}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setBookingLocation("bar")}
-                      className={`flex-1 min-w-[80px] py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${bookingLocation === "bar" ? "bg-jazz-gold text-jazz-black" : "text-white/40 hover:text-white/60"}`}
-                    >
-                      <GlassWater size={12} />
-                      {t.locationBar}
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.nameLabel}</label>
-                      <input
-                        type="text"
-                        required
-                        value={bookingName}
-                        onChange={(e) => setBookingName(e.target.value)}
-                        placeholder={t.namePlaceholder}
-                        className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.phoneLabel}</label>
-                      <input
-                        type="tel"
-                        required
-                        value={bookingPhone}
-                        onChange={(e) => setBookingPhone(e.target.value)}
-                        placeholder={t.phonePlaceholder}
-                        className="w-full bg-white/[0.03] border border-white/10 p-4 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.dateTimeLabel} - {lang === "BG" ? "Дата" : "Date"}</label>
-                      <div className="relative">
-                        <Calendar size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
-                        <input
-                          type="date"
-                          required
-                          value={bookingDate}
-                          onChange={(e) => setBookingDate(e.target.value)}
-                          min={new Date().toISOString().split("T")[0]}
-                          className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors italic appearance-none"
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{lang === "BG" ? "Час" : "Hour"}</label>
-                      <div className="relative">
-                        <Clock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
-                        <select
-                          required
-                          value={bookingTime}
-                          onChange={(e) => setBookingTime(e.target.value)}
-                          disabled={getTimeSlotsForDate(bookingDate).length === 0}
-                          className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {getTimeSlotsForDate(bookingDate).length > 0 ? (
-                            getTimeSlotsForDate(bookingDate).map(time => (
-                              <option key={time} value={time} className="bg-jazz-black">{time}</option>
-                            ))
-                          ) : (
-                            <option value="" className="bg-jazz-black">
-                              {lang === "BG" ? "Затворено" : "Closed"}
-                            </option>
-                          )}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40 block ml-1 font-bold">{t.guestsLabel}</label>
-                    <div className="relative">
-                      <Users size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-jazz-gold/50 pointer-events-none" />
-                      <select
-                        required
-                        value={bookingGuests}
-                        onChange={(e) => setBookingGuests(e.target.value)}
-                        className="w-full bg-white/[0.03] border border-white/10 p-4 pl-12 text-sm text-white focus:border-jazz-gold/50 outline-none transition-colors appearance-none italic"
-                      >
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
-                          <option key={n} value={n} className="bg-jazz-black">{n} {lang === "BG" ? (n === 1 ? "човек" : "души") : (n === 1 ? "person" : "people")}</option>
-                        ))}
-                        <option value="15" className="bg-jazz-black">10-20 {lang === "BG" ? "души" : "people"}</option>
-                        <option value="30" className="bg-jazz-black">20-50 {lang === "BG" ? "души" : "people"}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="pt-6">
-                    <div className="mb-6 py-3 border-y border-white/5 text-center">
-                      <span className="text-xs uppercase tracking-[0.2em] text-[#00ff88] font-black animate-pulse">
-                        {t.onlineResStat}
-                      </span>
-                    </div>
-                    <div className="mt-8 space-y-4">
-                      {bookingError && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="text-center p-6 bg-jazz-red/10 border border-jazz-red/20 space-y-2"
-                        >
-                          <p className="text-jazz-red text-[11px] uppercase tracking-[0.3em] font-black">
-                            {bookingError === "FULL" ? (lang === "BG" ? "Няма свободни места" : "Fully booked") : (bookingError === "PERMISSION_ERROR" ? "Database Error" : (lang === "BG" ? "Грешка при резервацията" : "Booking error"))}
-                          </p>
-                          <p className="text-white/40 text-[9px] uppercase tracking-widest leading-relaxed">
-                            {bookingError === "PERMISSION_ERROR"
-                              ? "The booking system encountered a permission issue. Please contact 089 637 0777 directly."
-                              : "Please check your connection and ensuring all fields are filled correctly."}
-                          </p>
-                        </motion.div>
-                      )}
-
-                      <button
-                        type="submit"
-                        disabled={isSubmitting || (availableSpots !== null && availableSpots <= 0)}
-                        className="w-full py-5 bg-jazz-gold text-jazz-black uppercase text-[10px] tracking-[0.3em] font-black hover:scale-[1.02] transition-transform shadow-2xl disabled:opacity-50 disabled:grayscale disabled:scale-100 flex items-center justify-center gap-3"
-                      >
-                        {isSubmitting ? (
-                          <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="w-3 h-3 border-2 border-jazz-black border-t-transparent rounded-full" />
-                        ) : (
-                          <CalendarCheck size={14} />
-                        )}
-                        {t.confirmRes}
-                      </button>
-                    </div>
-                    <p className="text-[10px] text-center mt-6 text-white/20 uppercase tracking-[0.2em]">
-                      {t.resNote}
-                    </p>
-                  </div>
-                </form>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Footer */}
       <footer className="border-t border-white/10 pt-20 pb-16 px-8 md:px-16 bg-jazz-black">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 mb-20">
@@ -2126,10 +1364,9 @@ export default function App() {
             <div className="flex gap-10 text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">
               <a href="#" className="hover:text-jazz-gold transition-colors">Instagram</a>
               <a href="#" className="hover:text-jazz-gold transition-colors">{t.spotifyPlaylist}</a>
-              <a href="#" className="hover:text-jazz-gold transition-colors">{t.bookingTitle}</a>
+              <button onClick={handleReservationClick} className="hover:text-jazz-gold transition-colors">{t.bookingTitle}</button>
             </div>
           </div>
-
           <div className="flex items-center gap-6">
             <div className="text-right">
               <p className="text-[9px] uppercase tracking-[0.4em] opacity-40 mb-2 font-bold">{t.footerContact}</p>
@@ -2140,7 +1377,6 @@ export default function App() {
             </div>
           </div>
         </div>
-
         <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[9px] uppercase tracking-[0.3em] text-white/20">{t.footerCopyright}</p>
           <div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic">
