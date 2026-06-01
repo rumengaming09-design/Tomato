@@ -493,7 +493,7 @@ const LANGUAGES = {
     locationHall: "Main Hall",
     locationGarden: "Garden",
     locationBar: "Bar",
-    onlineResStat: "Book easily through Google!",
+    onlineResStat: "10% off for reservations made trough the website",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
     footerBuild: "Website created by AR Studio",
