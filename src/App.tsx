@@ -1,8 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
+// App.jsx - основен файл
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   MapPin, Phone, Clock, ChevronRight, Star, Instagram, Facebook, Music,
@@ -10,6 +6,8 @@ import {
   GlassWater, ChevronLeft
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
+import MenuPage from "./MenuPage";
 
 // Carousel images for halls
 const hallImages = {
@@ -174,7 +172,7 @@ const LANGUAGES = {
     locationHall: "Зала",
     locationGarden: "Градина",
     locationBar: "Бар",
-    onlineResStat: "10% отстъпка за резервации през сайта",
+    onlineResStat: "Резервирайте лесно през Google!",
     footerContact: "Контакт и Резервации",
     footerCopyright: "© 2026 Tomato · Естетичен ресторант Пловдив",
     footerBuild: "Създадено от AR Studio",
@@ -493,7 +491,7 @@ const LANGUAGES = {
     locationHall: "Main Hall",
     locationGarden: "Garden",
     locationBar: "Bar",
-    onlineResStat: "10% off for reservations made trough the website",
+    onlineResStat: "Book easily through Google!",
     footerContact: "Contact & Bookings",
     footerCopyright: "© 2026 Tomato · Aesthetic Restaurant Plovdiv",
     footerBuild: "Website created by AR Studio",
@@ -625,7 +623,7 @@ const LANGUAGES = {
               { name: "Meshalale Salad", price: "7,00€", info: "300 g" },
               { name: "Chicken & Bacon Caesar", price: "8,70€", info: "300 g" },
               { name: "Grilled Tomato & Mozzarella Salad", price: "7,70€", info: "300 g" },
-            ]
+            ],
           },
           {
             name: "Appetizers",
@@ -705,7 +703,7 @@ const LANGUAGES = {
   }
 };
 
-const NAV_LINKS_MAP: Record<string, string> = {
+const NAV_LINKS_MAP = {
   "Начало": "home",
   "Меню": "menu",
   "Зали": "private-room",
@@ -720,19 +718,20 @@ const NAV_LINKS_MAP: Record<string, string> = {
   "Reviews": "reviews"
 };
 
-export default function App() {
-  const [lang, setLang] = useState<"BG" | "EN">("BG");
+function App() {
+  const [lang, setLang] = useState("BG");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery">("none");
-  const [menuSection, setMenuSection] = useState<"drinks" | "food">("drinks");
+  const [overlayView, setOverlayView] = useState("none");
   const [scrolled, setScrolled] = useState(false);
-  const [selectedHall, setSelectedHall] = useState<"main" | "garden" | "bar">("main");
-  const [hallIndex, setHallIndex] = useState<Record<string, number>>({
+  const [selectedHall, setSelectedHall] = useState("main");
+  const [hallIndex, setHallIndex] = useState({
     main: 0,
     garden: 0,
     bar: 0
   });
   const [heroIndex, setHeroIndex] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -747,6 +746,10 @@ export default function App() {
     window.open(RESERVATION_LINK, "_blank");
   };
 
+  const handleMenuClick = () => {
+    navigate("/menu");
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -759,6 +762,11 @@ export default function App() {
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
+
+  // Ако сме на страницата с менюто, показваме само нея
+  if (location.pathname === "/menu") {
+    return <MenuPage lang={lang} setLang={setLang} t={t} LANGUAGES={LANGUAGES} />;
+  }
 
   return (
     <div ref={containerRef} className="relative bg-jazz-black selection:bg-jazz-gold selection:text-jazz-black min-h-screen">
@@ -783,7 +791,6 @@ export default function App() {
             <span className="text-[7px] md:text-[8px] tracking-[0.4em] md:tracking-[0.5em] uppercase opacity-40 font-bold">{t.subtitle}</span>
           </div>
         </motion.div>
-
         <div className="flex items-center gap-4 md:gap-10">
           <div className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-full px-4 py-2">
             <button
@@ -864,7 +871,7 @@ export default function App() {
               <div className="flex flex-col items-center gap-3 md:gap-6 w-full max-w-xl mx-auto px-6 text-center">
                 {[
                   { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
-                  { label: t.menuHeader, action: () => { setOverlayView("full-menu"); setIsMenuOpen(false); } },
+                  { label: t.menuHeader, action: () => { handleMenuClick(); setIsMenuOpen(false); } },
                   { label: t.privateRoomHeader, action: () => { document.getElementById("private-room")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
                   { label: t.gallerySubtitle, action: () => { setOverlayView("gallery"); setIsMenuOpen(false); } },
                   { label: t.vibeTitle, action: () => { document.getElementById("vibe")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
@@ -896,7 +903,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Sub-menu Overlays (Menu, Gallery) */}
+      {/* Sub-menu Overlays (Gallery only, Menu is now separate page) */}
       <AnimatePresence>
         {overlayView !== "none" && (
           <motion.div
@@ -911,76 +918,6 @@ export default function App() {
             >
               <X size={24} className="group-hover:rotate-90 transition-transform duration-500" />
             </button>
-
-            {overlayView === "full-menu" && (
-              <div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
-                <div className="text-center mb-12">
-                  <span className="text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-6 block font-bold opacity-60">{t.fullMenuTitle}</span>
-                  <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none mb-12">
-                    {t.menuHeader.split(" ").slice(0, 1)} <br /> {t.menuHeader.split(" ").slice(1).join(" ")}
-                  </h2>
-                </div>
-                <div className="flex flex-wrap justify-center gap-4 mb-20">
-                  <button
-                    onClick={() => setMenuSection("drinks")}
-                    className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "drinks" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
-                  >
-                    {lang === "BG" ? "Напитки" : "Drinks"}
-                  </button>
-                  <button
-                    onClick={() => setMenuSection("food")}
-                    className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "food" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
-                  >
-                    {lang === "BG" ? "Кухня" : "Food"}
-                  </button>
-                </div>
-                <div className="space-y-32">
-                  {t.fullMenu
-                    .filter((group, idx) => (menuSection === "drinks" ? idx === 0 : idx === 1))
-                    .map((group, gIdx) => (
-                      <motion.div
-                        key={group.title}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <div className="flex flex-col items-center mb-16 px-4">
-                          <div className="w-12 h-[1px] bg-jazz-gold/30 mb-6"></div>
-                          <h3 className="text-3xl md:text-6xl font-serif text-white italic tracking-tighter text-center">
-                            {group.title}
-                          </h3>
-                        </div>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24">
-                          {group.categories.map((section, idx) => (
-                            <motion.div
-                              key={section.name}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: idx * 0.1 }}
-                              className="space-y-12"
-                            >
-                              <h4 className="text-jazz-gold text-xs uppercase tracking-[0.5em] font-bold pb-6 border-b border-jazz-gold/20 italic">
-                                {section.name}
-                              </h4>
-                              <div className="space-y-12">
-                                {section.items.map((item) => (
-                                  <div key={item.name} className="group cursor-pointer">
-                                    <div className="flex justify-between items-start mb-3 gap-4">
-                                      <h5 className="text-xl md:text-2xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors leading-tight">{item.name}</h5>
-                                      <span className="text-[11px] text-jazz-gold/40 italic whitespace-nowrap pt-2 font-bold">{item.price}</span>
-                                    </div>
-                                    <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] leading-relaxed max-w-[80%]">{item.info}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    ))}
-                </div>
-              </div>
-            )}
 
             {overlayView === "gallery" && (
               <div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
@@ -1072,7 +1009,7 @@ export default function App() {
             <div className="mt-16 flex flex-col items-center gap-8 w-full px-4">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center items-center w-full max-w-[320px] md:max-w-none">
                 <button
-                  onClick={() => setOverlayView("full-menu")}
+                  onClick={handleMenuClick}
                   className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]"
                 >
                   <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
@@ -1137,7 +1074,7 @@ export default function App() {
           <div className="flex flex-col mb-16">
             <span className="text-jazz-gold text-lg md:text-2xl uppercase tracking-[0.4em] font-bold block mb-8">{t.privateRoomTitle}</span>
             <div className="flex flex-wrap gap-4 md:gap-8">
-              {(t as any).halls.map((hall: any) => (
+              {(t).halls.map((hall) => (
                 <button
                   key={hall.id}
                   onClick={() => setSelectedHall(hall.id)}
@@ -1161,7 +1098,7 @@ export default function App() {
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
                   <img
-                    src={hallImages[selectedHall as keyof typeof hallImages][hallIndex[selectedHall]]}
+                    src={hallImages[selectedHall][hallIndex[selectedHall]]}
                     alt={selectedHall}
                     className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110"
                     referrerPolicy="no-referrer"
@@ -1169,23 +1106,23 @@ export default function App() {
                   <div className="absolute inset-0 bg-jazz-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/p6.png')]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-jazz-black/80 to-transparent" />
                   <div className="absolute bottom-8 left-8 z-10">
-                    <span className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold block mb-2">{(t as any).halls.find((h: any) => h.id === selectedHall)?.name}</span>
+                    <span className="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold block mb-2">{(t).halls.find((h) => h.id === selectedHall)?.name}</span>
                     <p className="text-white/40 text-[9px] uppercase tracking-widest italic">Tomato Experience</p>
                   </div>
                   <button
-                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] - 1 + hallImages[selectedHall as keyof typeof hallImages].length) % hallImages[selectedHall as keyof typeof hallImages].length }))}
+                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] - 1 + hallImages[selectedHall].length) % hallImages[selectedHall].length }))}
                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"
                   >
                     <ChevronLeft size={24} />
                   </button>
                   <button
-                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] + 1) % hallImages[selectedHall as keyof typeof hallImages].length }))}
+                    onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: (prev[selectedHall] + 1) % hallImages[selectedHall].length }))}
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all z-20"
                   >
                     <ChevronRight size={24} />
                   </button>
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                    {hallImages[selectedHall as keyof typeof hallImages].map((_, idx) => (
+                    {hallImages[selectedHall].map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setHallIndex(prev => ({ ...prev, [selectedHall]: idx }))}
@@ -1198,14 +1135,14 @@ export default function App() {
               <div className="w-full lg:w-1/2 space-y-10">
                 <div>
                   <h2 className="text-4xl md:text-6xl font-serif text-white tracking-tighter italic leading-tight mb-8">
-                    {(t as any).halls.find((h: any) => h.id === selectedHall)?.name}
+                    {(t).halls.find((h) => h.id === selectedHall)?.name}
                   </h2>
                   <p className="text-white/60 text-base md:text-xl font-light leading-relaxed max-w-xl">
-                    {(t as any).halls.find((h: any) => h.id === selectedHall)?.desc}
+                    {(t).halls.find((h) => h.id === selectedHall)?.desc}
                   </p>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 py-8 border-y border-white/5">
-                  {(t as any).halls.find((h: any) => h.id === selectedHall)?.features.map((feature: string, i: number) => (
+                  {(t).halls.find((h) => h.id === selectedHall)?.features.map((feature, i) => (
                     <div key={i} className="flex items-center gap-4 group">
                       <div className="w-1.5 h-1.5 bg-jazz-gold rounded-full group-hover:scale-150 transition-transform" />
                       <span className="text-[10px] md:text-xs uppercase tracking-widest text-white/80 font-medium group-hover:text-jazz-gold transition-colors">{feature}</span>
@@ -1386,5 +1323,16 @@ export default function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function Root() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/menu" element={<MenuPage lang="BG" setLang={() => {}} t={LANGUAGES.BG} LANGUAGES={LANGUAGES} />} />
+      </Routes>
+    </Router>
   );
 }
