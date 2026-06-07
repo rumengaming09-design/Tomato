@@ -1261,7 +1261,7 @@ items: [
 
 { name: "Slivenska Perla", price: "2,70€", info: "50 ml" },
 
-{ name: "Peshtoverska Rakia", price: "1,50€", info: "50 ml" },
+{ name: "Peshterska Rakia", price: "1,50€", info: "50 ml" },
 
 { name: "Rakia 'Nashe Loze'", price: "1,50€", info: "50 ml" },
 
@@ -1773,7 +1773,7 @@ EN
 
 { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
 
-{ label: t.menuHeader, action: () => { setOverlayView("full-menu"); setIsMenuOpen(false); } },
+{ label: t.menuHeader, action: () => { window.open('/menu-standalone.html', '_blank'); setIsMenuOpen(false); } },
 
 { label: t.privateRoomHeader, action: () => { document.getElementById("private-room")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
 
@@ -1857,7 +1857,7 @@ className="fixed inset-0 z-[95] bg-jazz-black overflow-y-auto"
 
 <button
 
-onClick={() => setOverlayView("none")}
+onClick={() => window.open('/menu-standalone.html', '_blank')}
 
 className="fixed top-8 right-8 z-[110] p-4 bg-jazz-black/50 backdrop-blur-md border border-white/10 text-jazz-gold rounded-full hover:bg-jazz-gold hover:text-jazz-black transition-all shadow-2xl group"
 
