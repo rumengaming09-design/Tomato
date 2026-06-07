@@ -337,7 +337,7 @@ locationGarden: "Градина",
 
 locationBar: "Бар",
 
-onlineResStat: "Резервирайте лесно през Google!",
+onlineResStat: "10% отстъпка за резервации през сайта",
 
 footerContact: "Контакт и Резервации",
 
@@ -1011,7 +1011,7 @@ locationGarden: "Garden",
 
 locationBar: "Bar",
 
-onlineResStat: "Book easily through Google!",
+onlineResStat: "10% off for reservations made trough the website",
 
 footerContact: "Contact & Bookings",
 
