@@ -1507,9 +1507,7 @@ const [lang, setLang] = useState<"BG" | "EN">("BG");
 
 const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-const [overlayView, setOverlayView] = useState<"none" | "full-menu" | "gallery" | "private-events">("none");
-
-const [menuSection, setMenuSection] = useState<"drinks" | "food">("drinks");
+const [overlayView, setOverlayView] = useState<"none" | "gallery" | "private-events">("none"); // Removed "full-menu"
 
 const [scrolled, setScrolled] = useState(false);
 
@@ -1545,6 +1543,11 @@ const handleReservationClick = () => {
 
 window.open(RESERVATION_LINK, "_blank");
 
+};
+
+// Direct menu page opener - no overlay
+const handleMenuClick = () => {
+window.open('/menu-standalone.html', '_blank');
 };
 
 useEffect(() => {
@@ -1773,7 +1776,7 @@ EN
 
 { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
 
-{ label: t.menuHeader, action: () => { window.open('/menu-standalone.html', '_blank'); setIsMenuOpen(false); } },
+{ label: t.menuHeader, action: () => { handleMenuClick(); setIsMenuOpen(false); } }, // Direct open, no overlay
 
 { label: t.privateRoomHeader, action: () => { document.getElementById("private-room")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
 
@@ -1837,7 +1840,7 @@ className="mt-4 md:mt-8 w-full max-w-md py-5 bg-jazz-gold text-jazz-black text-[
 
 </AnimatePresence>
 
-{/* Sub-menu Overlays (Menu, Gallery, Private Events) */}
+{/* Sub-menu Overlays (Gallery, Private Events only - NO full-menu) */}
 
 <AnimatePresence>
 
@@ -1857,7 +1860,7 @@ className="fixed inset-0 z-[95] bg-jazz-black overflow-y-auto"
 
 <button
 
-onClick={() => window.open('/menu-standalone.html', '_blank')}
+onClick={() => setOverlayView("none")}
 
 className="fixed top-8 right-8 z-[110] p-4 bg-jazz-black/50 backdrop-blur-md border border-white/10 text-jazz-gold rounded-full hover:bg-jazz-gold hover:text-jazz-black transition-all shadow-2xl group"
 
@@ -1866,144 +1869,6 @@ className="fixed top-8 right-8 z-[110] p-4 bg-jazz-black/50 backdrop-blur-md bor
 <X size={24} className="group-hover:rotate-90 transition-transform duration-500" />
 
 </button>
-
-{overlayView === "full-menu" && (
-
-<div className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
-
-<div className="text-center mb-12">
-
-<span className="text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-6 block font-bold opacity-60">{t.fullMenuTitle}</span>
-
-<h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none mb-12">
-
-{t.menuHeader.split(" ").slice(0, 1)} <br /> {t.menuHeader.split(" ").slice(1).join(" ")}
-
-</h2>
-
-</div>
-
-<div className="flex flex-wrap justify-center gap-4 mb-20">
-
-<button
-
-onClick={() => setMenuSection("drinks")}
-
-className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "drinks" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
-
->
-
-{lang === "BG" ? "Напитки" : "Drinks"}
-
-</button>
-
-<button
-
-onClick={() => setMenuSection("food")}
-
-className={`px-8 md:px-16 py-4 md:py-5 border text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 ${menuSection === "food" ? "bg-jazz-gold text-jazz-black border-jazz-gold shadow-2xl scale-[1.05]" : "bg-transparent text-white border-white/20 hover:border-jazz-gold/50"}`}
-
->
-
-{lang === "BG" ? "Кухня" : "Food"}
-
-</button>
-
-</div>
-
-<div className="space-y-32">
-
-{t.fullMenu
-
-.filter((group, idx) => (menuSection === "drinks" ? idx === 0 : idx === 1))
-
-.map((group, gIdx) => (
-
-<motion.div
-
-key={group.title}
-
-initial={{ opacity: 0 }}
-
-animate={{ opacity: 1 }}
-
-transition={{ duration: 0.5 }}
-
->
-
-<div className="flex flex-col items-center mb-16 px-4">
-
-<div className="w-12 h-[1px] bg-jazz-gold/30 mb-6"></div>
-
-<h3 className="text-3xl md:text-6xl font-serif text-white italic tracking-tighter text-center">
-
-{group.title}
-
-</h3>
-
-</div>
-
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-16 md:gap-24">
-
-{group.categories.map((section, idx) => (
-
-<motion.div
-
-key={section.name}
-
-initial={{ opacity: 0, y: 20 }}
-
-animate={{ opacity: 1, y: 0 }}
-
-transition={{ delay: idx * 0.1 }}
-
-className="space-y-12"
-
->
-
-<h4 className="text-jazz-gold text-xs uppercase tracking-[0.5em] font-bold pb-6 border-b border-jazz-gold/20 italic">
-
-{section.name}
-
-</h4>
-
-<div className="space-y-12">
-
-{section.items.map((item) => (
-
-<div key={item.name} className="group cursor-pointer">
-
-<div className="flex justify-between items-start mb-3 gap-4">
-
-<h5 className="text-xl md:text-2xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors leading-tight">{item.name}</h5>
-
-<span className="text-[11px] text-jazz-gold/40 italic whitespace-nowrap pt-2 font-bold">{item.price}</span>
-
-</div>
-
-<p className="text-[10px] text-white/30 uppercase tracking-[0.2em] leading-relaxed max-w-[80%]">{item.info}</p>
-
-</div>
-
-))}
-
-</div>
-
-</motion.div>
-
-))}
-
-</div>
-
-</motion.div>
-
-))}
-
-</div>
-
-</div>
-
-)}
 
 {overlayView === "gallery" && (
 
@@ -2361,7 +2226,7 @@ transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
 
 <button
 
-onClick={() => setOverlayView("full-menu")}
+onClick={handleMenuClick} // Direct open to menu page
 
 className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]"
 
