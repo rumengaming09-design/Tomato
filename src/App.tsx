@@ -451,7 +451,7 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Menu Overlay */}
+      {/* Menu Overlay - ПРОМЕНЕНА ПОДРЕДБАТА! "Частни Събития" е втори */}
       <AnimatePresence mode="wait">
         {isMenuOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[70] bg-jazz-black flex flex-col items-center justify-center p-8 backdrop-blur-3xl">
@@ -471,12 +471,12 @@ export default function App() {
               <div className="flex flex-col items-center gap-3 md:gap-6 w-full max-w-xl mx-auto px-6 text-center">
                 {[
                   { label: t.nav[0], action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); setIsMenuOpen(false); } },
+                  { label: t.nav[6], action: () => { setOverlayView("private-events"); setIsMenuOpen(false); } }, // Частни Събития - ВТОРИ!
                   { label: t.menuHeader, action: () => { handleMenuClick(); setIsMenuOpen(false); } },
                   { label: t.privateRoomHeader, action: () => { document.getElementById("private-room")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
                   { label: t.gallerySubtitle, action: () => { setOverlayView("gallery"); setIsMenuOpen(false); } },
                   { label: t.vibeTitle, action: () => { document.getElementById("vibe")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
                   { label: t.visitTitle, action: () => { document.getElementById("location")?.scrollIntoView({ behavior: "smooth" }); setIsMenuOpen(false); } },
-                  { label: t.nav[6], action: () => { setOverlayView("private-events"); setIsMenuOpen(false); } },
                 ].map((item, i) => (
                   <motion.button key={item.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} onClick={item.action} className="text-3xl md:text-5xl font-serif italic text-white hover:text-jazz-gold transition-all tracking-tight group w-full text-center py-1 md:py-2 block">{item.label}</motion.button>
                 ))}
