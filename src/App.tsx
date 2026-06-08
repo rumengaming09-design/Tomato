@@ -349,7 +349,7 @@ footerRights: "Всички права запазени",
 
 scroll: "Надолу",
 
-spotifyPlaylist: "Spotify Плейлист",
+spotifyPlaylist: "Фейсбук",
 
 // Нова секция за частни събития
 
@@ -1023,7 +1023,7 @@ footerRights: "All Rights Reserved",
 
 scroll: "Scroll",
 
-spotifyPlaylist: "Spotify Playlist",
+spotifyPlaylist: "Facebook",
 
 // New section for private events
 
