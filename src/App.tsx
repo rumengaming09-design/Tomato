@@ -1525,16 +1525,24 @@ bar: 0
 
 const [heroIndex, setHeroIndex] = useState(0);
 
+// Hall carousel auto-advance effect (7 seconds)
 useEffect(() => {
+  if (!selectedHall) return;
+  const interval = setInterval(() => {
+    setHallIndex(prev => ({
+      ...prev,
+      [selectedHall]: (prev[selectedHall] + 1) % hallImages[selectedHall].length
+    }));
+  }, 7000);
+  return () => clearInterval(interval);
+}, [selectedHall]);
 
-const interval = setInterval(() => {
-
-setHeroIndex((prev) => (prev + 1) % heroImages.length);
-
-}, 3500);
-
-return () => clearInterval(interval);
-
+// Hero carousel auto-advance effect (5 seconds)
+useEffect(() => {
+  const interval = setInterval(() => {
+    setHeroIndex((prev) => (prev + 1) % heroImages.length);
+  }, 5000);
+  return () => clearInterval(interval);
 }, []);
 
 const t = LANGUAGES[lang];
@@ -1916,7 +1924,7 @@ src={url}
 
 alt={`Tomato gallery ${i}`}
 
-className="w-full h-full object-cover grayscale-[0.8] group-hover:grayscale-0 sepia-[0.4] group-hover:sepia-0 contrast-125 scale-110 group-hover:scale-100 transition-all duration-[2s] ease-in-out"
+className="w-full h-full object-cover transition-all duration-[2s] ease-in-out"
 
 referrerPolicy="no-referrer"
 
@@ -2404,7 +2412,7 @@ src={hallImages[selectedHall as keyof typeof hallImages][hallIndex[selectedHall]
 
 alt={selectedHall}
 
-className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out grayscale-[0.5] group-hover:grayscale-0 sepia-[0.3] group-hover:sepia-0 contrast-110"
+className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out"
 
 referrerPolicy="no-referrer"
 
@@ -2536,7 +2544,7 @@ className="group relative inline-flex px-8 py-5 bg-jazz-gold text-jazz-black tex
 
 <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20 items-center text-center md:text-left">
 
-<div className="w-full md:w-1/2 aspect-[3/4] md:aspect-[4/5] bg-zinc-900 overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-1000">
+<div className="w-full md:w-1/2 aspect-[3/4] md:aspect-[4/5] bg-zinc-900 overflow-hidden relative transition-all duration-1000">
 
 <img
 
