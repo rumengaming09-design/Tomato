@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang=“bg“>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta charset=“UTF-8“>
+  <meta name=“viewport“ content=“width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, viewport-fit=cover“>
   <title>Tomato Menu | Напитки & Кухня</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <script src=https://cdn.tailwindcss.com></script>
+  <link href=https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap rel=“stylesheet“>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #050505;
+    Body {
+      Font-family: ‚Inter‘, sans-serif;
+      Background-color: #050505;
+      Overflow-x: hidden;
     }
     .font-serif {
-      font-family: 'Playfair Display', serif;
+      Font-family: ‚Playfair Display‘, serif;
     }
     .bg-jazz-black { background-color: #050505; }
     .bg-jazz-gold { background-color: #D4AF37; }
@@ -21,472 +22,482 @@
     .border-jazz-gold { border-color: #D4AF37; }
     .hover\:bg-jazz-gold:hover { background-color: #D4AF37; }
     .hover\:text-jazz-black:hover { color: #050505; }
-    * {
-      box-sizing: border-box;
+•	{
+      Box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-    button, a {
-      cursor: pointer;
+    Button, a {
+      Cursor: pointer;
+    }
+    /* Забрана на зуумване при double-tap на iOS */
+    Input, textarea, select, button {
+      Font-size: 16px;
     }
   </style>
 </head>
-<body class="bg-jazz-black text-jazz-cream">
+<body class=“bg-jazz-black text-jazz-cream overflow-x-hidden“>
 
-  <div class="max-w-7xl mx-auto py-16 px-6 md:px-16">
+  <div class=“max-w-7xl mx-auto py-8 md:py-16 px-4 md:px-16“>
     
-    <!-- Header with language switcher and close button -->
-    <div class="flex justify-between items-center mb-12 pb-8 border-b border-white/10">
-      <div class="flex items-center gap-6">
-        <div class="w-12 h-12 rounded-full overflow-hidden border border-jazz-gold/30">
-          <img src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg" alt="Tomato Logo" class="w-full h-full object-cover">
+    <!—Header with language switcher and close button – подобрено подравняване 
+    <div class=“flex flex-col sm:flex-row justify-between items-center gap-6 mb-12 pb-8 border-b border-white/10“>
+      <div class=“flex items-center gap-4“>
+        <div class=“w-12 h-12 rounded-full overflow-hidden border border-jazz-gold/30 shrink-0“>
+          <img src=https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg alt=“Tomato Logo“ class=“w-full h-full object-cover“>
         </div>
         <div>
-          <h1 class="text-3xl font-serif text-jazz-gold tracking-tighter">TOMATO</h1>
-          <p class="text-[8px] tracking-[0.3em] uppercase opacity-40">Plovdiv · Since 2012</p>
+          <h1 class=“text-2xl md:text-3xl font-serif text-jazz-gold tracking-tighter“>TOMATO</h1>
+          <p class=“text-[7px] md:text-[8px] tracking-[0.3em] uppercase opacity-40“>Plovdiv · Since 2012</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
-          <button onclick="setLanguage('BG')" id="langBtnBG" class="text-[10px] font-black tracking-wider px-2 transition-colors text-jazz-gold">BG</button>
-          <div class="w-[1px] h-3 bg-white/20"></div>
-          <button onclick="setLanguage('EN')" id="langBtnEN" class="text-[10px] font-black tracking-wider px-2 transition-colors text-white/40">EN</button>
+      <div class=“flex items-center gap-3 md:gap-4“>
+        <div class=“flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2“>
+          <button onclick=“setLanguage(‚BG‘)“ id=“langBtnBG“ class=“text-[11px] md:text-[10px] font-black tracking-wider px-2 transition-colors text-jazz-gold“>BG</button>
+          <div class=“w-[1px] h-3 bg-white/20“></div>
+          <button onclick=“setLanguage(‚EN‘)“ id=“langBtnEN“ class=“text-[11px] md:text-[10px] font-black tracking-wider px-2 transition-colors text-white/40“>EN</button>
         </div>
-        <button onclick="window.close()" class="px-5 py-2 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.2em] font-black hover:bg-jazz-gold hover:text-black transition-all">Затвори</button>
+        <button onclick=“window.close()“ class=“px-5 py-2 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.2em] font-black hover:bg-jazz-gold hover:text-black transition-all whitespace-nowrap“>
+          Затвори
+        </button>
       </div>
     </div>
 
-    <!-- Title -->
-    <div class="text-center mb-16">
-      <span id="fullMenuTitle" class="text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-4 block font-bold opacity-60">The Full Collection</span>
-      <h2 id="menuHeader" class="text-6xl md:text-8xl font-serif text-white italic tracking-tighter">Our <span class="text-jazz-gold">Menu</span></h2>
+    <!—Title 
+    <div class=“text-center mb-12 md:mb-16“>
+      <span id=“fullMenuTitle“ class=“text-[10px] uppercase tracking-[0.6em] text-jazz-gold mb-4 block font-bold opacity-60“>The Full Collection</span>
+      <h2 id=“menuHeader“ class=“text-5xl md:text-8xl font-serif text-white italic tracking-tighter“>Our <span class=“text-jazz-gold“>Menu</span></h2>
     </div>
 
-    <!-- Menu Section Tabs -->
-    <div class="flex justify-center gap-6 mb-16">
-      <button onclick="showSection('drinks')" id="tabDrinks" class="px-10 py-4 border text-[10px] uppercase tracking-[0.3em] font-black transition-all bg-jazz-gold text-black border-jazz-gold">Напитки</button>
-      <button onclick="showSection('food')" id="tabFood" class="px-10 py-4 border text-[10px] uppercase tracking-[0.3em] font-black transition-all bg-transparent text-white border-white/20 hover:border-jazz-gold/50">Кухня</button>
+    <!—Menu Section Tabs – подобрено подравняване 
+    <div class=“flex flex-wrap justify-center gap-4 md:gap-6 mb-12 md:mb-16“>
+      <button onclick=“showSection(‚drinks‘)“ id=“tabDrinks“ class=“px-8 md:px-12 py-3 md:py-4 border text-[10px] uppercase tracking-[0.3em] font-black transition-all bg-jazz-gold text-black border-jazz-gold“>
+        Напитки
+      </button>
+      <button onclick=“showSection(‚food‘)“ id=“tabFood“ class=“px-8 md:px-12 py-3 md:py-4 border text-[10px] uppercase tracking-[0.3em] font-black transition-all bg-transparent text-white border-white/20 hover:border-jazz-gold/50“>
+        Кухня
+      </button>
     </div>
 
-    <!-- Drinks Section -->
-    <div id="drinksSection" class="space-y-24">
-      <!-- Drinks content will be populated by JavaScript -->
+    <!—Drinks Section 
+    <div id=“drinksSection“ class=“space-y-16 md:space-y-24“>
+      <!—Drinks content will be populated by JavaScript 
     </div>
 
-    <!-- Food Section (hidden by default) -->
-    <div id="foodSection" class="space-y-24 hidden"></div>
+    <!—Food Section (hidden by default) 
+    <div id=“foodSection“ class=“space-y-16 md:space-y-24 hidden“></div>
 
-    <!-- Footer with reservation button -->
-    <div class="mt-24 pt-12 border-t border-white/10 text-center">
-      <p id="contactText" class="text-white/40 text-xs mb-6 uppercase tracking-widest">За резервации: 089 637 0777</p>
-      <button onclick="window.open('https://www.google.com/maps/reserve/v/dine/c/cLjMFkgllLM?source=pa&opi=89978449&hl=en-BG&gei=14gcarvWJM2Mxc8PhfSl0QQ&gsas=1&ahbb=1&sourceurl=https://www.google.com/search?hl%3Den-US%26ram_mb%3D7225%26aos%3D18%26ampcct%3D7778%26cs%3D1%26q%3Dtomato%2Brestaurant%26agsai%3Dsg8HwFfHgBc%26padt%3D117%26rdid%3D40711b74-5722-41e3-a90c-bade1d5929b5%26client%3Dms-android-samsung-ss%26gs_ssp%3DeJzj4tVP1zc0TKnISU_KKEo2YLRSMagwNElMTjFMSjFPSUq0NEwxtjKoMDOwNDYySzY0NbUwTU1L8xIsyc9NLMlXKEotLkksLUrMKwEAFNwWtw%26source%3Dand.gsa.launcher.icon%26pf%3Dop', '_blank')" class="px-10 py-4 bg-jazz-gold text-black text-[10px] uppercase tracking-[0.4em] font-black hover:bg-white transition-all duration-500">
+    <!—Footer with reservation button 
+    <div class=“mt-16 md:mt-24 pt-8 md:pt-12 border-t border-white/10 text-center“>
+      <p id=“contactText“ class=“text-white/40 text-xs mb-6 uppercase tracking-widest“>За резервации: 089 637 0777</p>
+      <button onclick=“window.open(‚https://www.google.com/maps/reserve/v/dine/c/cLjMFkgllLM?source=pa&opi=89978449&hl=en-BG&gei=14gcarvWJM2Mxc8PhfSl0QQ&gsas=1&ahbb=1&sourceurl=https://www.google.com/search?hl%3Den-US%26ram_mb%3D7225%26aos%3D18%26ampcct%3D7778%26cs%3D1%26q%3Dtomato%2Brestaurant%26agsai%3Dsg8HwFfHgBc%26padt%3D117%26rdid%3D40711b74-5722-41e3-a90c-bade1d5929b5%26client%3Dms-android-samsung-ss%26gs_ssp%3DeJzj4tVP1zc0TKnISU_KKEo2YLRSMagwNElMTjFMSjFPSUq0NEwxtjKoMDOwNDYySzY0NbUwTU1L8xIsyc9NLMlXKEotLkksLUrMKwEAFNwWtw%26source%3Dand.gsa.launcher.icon%26pf%3Dop‘, ‚_blank‘)“ class=“px-8 md:px-12 py-4 bg-jazz-gold text-black text-[10px] uppercase tracking-[0.4em] font-black hover:bg-white transition-all duration-500“>
         Резервирай маса
       </button>
-      <p class="text-[9px] text-white/20 mt-8 uppercase tracking-widest">© 2026 Tomato · Естетичен ресторант Пловдив</p>
+      <p class=“text-[9px] text-white/20 mt-8 uppercase tracking-widest“>© 2026 Tomato · Естетичен ресторант Пловдив</p>
     </div>
   </div>
 
   <script>
     // MENU DATA (same as in React app)
-    const menuData = {
+    Const menuData = {
       BG: {
-        fullMenuTitle: "Цялата колекция",
-        menuHeader: "Нашето Меню",
-        drinksTitle: "Напитки",
-        foodTitle: "Меню Кухня",
-        contactText: "За резервации: 089 637 0777",
+        fullMenuTitle: „Цялата колекция“,
+        menuHeader: „Нашето Меню“,
+        drinksTitle: „Напитки“,
+        foodTitle: „Меню Кухня“,
+        contactText: „За резервации: 089 637 0777“,
         drinks: [
-          { name: "Напитки с кафе, мляко и чай", items: [
-            { name: "Кафе Lavazza", price: "1,99€", info: "60 мл" },
-            { name: "Кафе без кофеин", price: "2,50€", info: "60 мл" },
-            { name: "Капучино", price: "2,60€", info: "130 мл" },
-            { name: "Кафе Лате", price: "2,60€", info: "220 мл" },
-            { name: "Макиато", price: "1,99€", info: "60 мл" },
-            { name: "Виенско кафе", price: "2,60€", info: "80 мл" },
-            { name: "Кафе фрапе черно/бяло", price: "2,60€", info: "200 мл" },
-            { name: "Кафе Фредо", price: "2,60€", info: "200 мл" },
-            { name: "Ирландско кафе", price: "5,50€", info: "120 мл" },
-            { name: "Мляко с инстантно кафе", price: "2,60€", info: "160 мл" },
-            { name: "Мляко с мед и канела", price: "2,60€", info: "160 мл" },
-            { name: "Мляко с какао", price: "2,60€", info: "160 мл" },
-            { name: "Фрапе какао", price: "2,60€", info: "200 мл" },
-            { name: "Горещ шоколад", price: "2,99€", info: "160 мл" },
-            { name: "Чай Ронефелд", price: "2,20€", info: "200 мл /билков, горски плодове, зелен, черен/" }
+          { name: „Напитки с кафе, мляко и чай“, items: [
+            { name: „Кафе Lavazza“, price: „1,99€“, info: „60 мл“ },
+            { name: „Кафе без кофеин“, price: „2,50€“, info: „60 мл“ },
+            { name: „Капучино“, price: „2,60€“, info: „130 мл“ },
+            { name: „Кафе Лате“, price: „2,60€“, info: „220 мл“ },
+            { name: „Макиато“, price: „1,99€“, info: „60 мл“ },
+            { name: „Виенско кафе“, price: „2,60€“, info: „80 мл“ },
+            { name: „Кафе фрапе черно/бяло“, price: „2,60€“, info: „200 мл“ },
+            { name: „Кафе Фредо“, price: „2,60€“, info: „200 мл“ },
+            { name: „Ирландско кафе“, price: „5,50€“, info: „120 мл“ },
+            { name: „Мляко с инстантно кафе“, price: „2,60€“, info: „160 мл“ },
+            { name: „Мляко с мед и канела“, price: „2,60€“, info: „160 мл“ },
+            { name: „Мляко с какао“, price: „2,60€“, info: „160 мл“ },
+            { name: „Фрапе какао“, price: „2,60€“, info: „200 мл“ },
+            { name: „Горещ шоколад“, price: „2,99€“, info: „160 мл“ },
+            { name: „Чай Ронефелд“, price: „2,20€“, info: „200 мл /билков, горски плодове, зелен, черен/“ }
           ]},
-          { name: "Безалкохолни напитки", items: [
-            { name: "Coca Cola продукти", price: "1,99€", info: "250 мл" },
-            { name: "Soda Schweppes", price: "1,99€", info: "250 мл" },
-            { name: "Натурален сок", price: "2,60€", info: "250 мл" },
-            { name: "Минерална вода Девин", price: "1,50€", info: "400 мл" },
-            { name: "Минерална вода Девин", price: "2,60€", info: "1,2 л" },
-            { name: "Red Bull", price: "3,60€", info: "250 мл" },
-            { name: "Фреш", price: "3,20€", info: "300 мл /портокал, грейпфрут/" },
-            { name: "Шейкове", price: "3,20€", info: "300 мл /млечен, шоколадов/" },
-            { name: "Лимонади", price: "3,20€", info: "300 мл" }
+          { name: „Безалкохолни напитки“, items: [
+            { name: „Coca Cola продукти“, price: „1,99€“, info: „250 мл“ },
+            { name: „Soda Schweppes“, price: „1,99€“, info: „250 мл“ },
+            { name: „Натурален сок“, price: „2,60€“, info: „250 мл“ },
+            { name: „Минерална вода Девин“, price: „1,50€“, info: „400 мл“ },
+            { name: „Минерална вода Девин“, price: „2,60€“, info: „1,2 л“ },
+            { name: „Red Bull“, price: „3,60€“, info: „250 мл“ },
+            { name: „Фреш“, price: „3,20€“, info: „300 мл /портокал, грейпфрут/“ },
+            { name: „Шейкове“, price: „3,20€“, info: „300 мл /млечен, шоколадов/“ },
+            { name: „Лимонади“, price: „3,20€“, info: „300 мл“ }
           ]},
-          { name: "Бира и Сайдери", items: [
-            { name: "Шуменско", price: "1,99€", info: "330 мл" },
-            { name: "Шуменско", price: "2,50€", info: "500 мл" },
-            { name: "Карлсберг наливна", price: "3,40€", info: "330 мл" },
-            { name: "Карлсберг наливна", price: "3,90€", info: "500 мл" },
-            { name: "Карлсберг 0.0%", price: "3,40€", info: "330 мл" },
-            { name: "Kloster Weiss / Gold", price: "4,20€", info: "500 мл" },
-            { name: "Berliner Kindl", price: "4,20€", info: "500 мл" }
+          { name: „Бира и Сайдери“, items: [
+            { name: „Шуменско“, price: „1,99€“, info: „330 мл“ },
+            { name: „Шуменско“, price: „2,50€“, info: „500 мл“ },
+            { name: „Карлсберг наливна“, price: „3,40€“, info: „330 мл“ },
+            { name: „Карлсберг наливна“, price: „3,90€“, info: „500 мл“ },
+            { name: „Карлсберг 0.0%“, price: „3,40€“, info: „330 мл“ },
+            { name: „Kloster Weiss / Gold“, price: „4,20€“, info: „500 мл“ },
+            { name: „Berliner Kindl“, price: „4,20€“, info: „500 мл“ }
           ]},
-          { name: "Коктейли", items: [
-            { name: "Mojito", price: "4,99€", info: "200 мл" },
-            { name: "Margarita", price: "4,99€", info: "150 мл" },
-            { name: "Long Island Ice Tea", price: "4,99€", info: "300 мл" },
-            { name: "Aperol Spritz", price: "4,99€", info: "350 мл" },
-            { name: "Pink Zu", price: "4,99€", info: "350 мл" },
-            { name: "Bloody Bison", price: "4,99€", info: "200 мл" },
-            { name: "Bison Smash", price: "4,99€", info: "150 мл" }
+          { name: „Коктейли“, items: [
+            { name: „Mojito“, price: „4,99€“, info: „200 мл“ },
+            { name: „Margarita“, price: „4,99€“, info: „150 мл“ },
+            { name: „Long Island Ice Tea“, price: „4,99€“, info: „300 мл“ },
+            { name: „Aperol Spritz“, price: „4,99€“, info: „350 мл“ },
+            { name: „Pink Zu“, price: „4,99€“, info: „350 мл“ },
+            { name: „Bloody Bison“, price: „4,99€“, info: „200 мл“ },
+            { name: „Bison Smash“, price: „4,99€“, info: „150 мл“ }
           ]},
-          { name: "Уиски", items: [
-            { name: "Jameson", price: "3,40€", info: "50 мл" },
-            { name: "Glenfiddich Single Malt 12 y.o.", price: "6,90€", info: "50 мл" },
-            { name: "Johnnie Walker 12 y.o.", price: "5,90€", info: "50 мл" },
-            { name: "Jack Daniels", price: "4,60€", info: "50 мл" },
-            { name: "Jim Beam", price: "3,40€", info: "50 мл" }
+          { name: „Уиски“, items: [
+            { name: „Jameson“, price: „3,40€“, info: „50 мл“ },
+            { name: „Glenfiddich Single Malt 12 y.o.“, price: „6,90€“, info: „50 мл“ },
+            { name: „Johnnie Walker 12 y.o.“, price: „5,90€“, info: „50 мл“ },
+            { name: „Jack Daniels“, price: „4,60€“, info: „50 мл“ },
+            { name: „Jim Beam“, price: „3,40€“, info: „50 мл“ }
           ]},
-          { name: "Други алкохолни", items: [
-            { name: "Reyka Водка", price: "4,60€", info: "50 мл" },
-            { name: "Finlandia Водка", price: "2,50€", info: "50 мл" },
-            { name: "Bombay Sapphire Джин", price: "3,40€", info: "50 мл" },
-            { name: "Beefeater Джин", price: "2,50€", info: "50 мл" },
-            { name: "Bacardi Superior Ром", price: "2,50€", info: "50 мл" },
-            { name: "Jose Cuervo Текила", price: "1,90€", info: "30 мл" }
+          { name: „Други алкохолни“, items: [
+            { name: „Reyka Водка“, price: „4,60€“, info: „50 мл“ },
+            { name: „Finlandia Водка“, price: „2,50€“, info: „50 мл“ },
+            { name: „Bombay Sapphire Джин“, price: „3,40€“, info: „50 мл“ },
+            { name: „Beefeater Джин“, price: „2,50€“, info: „50 мл“ },
+            { name: „Bacardi Superior Ром“, price: „2,50€“, info: „50 мл“ },
+            { name: „Jose Cuervo Текила“, price: „1,90€“, info: „30 мл“ }
           ]},
-          { name: "Вермути, Ликьори и Коняк", items: [
-            { name: "Martini /Extra Dry, Bianco/", price: "1,90€", info: "50 мл" },
-            { name: "Baileys", price: "2,90€", info: "50 мл" },
-            { name: "Limonchelo", price: "2,90€", info: "50 мл" },
-            { name: "Jagermeister", price: "2,90€", info: "50 мл" },
-            { name: "Metaxa ***", price: "2,90€", info: "50 мл" }
+          { name: „Вермути, Ликьори и Коняк“, items: [
+            { name: „Martini /Extra Dry, Bianco/“, price: „1,90€“, info: „50 мл“ },
+            { name: „Baileys“, price: „2,90€“, info: „50 мл“ },
+            { name: „Limonchelo“, price: „2,90€“, info: „50 мл“ },
+            { name: „Jagermeister“, price: „2,90€“, info: „50 мл“ },
+            { name: „Metaxa ***“, price: „2,90€“, info: „50 мл“ }
           ]},
-          { name: "Аперитиви и Ракии", items: [
-            { name: "Стралджанска Мускатова Барел", price: "3,00€", info: "50 мл" },
-            { name: "Стралджанска Мускатова Ракия", price: "2,70€", info: "50 мл" },
-            { name: "Сливенска перла Барел", price: "3,00€", info: "50 мл" },
-            { name: "Сливенска перла", price: "2,70€", info: "50 мл" },
-            { name: "Пещерска отлична ракия", price: "1,50€", info: "50 мл" },
-            { name: "Ракия 'Наше лозе'", price: "1,50€", info: "50 мл" },
-            { name: "Карловска мускатова", price: "2,00€", info: "50 мл" },
-            { name: "Сръбска дюлева ракия", price: "3,00€", info: "50 мл" },
-            { name: "Сръбска крушева ракия", price: "3,00€", info: "50 мл" },
-            { name: "Ouzo", price: "2,00€", info: "50 мл" },
-            { name: "Pernod", price: "2,70€", info: "50 мл" }
+          { name: „Аперитиви и Ракии“, items: [
+            { name: „Стралджанска Мускатова Барел“, price: „3,00€“, info: „50 мл“ },
+            { name: „Стралджанска Мускатова Ракия“, price: „2,70€“, info: „50 мл“ },
+            { name: „Сливенска перла Барел“, price: „3,00€“, info: „50 мл“ },
+            { name: „Сливенска перла“, price: „2,70€“, info: „50 мл“ },
+            { name: „Пещерска отлична ракия“, price: „1,50€“, info: „50 мл“ },
+            { name: „Ракия ‚Наше лозе‘“, price: „1,50€“, info: „50 мл“ },
+            { name: „Карловска мускатова“, price: „2,00€“, info: „50 мл“ },
+            { name: „Сръбска дюлева ракия“, price: „3,00€“, info: „50 мл“ },
+            { name: „Сръбска крушева ракия“, price: „3,00€“, info: „50 мл“ },
+            { name: „Ouzo“, price: „2,00€“, info: „50 мл“ },
+            { name: „Pernod“, price: „2,70€“, info: „50 мл“ }
           ]}
         ],
-        food: [
-          { name: "Салати", items: [
-            { name: "Салата със скариди, авокадо и манго", price: "11,00€", info: "300 гр" },
-            { name: "Салата с риба тон", price: "8,50€", info: "300 гр" },
-            { name: "Салата с червено цвекло и синьо сирене", price: "9,50€", info: "300 гр /печена тиква, круши, орехи/" },
-            { name: "Средиземноморска салата с моцарела", price: "7,50€", info: "300 гр" },
-            { name: "Селска салата с гриловани зеленчуци", price: "7,00€", info: "300 гр" },
-            { name: "Салата Мешалале", price: "7,00€", info: "300 гр" },
-            { name: "Салата 'Цезар' с пиле и бекон", price: "8,70€", info: "300 гр" },
-            { name: "Салата с гриловани домати и моцарела", price: "7,70€", info: "300 гр" }
+        Food: [
+          { name: „Салати“, items: [
+            { name: „Салата със скариди, авокадо и манго“, price: „11,00€“, info: „300 гр“ },
+            { name: „Салата с риба тон“, price: „8,50€“, info: „300 гр“ },
+            { name: „Салата с червено цвекло и синьо сирене“, price: „9,50€“, info: „300 гр /печена тиква, круши, орехи/“ },
+            { name: „Средиземноморска салата с моцарела“, price: „7,50€“, info: „300 гр“ },
+            { name: „Селска салата с гриловани зеленчуци“, price: „7,00€“, info: „300 гр“ },
+            { name: „Салата Мешалале“, price: „7,00€“, info: „300 гр“ },
+            { name: „Салата ‚Цезар‘ с пиле и бекон“, price: „8,70€“, info: „300 гр“ },
+            { name: „Салата с гриловани домати и моцарела“, price: „7,70€“, info: „300 гр“ }
           ]},
-          { name: "Мезета", items: [
-            { name: "Мус ог сьомга със зелена салата и багета", price: "6,70€", info: "200 гр" },
-            { name: "Трио разядки от хумус, мариновани маслини с Фета сирене и мутабал", price: "7,70€", info: "300 гр" },
-            { name: "Панирана Скаморца с боровинки", price: "8,50€", info: "200 гр" },
-            { name: "Телешки език с масло и гъби", price: "9,30€", info: "250 гр" },
-            { name: "Касапско тиганче", price: "7,70€", info: "250 гр /телешки език, шкембе, дроб, гъби и вино/" },
-            { name: "Скариди със сметана", price: "10,50€", info: "200 гр" },
-            { name: "Телешки дроб с яйце и кисели краставички", price: "6,00€", info: "250 гр" },
-            { name: "Свински уши", price: "6,00€", info: "250 гр" },
-            { name: "Пилешки крилца", price: "6,60€", info: "300 гр" },
-            { name: "Хрупкави пилешки хапки с чеснов сос", price: "7,20€", info: "250 гр" },
-            { name: "Пукани картофи с панчета и кашкавал", price: "6,70€", info: "250 гр" },
-            { name: "Пържени картофи с пармеджано и труфел", price: "5,00€", info: "200 гр" },
-            { name: "Пържени картофи", price: "3,60€", info: "200 гр" },
-            { name: "Пърленка с чесън", price: "1,50€", info: "100 гр" },
-            { name: "Пърленка с кашкавал", price: "3,00€", info: "140 гр" }
+          { name: „Мезета“, items: [
+            { name: „Мус ог сьомга със зелена салата и багета“, price: „6,70€“, info: „200 гр“ },
+            { name: „Трио разядки от хумус, мариновани маслини с Фета сирене и мутабал“, price: „7,70€“, info: „300 гр“ },
+            { name: „Панирана Скаморца с боровинки“, price: „8,50€“, info: „200 гр“ },
+            { name: „Телешки език с масло и гъби“, price: „9,30€“, info: „250 гр“ },
+            { name: „Касапско тиганче“, price: „7,70€“, info: „250 гр /телешки език, шкембе, дроб, гъби и вино/“ },
+            { name: „Скариди със сметана“, price: „10,50€“, info: „200 гр“ },
+            { name: „Телешки дроб с яйце и кисели краставички“, price: „6,00€“, info: „250 гр“ },
+            { name: „Свински уши“, price: „6,00€“, info: „250 гр“ },
+            { name: „Пилешки крилца“, price: „6,60€“, info: „300 гр“ },
+            { name: „Хрупкави пилешки хапки с чеснов сос“, price: „7,20€“, info: „250 гр“ },
+            { name: „Пукани картофи с панчета и кашкавал“, price: „6,70€“, info: „250 гр“ },
+            { name: „Пържени картофи с пармеджано и труфел“, price: „5,00€“, info: „200 гр“ },
+            { name: „Пържени картофи“, price: „3,60€“, info: „200 гр“ },
+            { name: „Пърленка с чесън“, price: „1,50€“, info: „100 гр“ },
+            { name: „Пърленка с кашкавал“, price: „3,00€“, info: „140 гр“ }
           ]},
-          { name: "Tomato Промо Предложения", items: [
-            { name: "BBQ дъска за 1 човек", price: "10,00€", info: "250 гр" },
-            { name: "BBQ дъска за 2 души", price: "20,00€", info: "500 гр" },
-            { name: "BBQ дъска за 4 човека", price: "40,00€", info: "1,5 кг" }
+          { name: „Tomato Промо Предложения“, items: [
+            { name: „BBQ дъска за 1 човек“, price: „10,00€“, info: „250 гр“ },
+            { name: „BBQ дъска за 2 души“, price: „20,00€“, info: „500 гр“ },
+            { name: „BBQ дъска за 4 човека“, price: „40,00€“, info: „1,5 кг“ }
           ]},
-          { name: "BBQ", items: [
-            { name: "Нашите три кюфтета", price: "8,50€", info: "300 гр /със салца и картофи/" },
-            { name: "Свински ребра", price: "13,50€", info: "450 гр" },
-            { name: "Телешка наденица", price: "8,50€", info: "300 гр" },
-            { name: "Адана кебап", price: "9,50€", info: "300 гр" },
-            { name: "Свински шиш кебап", price: "8,50€", info: "350 гр" },
-            { name: "Наденички Чоризо", price: "9,50€", info: "250 гр" },
-            { name: "Телешки бон филенца с гъбен сос", price: "20,00€", info: "300 гр" }
+          { name: „BBQ“, items: [
+            { name: „Нашите три кюфтета“, price: „8,50€“, info: „300 гр /със салца и картофи/“ },
+            { name: „Свински ребра“, price: „13,50€“, info: „450 гр“ },
+            { name: „Телешка наденица“, price: „8,50€“, info: „300 гр“ },
+            { name: „Адана кебап“, price: „9,50€“, info: „300 гр“ },
+            { name: „Свински шиш кебап“, price: „8,50€“, info: „350 гр“ },
+            { name: „Наденички Чоризо“, price: „9,50€“, info: „250 гр“ },
+            { name: „Телешки бон филенца с гъбен сос“, price: „20,00€“, info: „300 гр“ }
           ]},
-          { name: "Рибни и Вегетариански", items: [
-            { name: "Филе от лаврак на тиган", price: "19,00€", info: "300 гр" },
-            { name: "Филе от сьомга BBQ", price: "19,00€", info: "300 гр" },
-            { name: "Ризото с пиле и гъби", price: "9,00€", info: "300 гр" },
-            { name: "Паста със скариди и чери домати", price: "11,00€", info: "300 гр /бейби спанак/" },
-            { name: "Паста с гриловани зеленчуци", price: "8,00€", info: "300 гр /босилек/" }
+          { name: „Рибни и Вегетариански“, items: [
+            { name: „Филе от лаврак на тиган“, price: „19,00€“, info: „300 гр“ },
+            { name: „Филе от сьомга BBQ“, price: „19,00€“, info: „300 гр“ },
+            { name: „Ризото с пиле и гъби“, price: „9,00€“, info: „300 гр“ },
+            { name: „Паста със скариди и чери домати“, price: „11,00€“, info: „300 гр /бейби спанак/“ },
+            { name: „Паста с гриловани зеленчуци“, price: „8,00€“, info: „300 гр /босилек/“ }
           ]}
         ]
       },
       EN: {
-        fullMenuTitle: "The Full Collection",
-        menuHeader: "Our Menu",
-        drinksTitle: "Drinks",
-        foodTitle: "Kitchen Menu",
-        contactText: "For reservations: 089 637 0777",
+        fullMenuTitle: „The Full Collection“,
+        menuHeader: „Our Menu“,
+        drinksTitle: „Drinks“,
+        foodTitle: „Kitchen Menu“,
+        contactText: „For reservations: 089 637 0777“,
         drinks: [
-          { name: "Coffee, Milk & Tea", items: [
-            { name: "Lavazza Coffee", price: "1,99€", info: "60 ml" },
-            { name: "Decaf Coffee", price: "2,50€", info: "60 ml" },
-            { name: "Cappuccino", price: "2,60€", info: "130 ml" },
-            { name: "Caffe Latte", price: "2,60€", info: "220 ml" },
-            { name: "Macchiato", price: "1,99€", info: "60 ml" },
-            { name: "Viennese Coffee", price: "2,60€", info: "80 ml" },
-            { name: "Frape Black/White", price: "2,60€", info: "200 ml" },
-            { name: "Freddo Coffee", price: "2,60€", info: "200 ml" },
-            { name: "Irish Coffee", price: "5,50€", info: "120 ml" },
-            { name: "Instant Coffee with Milk", price: "2,60€", info: "160 ml" },
-            { name: "Milk with Honey & Cinnamon", price: "2,60€", info: "160 ml" },
-            { name: "Milk with Cocoa", price: "2,60€", info: "160 ml" },
-            { name: "Cocoa Frape", price: "2,60€", info: "200 ml" },
-            { name: "Hot Chocolate", price: "2,99€", info: "160 ml" },
-            { name: "Ronnefeldt Tea", price: "2,20€", info: "200 ml /Herbal, Forest Fruit, Green, Black/" }
+          { name: „Coffee, Milk & Tea“, items: [
+            { name: „Lavazza Coffee“, price: „1,99€“, info: „60 ml“ },
+            { name: „Decaf Coffee“, price: „2,50€“, info: „60 ml“ },
+            { name: „Cappuccino“, price: „2,60€“, info: „130 ml“ },
+            { name: „Caffe Latte“, price: „2,60€“, info: „220 ml“ },
+            { name: „Macchiato“, price: „1,99€“, info: „60 ml“ },
+            { name: „Viennese Coffee“, price: „2,60€“, info: „80 ml“ },
+            { name: „Frape Black/White“, price: „2,60€“, info: „200 ml“ },
+            { name: „Freddo Coffee“, price: „2,60€“, info: „200 ml“ },
+            { name: „Irish Coffee“, price: „5,50€“, info: „120 ml“ },
+            { name: „Instant Coffee with Milk“, price: „2,60€“, info: „160 ml“ },
+            { name: „Milk with Honey & Cinnamon“, price: „2,60€“, info: „160 ml“ },
+            { name: „Milk with Cocoa“, price: „2,60€“, info: „160 ml“ },
+            { name: „Cocoa Frape“, price: „2,60€“, info: „200 ml“ },
+            { name: „Hot Chocolate“, price: „2,99€“, info: „160 ml“ },
+            { name: „Ronnefeldt Tea“, price: „2,20€“, info: „200 ml /Herbal, Forest Fruit, Green, Black/“ }
           ]},
-          { name: "Soft Drinks", items: [
-            { name: "Coca Cola Products", price: "1,99€", info: "250 ml" },
-            { name: "Soda Schweppes", price: "1,99€", info: "250 ml" },
-            { name: "Fruit Juice", price: "2,60€", info: "250 ml" },
-            { name: "Mineral Water Devin", price: "1,50€", info: "400 ml" },
-            { name: "Mineral Water Devin", price: "2,60€", info: "1.2 L" },
-            { name: "Red Bull", price: "3,60€", info: "250 ml" },
-            { name: "Fresh Juice", price: "3,20€", info: "300 ml /Orange, Grapefruit/" },
-            { name: "Shakes", price: "3,20€", info: "300 ml /Milk, Chocolate/" },
-            { name: "Lemonades", price: "3,20€", info: "300 ml" }
+          { name: „Soft Drinks“, items: [
+            { name: „Coca Cola Products“, price: „1,99€“, info: „250 ml“ },
+            { name: „Soda Schweppes“, price: „1,99€“, info: „250 ml“ },
+            { name: „Fruit Juice“, price: „2,60€“, info: „250 ml“ },
+            { name: „Mineral Water Devin“, price: „1,50€“, info: „400 ml“ },
+            { name: „Mineral Water Devin“, price: „2,60€“, info: „1.2 L“ },
+            { name: „Red Bull“, price: „3,60€“, info: „250 ml“ },
+            { name: „Fresh Juice“, price: „3,20€“, info: „300 ml /Orange, Grapefruit/“ },
+            { name: „Shakes“, price: „3,20€“, info: „300 ml /Milk, Chocolate/“ },
+            { name: „Lemonades“, price: „3,20€“, info: „300 ml“ }
           ]},
-          { name: "Beer & Ciders", items: [
-            { name: "Shumensko", price: "1,99€", info: "330 ml" },
-            { name: "Shumensko", price: "2,50€", info: "500 ml" },
-            { name: "Carlsberg Draught", price: "3,40€", info: "330 ml" },
-            { name: "Carlsberg Draught", price: "3,90€", info: "500 ml" },
-            { name: "Carlsberg 0.0%", price: "3,40€", info: "330 ml" },
-            { name: "Kloster Weiss / Gold", price: "4,20€", info: "500 ml" },
-            { name: "Berliner Kindl", price: "4,20€", info: "500 ml" }
+          { name: „Beer & Ciders“, items: [
+            { name: „Shumensko“, price: „1,99€“, info: „330 ml“ },
+            { name: „Shumensko“, price: „2,50€“, info: „500 ml“ },
+            { name: „Carlsberg Draught“, price: „3,40€“, info: „330 ml“ },
+            { name: „Carlsberg Draught“, price: „3,90€“, info: „500 ml“ },
+            { name: „Carlsberg 0.0%“, price: „3,40€“, info: „330 ml“ },
+            { name: „Kloster Weiss / Gold“, price: „4,20€“, info: „500 ml“ },
+            { name: „Berliner Kindl“, price: „4,20€“, info: „500 ml“ }
           ]},
-          { name: "Cocktails", items: [
-            { name: "Mojito", price: "4,99€", info: "200 ml" },
-            { name: "Margarita", price: "4,99€", info: "150 ml" },
-            { name: "Long Island Ice Tea", price: "4,99€", info: "300 ml" },
-            { name: "Aperol Spritz", price: "4,99€", info: "350 ml" },
-            { name: "Pink Zu", price: "4,99€", info: "350 ml" },
-            { name: "Bloody Bison", price: "4,99€", info: "200 ml" },
-            { name: "Bison Smash", price: "4,99€", info: "150 ml" }
+          { name: „Cocktails“, items: [
+            { name: „Mojito“, price: „4,99€“, info: „200 ml“ },
+            { name: „Margarita“, price: „4,99€“, info: „150 ml“ },
+            { name: „Long Island Ice Tea“, price: „4,99€“, info: „300 ml“ },
+            { name: „Aperol Spritz“, price: „4,99€“, info: „350 ml“ },
+            { name: „Pink Zu“, price: „4,99€“, info: „350 ml“ },
+            { name: „Bloody Bison“, price: „4,99€“, info: „200 ml“ },
+            { name: „Bison Smash“, price: „4,99€“, info: „150 ml“ }
           ]},
-          { name: "Whiskey", items: [
-            { name: "Jameson", price: "3,40€", info: "50 ml" },
-            { name: "Glenfiddich Single Malt 12 y.o.", price: "6,90€", info: "50 ml" },
-            { name: "Johnnie Walker 12 y.o.", price: "5,90€", info: "50 ml" },
-            { name: "Jack Daniels", price: "4,60€", info: "50 ml" },
-            { name: "Jim Beam", price: "3,40€", info: "50 ml" }
+          { name: „Whiskey“, items: [
+            { name: „Jameson“, price: „3,40€“, info: „50 ml“ },
+            { name: „Glenfiddich Single Malt 12 y.o.“, price: „6,90€“, info: „50 ml“ },
+            { name: „Johnnie Walker 12 y.o.“, price: „5,90€“, info: „50 ml“ },
+            { name: „Jack Daniels“, price: „4,60€“, info: „50 ml“ },
+            { name: „Jim Beam“, price: „3,40€“, info: „50 ml“ }
           ]},
-          { name: "Other Spirits", items: [
-            { name: "Reyka Vodka", price: "4,60€", info: "50 ml" },
-            { name: "Finlandia Vodka", price: "2,50€", info: "50 ml" },
-            { name: "Bombay Sapphire Gin", price: "3,40€", info: "50 ml" },
-            { name: "Beefeater Gin", price: "2,50€", info: "50 ml" },
-            { name: "Bacardi Superior Rum", price: "2,50€", info: "50 ml" },
-            { name: "Jose Cuervo Tequila", price: "1,90€", info: "30 ml" }
+          { name: „Other Spirits“, items: [
+            { name: „Reyka Vodka“, price: „4,60€“, info: „50 ml“ },
+            { name: „Finlandia Vodka“, price: „2,50€“, info: „50 ml“ },
+            { name: „Bombay Sapphire Gin“, price: „3,40€“, info: „50 ml“ },
+            { name: „Beefeater Gin“, price: „2,50€“, info: „50 ml“ },
+            { name: „Bacardi Superior Rum“, price: „2,50€“, info: „50 ml“ },
+            { name: „Jose Cuervo Tequila“, price: „1,90€“, info: „30 ml“ }
           ]},
-          { name: "Vermouth, Liqueurs & Cognac", items: [
-            { name: "Martini /Extra Dry, Bianco/", price: "1,90€", info: "50 ml" },
-            { name: "Baileys", price: "2,90€", info: "50 ml" },
-            { name: "Limonchelo", price: "2,90€", info: "50 ml" },
-            { name: "Jagermeister", price: "2,90€", info: "50 ml" },
-            { name: "Metaxa ***", price: "2,90€", info: "50 ml" }
+          { name: „Vermouth, Liqueurs & Cognac“, items: [
+            { name: „Martini /Extra Dry, Bianco/“, price: „1,90€“, info: „50 ml“ },
+            { name: „Baileys“, price: „2,90€“, info: „50 ml“ },
+            { name: „Limonchelo“, price: „2,90€“, info: „50 ml“ },
+            { name: „Jagermeister“, price: „2,90€“, info: „50 ml“ },
+            { name: „Metaxa ***“, price: „2,90€“, info: „50 ml“ }
           ]},
-          { name: "Aperitifs & Rakia", items: [
-            { name: "Straldzhanaka Muscat Barrel", price: "3,00€", info: "50 ml" },
-            { name: "Straldzhanaka Muscat Rakia", price: "2,70€", info: "50 ml" },
-            { name: "Slivenska Perla Barrel", price: "3,00€", info: "50 ml" },
-            { name: "Slivenska Perla", price: "2,70€", info: "50 ml" },
-            { name: "Peshtoverska Rakia", price: "1,50€", info: "50 ml" },
-            { name: "Rakia 'Nashe Loze'", price: "1,50€", info: "50 ml" },
-            { name: "Karlovska Muscat", price: "2,00€", info: "50 ml" },
-            { name: "Serbian Quince Rakia", price: "3,00€", info: "50 ml" },
-            { name: "Serbian Pear Rakia", price: "3,00€", info: "50 ml" },
-            { name: "Ouzo", price: "2,00€", info: "50 ml" },
-            { name: "Pernod", price: "2,70€", info: "50 ml" }
+          { name: „Aperitifs & Rakia“, items: [
+            { name: „Straldzhanaka Muscat Barrel“, price: „3,00€“, info: „50 ml“ },
+            { name: „Straldzhanaka Muscat Rakia“, price: „2,70€“, info: „50 ml“ },
+            { name: „Slivenska Perla Barrel“, price: „3,00€“, info: „50 ml“ },
+            { name: „Slivenska Perla“, price: „2,70€“, info: „50 ml“ },
+            { name: „Peshtoverska Rakia“, price: „1,50€“, info: „50 ml“ },
+            { name: „Rakia ‚Nashe Loze‘“, price: „1,50€“, info: „50 ml“ },
+            { name: „Karlovska Muscat“, price: „2,00€“, info: „50 ml“ },
+            { name: „Serbian Quince Rakia“, price: „3,00€“, info: „50 ml“ },
+            { name: „Serbian Pear Rakia“, price: „3,00€“, info: „50 ml“ },
+            { name: „Ouzo“, price: „2,00€“, info: „50 ml“ },
+            { name: „Pernod“, price: „2,70€“, info: „50 ml“ }
           ]}
         ],
-        food: [
-          { name: "Salads", items: [
-            { name: "Shrimp, Avocado & Mango Salad", price: "11,00€", info: "300 g" },
-            { name: "Tuna Salad", price: "8,50€", info: "300 g" },
-            { name: "Beetroot & Blue Cheese Salad", price: "9,50€", info: "300 g /Baked Pumpkin, Pears, Walnuts/" },
-            { name: "Mediterranean Mozzarella Salad", price: "7,50€", info: "300 g" },
-            { name: "Village Salad with Grilled Veggies", price: "7,00€", info: "300 g" },
-            { name: "Meshalale Salad", price: "7,00€", info: "300 g" },
-            { name: "Chicken & Bacon Caesar", price: "8,70€", info: "300 g" },
-            { name: "Grilled Tomato & Mozzarella Salad", price: "7,70€", info: "300 g" }
+        Food: [
+          { name: „Salads“, items: [
+            { name: „Shrimp, Avocado & Mango Salad“, price: „11,00€“, info: „300 g“ },
+            { name: „Tuna Salad“, price: „8,50€“, info: „300 g“ },
+            { name: „Beetroot & Blue Cheese Salad“, price: „9,50€“, info: „300 g /Baked Pumpkin, Pears, Walnuts/“ },
+            { name: „Mediterranean Mozzarella Salad“, price: „7,50€“, info: „300 g“ },
+            { name: „Village Salad with Grilled Veggies“, price: „7,00€“, info: „300 g“ },
+            { name: „Meshalale Salad“, price: „7,00€“, info: „300 g“ },
+            { name: „Chicken & Bacon Caesar“, price: „8,70€“, info: „300 g“ },
+            { name: „Grilled Tomato & Mozzarella Salad“, price: „7,70€“, info: „300 g“ }
           ]},
-          { name: "Appetizers", items: [
-            { name: "Salmon mousse with green salad and baguette", price: "6,70€", info: "200 гр" },
-            { name: "Trio of appetizers of hummus, marinated olives with Feta cheese and mutabal", price: "7,70€", info: "300 гр" },
-            { name: "Breaded Scamorza with blueberries", price: "8,50€", info: "200 гр" },
-            { name: "Beef tongue with butter and mushrooms", price: "9,30€", info: "250 гр" },
-            { name: "Butcher's Pan", price: "7,70€", info: "250 g /beef tongue, tripe, liver, mushrooms and wine/" },
-            { name: "Shrimp with cream", price: "10,50€", info: "200 гр" },
-            { name: "Beef liver with egg and pickles", price: "6,00€", info: "250 гр" },
-            { name: "Pig ears", price: "6,00€", info: "250 гр" },
-            { name: "chicken wings", price: "6,60€", info: "300 гр" },
-            { name: "Crispy chicken bites with garlic sauce", price: "7,20€", info: "250 гр" },
-            { name: "Popped potatoes with pancetta and yellow cheese", price: "6,70€", info: "250 гр" },
-            { name: "French fries with parmesan and truffle", price: "5,00€", info: "200 гр" },
-            { name: "French fries", price: "3,60€", info: "200 гр" },
-            { name: "Parlenka with garlic", price: "1,50€", info: "100 гр" },
-            { name: "Parlenka with yellow cheese", price: "3,00€", info: "140 гр" }
+          { name: „Appetizers“, items: [
+            { name: „Salmon mousse with green salad and baguette“, price: „6,70€“, info: „200 гр“ },
+            { name: „Trio of appetizers of hummus, marinated olives with Feta cheese and mutabal“, price: „7,70€“, info: „300 гр“ },
+            { name: „Breaded Scamorza with blueberries“, price: „8,50€“, info: „200 гр“ },
+            { name: „Beef tongue with butter and mushrooms“, price: „9,30€“, info: „250 гр“ },
+            { name: „Butcher‘s Pan“, price: „7,70€“, info: „250 g /beef tongue, tripe, liver, mushrooms and wine/“ },
+            { name: „Shrimp with cream“, price: „10,50€“, info: „200 гр“ },
+            { name: „Beef liver with egg and pickles“, price: „6,00€“, info: „250 гр“ },
+            { name: „Pig ears“, price: „6,00€“, info: „250 гр“ },
+            { name: „chicken wings“, price: „6,60€“, info: „300 гр“ },
+            { name: „Crispy chicken bites with garlic sauce“, price: „7,20€“, info: „250 гр“ },
+            { name: „Popped potatoes with pancetta and yellow cheese“, price: „6,70€“, info: „250 гр“ },
+            { name: „French fries with parmesan and truffle“, price: „5,00€“, info: „200 гр“ },
+            { name: „French fries“, price: „3,60€“, info: „200 гр“ },
+            { name: „Parlenka with garlic“, price: „1,50€“, info: „100 гр“ },
+            { name: „Parlenka with yellow cheese“, price: „3,00€“, info: „140 гр“ }
           ]},
-          { name: "Tomato Promo Offers", items: [
-            { name: "BBQ board for 1 person", price: "10,00€", info: "250 гр" },
-            { name: "BBQ board for 2 people", price: "20,00€", info: "500 гр" },
-            { name: "BBQ board for 4 people", price: "40,00€", info: "1,5 кг" }
+          { name: „Tomato Promo Offers“, items: [
+            { name: „BBQ board for 1 person“, price: „10,00€“, info: „250 гр“ },
+            { name: „BBQ board for 2 people“, price: „20,00€“, info: „500 гр“ },
+            { name: „BBQ board for 4 people“, price: „40,00€“, info: „1,5 кг“ }
           ]},
-          { name: "BBQ", items: [
-            { name: "Our Three Meatballs", price: "8,50€", info: "300 g /with salsa and potatoes/" },
-            { name: "Pork Ribs", price: "13,50€", info: "450 g" },
-            { name: "Beef Sausage", price: "8,50€", info: "300 g" },
-            { name: "Adana Kebab", price: "9,50€", info: "300 g" },
-            { name: "Pork Shish Kebab", price: "8,50€", info: "350 g" },
-            { name: "Chorizo Sausages", price: "9,50€", info: "250 g" },
-            { name: "Beef Fillet with Mushroom Sauce", price: "20,00€", info: "300 g" }
+          { name: „BBQ“, items: [
+            { name: „Our Three Meatballs“, price: „8,50€“, info: „300 g /with salsa and potatoes/“ },
+            { name: „Pork Ribs“, price: „13,50€“, info: „450 g“ },
+            { name: „Beef Sausage“, price: „8,50€“, info: „300 g“ },
+            { name: „Adana Kebab“, price: „9,50€“, info: „300 g“ },
+            { name: „Pork Shish Kebab“, price: „8,50€“, info: „350 g“ },
+            { name: „Chorizo Sausages“, price: „9,50€“, info: „250 g“ },
+            { name: „Beef Fillet with Mushroom Sauce“, price: „20,00€“, info: „300 g“ }
           ]},
-          { name: "Fish & Vegetarian", items: [
-            { name: "Pan-Seared Sea Bass", price: "19,00€", info: "300 g" },
-            { name: "BBQ Salmon Fillet", price: "19,00€", info: "300 g" },
-            { name: "Chicken & Mushroom Risotto", price: "9,00€", info: "300 g" },
-            { name: "Shrimp & Cherry Tomato Pasta", price: "11,00€", info: "300 g /baby spinach/" },
-            { name: "Grilled Veggie & Basil Pasta", price: "8,00€", info: "300 g /basil/" }
+          { name: „Fish & Vegetarian“, items: [
+            { name: „Pan-Seared Sea Bass“, price: „19,00€“, info: „300 g“ },
+            { name: „BBQ Salmon Fillet“, price: „19,00€“, info: „300 g“ },
+            { name: „Chicken & Mushroom Risotto“, price: „9,00€“, info: „300 g“ },
+            { name: „Shrimp & Cherry Tomato Pasta“, price: „11,00€“, info: „300 g /baby spinach/“ },
+            { name: „Grilled Veggie & Basil Pasta“, price: „8,00€“, info: „300 g /basil/“ }
           ]}
         ]
       }
     };
 
-    let currentLang = 'BG';
-    let currentSection = 'drinks';
+    Let currentLang = ‚BG‘;
+    Let currentSection = ‚drinks‘;
 
-    function renderMenu() {
-      const data = menuData[currentLang];
-      const drinksContainer = document.getElementById('drinksSection');
-      const foodContainer = document.getElementById('foodSection');
+    Function renderMenu() {
+      Const data = menuData[currentLang];
+      Const drinksContainer = document.getElementById(‚drinksSection‘);
+      Const foodContainer = document.getElementById(‚foodSection‘);
       
       // Render drinks
-      drinksContainer.innerHTML = '';
+      drinksContainer.innerHTML = ‚‘;
       data.drinks.forEach(category => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'space-y-8';
+        const sectionDiv = document.createElement(‚div‘);
+        sectionDiv.className = ‚space-y-6 md:space-y-8‘;
         sectionDiv.innerHTML = `
-          <div class="text-center mb-8">
-            <div class="w-12 h-[1px] bg-jazz-gold/30 mx-auto mb-6"></div>
-            <h3 class="text-3xl md:text-4xl font-serif text-white italic tracking-tighter">${category.name}</h3>
+          <div class=“text-center mb-6 md:mb-8“>
+            <div class=“w-12 h-[1px] bg-jazz-gold/30 mx-auto mb-6“></div>
+            <h3 class=“text-2xl md:text-4xl font-serif text-white italic tracking-tighter“>${category.name}</h3>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div class=“grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12“>
             ${category.items.map(item => `
-              <div class="group cursor-pointer">
-                <div class="flex justify-between items-start mb-2 gap-4">
-                  <h4 class="text-lg md:text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors">${item.name}</h4>
-                  <span class="text-[10px] text-jazz-gold/50 whitespace-nowrap font-bold">${item.price}</span>
+              <div class=“group cursor-pointer“>
+                <div class=“flex justify-between items-start mb-2 gap-4“>
+                  <h4 class=“text-base md:text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors“>${item.name}</h4>
+                  <span class=“text-[10px] text-jazz-gold/50 whitespace-nowrap font-bold“>${item.price}</span>
                 </div>
-                <p class="text-[9px] text-white/30 uppercase tracking-[0.2em]">${item.info}</p>
+                <p class=“text-[8px] md:text-[9px] text-white/30 uppercase tracking-[0.2em]“>${item.info}</p>
               </div>
-            `).join('')}
+            `).join(‚‘)}
           </div>
         `;
         drinksContainer.appendChild(sectionDiv);
       });
 
       // Render food
-      foodContainer.innerHTML = '';
+      foodContainer.innerHTML = ‚‘;
       data.food.forEach(category => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'space-y-8';
+        const sectionDiv = document.createElement(‚div‘);
+        sectionDiv.className = ‚space-y-6 md:space-y-8‘;
         sectionDiv.innerHTML = `
-          <div class="text-center mb-8">
-            <div class="w-12 h-[1px] bg-jazz-gold/30 mx-auto mb-6"></div>
-            <h3 class="text-3xl md:text-4xl font-serif text-white italic tracking-tighter">${category.name}</h3>
+          <div class=“text-center mb-6 md:mb-8“>
+            <div class=“w-12 h-[1px] bg-jazz-gold/30 mx-auto mb-6“></div>
+            <h3 class=“text-2xl md:text-4xl font-serif text-white italic tracking-tighter“>${category.name}</h3>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div class=“grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12“>
             ${category.items.map(item => `
-              <div class="group cursor-pointer">
-                <div class="flex justify-between items-start mb-2 gap-4">
-                  <h4 class="text-lg md:text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors">${item.name}</h4>
-                  <span class="text-[10px] text-jazz-gold/50 whitespace-nowrap font-bold">${item.price}</span>
+              <div class=“group cursor-pointer“>
+                <div class=“flex justify-between items-start mb-2 gap-4“>
+                  <h4 class=“text-base md:text-xl font-serif italic text-jazz-cream group-hover:text-jazz-gold transition-colors“>${item.name}</h4>
+                  <span class=“text-[10px] text-jazz-gold/50 whitespace-nowrap font-bold“>${item.price}</span>
                 </div>
-                <p class="text-[9px] text-white/30 uppercase tracking-[0.2em]">${item.info}</p>
+                <p class=“text-[8px] md:text-[9px] text-white/30 uppercase tracking-[0.2em]“>${item.info}</p>
               </div>
-            `).join('')}
+            `).join(‚‘)}
           </div>
         `;
         foodContainer.appendChild(sectionDiv);
       });
 
       // Update texts
-      document.getElementById('fullMenuTitle').innerText = data.fullMenuTitle;
-      document.getElementById('menuHeader').innerHTML = currentLang === 'BG' ? 'Нашето <span class="text-jazz-gold">Меню</span>' : 'Our <span class="text-jazz-gold">Menu</span>';
-      document.getElementById('contactText').innerText = data.contactText;
+      Document.getElementById(‚fullMenuTitle‘).innerText = data.fullMenuTitle;
+      Document.getElementById(‚menuHeader‘).innerHTML = currentLang === ‚BG‘ ? ‚Нашето <span class=“text-jazz-gold“>Меню</span>‘ : ‚Our <span class=“text-jazz-gold“>Menu</span>‘;
+      Document.getElementById(‚contactText‘).innerText = data.contactText;
       
       // Update tab buttons text
-      document.getElementById('tabDrinks').innerText = data.drinksTitle;
-      document.getElementById('tabFood').innerText = data.foodTitle;
+      Document.getElementById(‚tabDrinks‘).innerText = data.drinksTitle;
+      Document.getElementById(‚tabFood‘).innerText = data.foodTitle;
     }
 
-    function setLanguage(lang) {
+    Function setLanguage(lang) {
       currentLang = lang;
       renderMenu();
       
       // Update button styles
-      const btnBG = document.getElementById('langBtnBG');
-      const btnEN = document.getElementById('langBtnEN');
-      if (lang === 'BG') {
-        btnBG.classList.add('text-jazz-gold');
-        btnBG.classList.remove('text-white/40');
-        btnEN.classList.add('text-white/40');
-        btnEN.classList.remove('text-jazz-gold');
+      Const btnBG = document.getElementById(‚langBtnBG‘);
+      Const btnEN = document.getElementById(‚langBtnEN‘);
+      If (lang === ‚BG‘) {
+        btnBG.classList.add(‚text-jazz-gold‘);
+        btnBG.classList.remove(‚text-white/40‘);
+        btnEN.classList.add(‚text-white/40‘);
+        btnEN.classList.remove(‚text-jazz-gold‘);
       } else {
-        btnEN.classList.add('text-jazz-gold');
-        btnEN.classList.remove('text-white/40');
-        btnBG.classList.add('text-white/40');
-        btnBG.classList.remove('text-jazz-gold');
+        btnEN.classList.add(‚text-jazz-gold‘);
+        btnEN.classList.remove(‚text-white/40‘);
+        btnBG.classList.add(‚text-white/40‘);
+        btnBG.classList.remove(‚text-jazz-gold‘);
       }
     }
 
-    function showSection(section) {
+    Function showSection(section) {
       currentSection = section;
-      const drinksSection = document.getElementById('drinksSection');
-      const foodSection = document.getElementById('foodSection');
-      const drinksTab = document.getElementById('tabDrinks');
-      const foodTab = document.getElementById('tabFood');
+      const drinksSection = document.getElementById(‚drinksSection‘);
+      const foodSection = document.getElementById(‚foodSection‘);
+      const drinksTab = document.getElementById(‚tabDrinks‘);
+      const foodTab = document.getElementById(‚tabFood‘);
       
-      if (section === 'drinks') {
-        drinksSection.classList.remove('hidden');
-        foodSection.classList.add('hidden');
-        drinksTab.classList.add('bg-jazz-gold', 'text-black', 'border-jazz-gold');
-        drinksTab.classList.remove('bg-transparent', 'text-white', 'border-white/20');
-        foodTab.classList.add('bg-transparent', 'text-white', 'border-white/20');
-        foodTab.classList.remove('bg-jazz-gold', 'text-black', 'border-jazz-gold');
+      if (section === ‚drinks‘) {
+        drinksSection.classList.remove(‚hidden‘);
+        foodSection.classList.add(‚hidden‘);
+        drinksTab.classList.add(‚bg-jazz-gold‘, ‚text-black‘, ‚border-jazz-gold‘);
+        drinksTab.classList.remove(‚bg-transparent‘, ‚text-white‘, ‚border-white/20‘);
+        foodTab.classList.add(‚bg-transparent‘, ‚text-white‘, ‚border-white/20‘);
+        foodTab.classList.remove(‚bg-jazz-gold‘, ‚text-black‘, ‚border-jazz-gold‘);
       } else {
-        drinksSection.classList.add('hidden');
-        foodSection.classList.remove('hidden');
-        foodTab.classList.add('bg-jazz-gold', 'text-black', 'border-jazz-gold');
-        foodTab.classList.remove('bg-transparent', 'text-white', 'border-white/20');
-        drinksTab.classList.add('bg-transparent', 'text-white', 'border-white/20');
-        drinksTab.classList.remove('bg-jazz-gold', 'text-black', 'border-jazz-gold');
+        drinksSection.classList.add(‚hidden‘);
+        foodSection.classList.remove(‚hidden‘);
+        foodTab.classList.add(‚bg-jazz-gold‘, ‚text-black‘, ‚border-jazz-gold‘);
+        foodTab.classList.remove(‚bg-transparent‘, ‚text-white‘, ‚border-white/20‘);
+        drinksTab.classList.add(‚bg-transparent‘, ‚text-white‘, ‚border-white/20‘);
+        drinksTab.classList.remove(‚bg-jazz-gold‘, ‚text-black‘, ‚border-jazz-gold‘);
       }
     }
 
     // Initialize
     renderMenu();
-    setLanguage('BG');
-    showSection('drinks');
+    setLanguage(‚BG‘);
+    showSection(‚drinks‘);
   </script>
 </body>
-</html> 
-
+</html>
