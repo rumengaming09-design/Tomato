@@ -729,7 +729,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 mb-20">
           <div className="flex flex-col">
             <h2 className="text-4xl font-serif text-jazz-gold tracking-tighter uppercase mb-6">TOMATO</h2>
-            <div className="flex gap-10 text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">
+            <div className="flex gap-10 text-[12px] uppercase tracking-[0.3em] opacity-60 font-bold">
               <a href="https://www.instagram.com/to.mato.2016?igsh=d3MzbjJ6dW0zaWg1" target="_blank" rel="noopener noreferrer" className="hover:text-jazz-gold transition-colors">Instagram</a>
               <a href="#" className="hover:text-jazz-gold transition-colors">{t.spotifyPlaylist}</a>
               <button onClick={handleReservationClick} className="hover:text-jazz-gold transition-colors">{t.bookingTitle}</button>
@@ -742,7 +742,7 @@ export default function App() {
         </div>
         <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[9px] uppercase tracking-[0.3em] text-white/20">{t.footerCopyright}</p>
-          <div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic"><a href="https://ar-studio-business.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-jazz-gold transition-all duration-300 not-italic font-medium">{t.footerBuild}</a><span>{t.footerRights}</span></div>
+          <div className="flex gap-8 text-[11px] uppercase tracking-[0.3em] text-white/40 italic"><a href="https://ar-studio-business.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-jazz-gold transition-all duration-300 not-italic font-medium">{t.footerBuild}</a><span>{t.footerRights}</span></div>
         </div>
       </footer>
     </div>
