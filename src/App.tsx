@@ -742,7 +742,7 @@ export default function App() {
         </div>
         <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[9px] uppercase tracking-[0.3em] text-white/20">{t.footerCopyright}</p>
-          <div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic"><a href="https://ar-studio-business.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-jazz-gold transition-colors">{t.footerBuild}</a><span>{t.footerRights}</span></div>
+          <div className="flex gap-8 text-[9px] uppercase tracking-[0.3em] text-white/20 italic"><a href="https://ar-studio-business.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-jazz-gold transition-all duration-300 not-italic font-medium">{t.footerBuild}</a><span>{t.footerRights}</span></div>
         </div>
       </footer>
     </div>
