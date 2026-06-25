@@ -111,8 +111,9 @@ const LANGUAGES = {
     addressValue: "ул. \"Йоаким Груев\" 21, 4000 Център, Пловдив",
     resLabel: "Резервации",
     workingHoursTitle: "Работно време",
-    workingHoursWeek: "Пон - Пет: 08:00 - 23:00",
-    workingHoursSat: "Събота: 16:00 - 21:00",
+    workingHoursWeek: "Пон - Сря: 08:00 - 17:00",
+    workingHoursThuFri: "Чет - Пет: 08:00 - 23:00",
+    workingHoursSat: "Събота: 16:00 - 23:00",
     workingHoursSun: "Неделя: Почивен ден",
     summerHoursAnnouncement: "очаквайте лятно работно време",
     directions: "Упътване",
@@ -236,8 +237,9 @@ const LANGUAGES = {
     addressValue: "21 Yoakim Gruev St, 4000 Center, Plovdiv",
     resLabel: "Reservations",
     workingHoursTitle: "Working Hours",
-    workingHoursWeek: "Mon - Fri: 8:00 AM - 11:00 PM",
-    workingHoursSat: "Saturday: 4:00 PM - 9:00 PM",
+    workingHoursWeek: "Mon - Wed: 8:00 AM - 5:00 PM",
+    workingHoursThuFri: "Thu - Fri: 8:00 AM - 11:00 PM",
+    workingHoursSat: "Saturday: 4:00 PM - 11:00 PM",
     workingHoursSun: "Sunday: Closed",
     summerHoursAnnouncement: "summer working hours coming soon",
     directions: "Get Directions",
@@ -716,7 +718,7 @@ export default function App() {
             <h2 className="text-4xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] mb-12 italic">{t.visitHeader.split(" ").slice(0, 2).join(" ")} <br /> {t.visitHeader.split(" ").slice(2).join(" ")}</h2>
             <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
               <div className="flex flex-col items-center gap-4"><MapPin className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p></div></div>
-              <div className="flex flex-col items-center gap-4 text-center"><Clock className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p><div className="text-xs font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest"><p>{t.workingHoursWeek}</p><p>{t.workingHoursSat}</p><p>{t.workingHoursSun}</p></div><p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">{t.summerHoursAnnouncement}</p></div></div>
+              <div className="flex flex-col items-center gap-4 text-center"><Clock className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p><div className="text-xs font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest"><p>{t.workingHoursWeek}</p><p>{t.workingHoursThuFri}</p><p>{t.workingHoursSat}</p><p>{t.workingHoursSun}</p></div><p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">{t.summerHoursAnnouncement}</p></div></div>
               <div className="flex flex-col items-center gap-4"><Phone className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p></div></div>
             </div>
             <a href="https://www.google.com/maps/dir/?api=1&destination=ul.+Yoakim+Gruev+21,+4000+Plovdiv" target="_blank" rel="noopener noreferrer" className="inline-block px-8 md:px-12 py-5 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-black hover:bg-jazz-gold hover:text-jazz-black transition-all duration-500 shadow-xl">{t.directions}</a>
