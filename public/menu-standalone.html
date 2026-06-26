@@ -88,6 +88,12 @@
 
     <!-- Footer with reservation button -->
     <div class="mt-16 md:mt-24 pt-8 md:pt-12 border-t border-white/10 text-center">
+      <div id="workingHours" class="mb-8 p-6 border border-jazz-gold/20 bg-jazz-gold/5 inline-block mx-auto rounded-lg">
+        <h4 id="workingHoursTitle" class="text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-bold mb-4">Работно Време</h4>
+        <div id="workingHoursList" class="space-y-2 text-jazz-cream/80 font-serif italic text-sm md:text-base">
+          <!-- Populated by JS -->
+        </div>
+      </div>
       <p id="contactText" class="text-white/40 text-[10px] md:text-xs mb-5 md:mb-6 uppercase tracking-widest">За резервации: 089 637 0777</p>
       <button onclick="window.open('https://www.google.com/maps/reserve/v/dine/c/cLjMFkgllLM?source=pa&opi=89978449&hl=en-BG&gei=14gcarvWJM2Mxc8PhfSl0QQ&gsas=1&ahbb=1&sourceurl=https://www.google.com/search?hl%3Den-US%26ram_mb%3D7225%26aos%3D18%26ampcct%3D7778%26cs%3D1%26q%3Dtomato%2Brestaurant%26agsai%3Dsg8HwFfHgBc%26padt%3D117%26rdid%3D40711b74-5722-41e3-a90c-bade1d5929b5%26client%3Dms-android-samsung-ss%26gs_ssp%3DeJzj4tVP1zc0TKnISU_KKEo2YLRSMagwNElMTjFMSjFPSUq0NEwxtjKoMDOwNDYySzY0NbUwTU1L8xIsyc9NLMlXKEotLkksLUrMKwEAFNwWtw%26source%3Dand.gsa.launcher.icon%26pf%3Dop', '_blank')" class="px-8 md:px-10 py-3 md:py-4 bg-jazz-gold text-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] font-black hover:bg-white transition-all duration-500">
         Резервирай маса
@@ -105,6 +111,13 @@
         drinksTitle: "Напитки",
         foodTitle: "Меню Кухня",
         contactText: "За резервации: 089 637 0777",
+        workingHoursTitle: "Работно Време",
+        workingHours: [
+          "Понеделник-сряда от 8ч до 17ч",
+          "Четвъртък-Петък от 8ч до 23ч",
+          "Събота от 16ч до 23ч",
+          "Неделя почивен ден"
+        ],
         drinks: [
           { name: "Напитки с кафе, мляко и чай", items: [
             { name: "Кафе Lavazza", price: "1,99€", info: "60 мл" },
@@ -245,6 +258,13 @@
         drinksTitle: "Drinks",
         foodTitle: "Kitchen Menu",
         contactText: "For reservations: 089 637 0777",
+        workingHoursTitle: "Opening Hours",
+        workingHours: [
+          "Monday-Wednesday: 8am - 5pm",
+          "Thursday-Friday: 8am - 11pm",
+          "Saturday: 4pm - 11pm",
+          "Sunday: Closed"
+        ],
         drinks: [
           { name: "Coffee, Milk & Tea", items: [
             { name: "Lavazza Coffee", price: "1,99€", info: "60 ml" },
@@ -447,6 +467,11 @@
       // Update tab buttons text
       document.getElementById('tabDrinks').innerText = data.drinksTitle;
       document.getElementById('tabFood').innerText = data.foodTitle;
+      
+      // Update working hours
+      document.getElementById('workingHoursTitle').innerText = data.workingHoursTitle;
+      const hoursList = document.getElementById('workingHoursList');
+      hoursList.innerHTML = data.workingHours.map(line => `<p>${line}</p>`).join('');
     }
 
     function setLanguage(lang) {
