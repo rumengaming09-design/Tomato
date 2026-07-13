@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import {
   MapPin, Phone, Clock, ChevronRight, Star, Instagram, Facebook, Music,
   UtensilsCrossed, Wine, Quote, X, Calendar, Users, CalendarCheck,
-  GlassWater, ChevronLeft
+  GlassWater, ChevronLeft, Play
 } from "lucide-react";
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 
@@ -325,6 +325,26 @@ const NAV_LINKS_MAP: Record<string, string> = {
 };
 
 // ==================== ОПТИМИЗИРАНИ КОМПОНЕНТИ ====================
+const VideoPlayer = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="w-full max-w-5xl mx-auto mb-20 relative group"
+  >
+    <div className="relative aspect-video w-full overflow-hidden border border-white/10 bg-jazz-black shadow-2xl">
+      <iframe
+        src="https://www.youtube.com/embed/Yidc9QbyU0M?autoplay=0&rel=0&modestbranding=1"
+        title="Tomato Restaurant Video"
+        className="absolute inset-0 w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+    <div className="absolute -bottom-6 -right-6 w-24 h-24 border-r border-b border-jazz-gold/30 -z-10" />
+    <div className="absolute -top-6 -left-6 w-24 h-24 border-l border-t border-jazz-gold/30 -z-10" />
+  </motion.div>
+);
+
 const GalleryImage = ({ url, index }: { url: string; index: number }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
@@ -503,6 +523,9 @@ export default function App() {
                   <h2 className="text-5xl md:text-9xl font-serif text-white italic tracking-tighter leading-none">{t.gallerySubtitle.split(" ").slice(0, 1)} <br /> {t.gallerySubtitle.split(" ").slice(1).join(" ")}</h2>
                   <p className="mt-8 text-white/40 text-sm max-w-lg mx-auto font-light leading-relaxed italic">{t.galleryDesc}</p>
                 </div>
+                
+                <VideoPlayer />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 px-4 md:px-12">
                   {allGalleryImages.map((url, i) => <GalleryImage key={i} url={url} index={i} />)}
                 </div>
