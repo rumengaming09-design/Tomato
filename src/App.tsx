@@ -333,7 +333,7 @@ const VideoPlayer = () => (
   >
     <div className="relative aspect-video w-full overflow-hidden border border-white/10 bg-jazz-black shadow-2xl">
       <iframe
-        src="https://www.youtube.com/embed/Yidc9QbyU0M?autoplay=0&rel=0&modestbranding=1"
+        src="https://www.youtube.com/embed/MQkq0wBHB2E?autoplay=0&rel=0&modestbranding=1"
         title="Tomato Restaurant Video"
         className="absolute inset-0 w-full h-full"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
