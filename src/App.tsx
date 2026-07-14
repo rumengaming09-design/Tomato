@@ -115,7 +115,7 @@ const LANGUAGES = {
     workingHoursThuFri: "Четвъртък-Петък от 8ч до 23ч",
     workingHoursSat: "Събота от 16ч до 23ч",
     workingHoursSun: "Неделя почивен ден",
-    summerHoursAnnouncement: "очаквайте лятно работно време",
+    summerHoursAnnouncement: "ВРЕМЕННО ЛЯТНО РАБОТНО ВРЕМЕ",
     directions: "Упътване",
     locationTag: "Бижуто на Капана",
     locationDesc: "Намираме се в историческото ядро на Пловдив. Последвайте ритъма на пианото до нашата врата.",
