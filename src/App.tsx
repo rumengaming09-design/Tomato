@@ -354,7 +354,7 @@ const GalleryImage = ({ url, index }: { url: string; index: number }) => (
   >
     <img
       src={url}
-      alt={`Tomato gallery ${index}`}
+      alt={`Снимка от ресторант Tomato в Пловдив – атмосфера и меню ${index + 1}`}
       className="w-full h-full object-cover transition-all duration-[2s] ease-in-out"
       loading="lazy"
       referrerPolicy="no-referrer"
@@ -406,6 +406,28 @@ export default function App() {
 
   const t = useMemo(() => LANGUAGES[lang], [lang]);
 
+  useEffect(() => {
+    const isBulgarian = lang === "BG";
+    const title = isBulgarian
+      ? "Ресторант Tomato в Пловдив | Меню, коктейли и резервации"
+      : "Tomato Restaurant in Plovdiv | Menu, Cocktails & Reservations";
+    const description = isBulgarian
+      ? "Ресторант Tomato в центъра на Пловдив – уютна джаз атмосфера, BBQ специалитети, коктейли, градина и резервации онлайн."
+      : "Tomato is a restaurant in central Plovdiv with a cozy jazz atmosphere, BBQ specialties, cocktails, a garden, and online reservations.";
+    const updateMeta = (selector: string, content: string) => {
+      document.querySelector<HTMLMetaElement>(selector)?.setAttribute("content", content);
+    };
+
+    document.documentElement.lang = isBulgarian ? "bg" : "en";
+    document.title = title;
+    updateMeta('meta[name="description"]', description);
+    updateMeta('meta[property="og:locale"]', isBulgarian ? "bg_BG" : "en_US");
+    updateMeta('meta[property="og:title"]', title);
+    updateMeta('meta[property="og:description"]', description);
+    updateMeta('meta[name="twitter:title"]', title);
+    updateMeta('meta[name="twitter:description"]', description);
+  }, [lang]);
+
   const handleReservationClick = useCallback(() => window.open(RESERVATION_LINK, "_blank"), []);
   const handleMenuClick = useCallback(() => window.open('/menu-standalone.html', '_blank'), []);
   const handleScroll = useCallback(() => setScrolled(window.scrollY > 20), []);
@@ -449,10 +471,10 @@ export default function App() {
       <nav className={`fixed top-0 left-0 w-full z-[80] flex justify-between items-center px-6 md:px-16 py-6 transition-all duration-500 ${scrolled ? "backdrop-blur-md border-b border-white/5 bg-jazz-black/50" : "bg-transparent border-transparent"}`}>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-4 md:gap-6 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform duration-500">
-            <img src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg" alt="Tomato Logo" className="w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
+            <img src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg" alt="Лого на ресторант Tomato в Пловдив" className="w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</h1>
+            <p className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</p>
             <span className="text-[7px] md:text-[8px] tracking-[0.4em] md:tracking-[0.5em] uppercase opacity-40 font-bold">{t.subtitle}</span>
           </div>
         </motion.div>
@@ -463,7 +485,7 @@ export default function App() {
             <button onClick={() => setLang("EN")} className={`text-[10px] font-black tracking-widest transition-colors ${lang === "EN" ? "text-jazz-gold" : "text-white/40 hover:text-white"}`}>EN</button>
           </div>
           <div className="hidden sm:flex flex-col items-end gap-1">
-            <button onClick={handleReservationClick} className="flex items-center gap-3 px-6 py-2.5 bg-jazz-gold text-jazz-black text-[9px] uppercase tracking-[0.2em] font-black hover:bg-white transition-colors duration-500 shadow-lg group">{t.bookNow}</button>
+            <a href={RESERVATION_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-6 py-2.5 bg-jazz-gold text-jazz-black text-[9px] uppercase tracking-[0.2em] font-black hover:bg-white transition-colors duration-500 shadow-lg group">{t.bookNow}</a>
             <span className="text-xs uppercase tracking-widest text-[#00ff88] animate-pulse font-black">{t.onlineResStat}</span>
           </div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex flex-col gap-1.5 p-2 group cursor-pointer">
@@ -569,12 +591,13 @@ export default function App() {
         )}
       </AnimatePresence>
 
+      <main>
       {/* Hero Section */}
       <section id="home" className="relative h-screen flex flex-col justify-center items-center pt-20">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div key={heroIndex} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.5, ease: "easeInOut" }}>
-              <img src={heroImages[heroIndex]} alt="Hero Background" className="w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
+              <img src={heroImages[heroIndex]} alt="Интериор и атмосфера в ресторант Tomato в Пловдив" className="w-full h-full object-cover" loading="eager" fetchPriority="high" referrerPolicy="no-referrer" />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-jazz-black/60 via-jazz-black/40 to-jazz-black z-10" />
@@ -592,21 +615,21 @@ export default function App() {
               <div className="w-8 md:w-12 h-[1px] bg-jazz-gold/40" />
             </div>
             <h1 className="text-6xl md:text-[12rem] font-serif text-white mb-10 md:mb-12 tracking-tighter leading-none relative group px-2">
-              <span className="relative z-10">{t.heroTitle1}</span><br />
-              <span className="italic text-jazz-gold relative z-10">{t.heroTitle2}</span>
+              <span className="relative z-10">{lang === "BG" ? "Ресторант Tomato" : "Tomato Restaurant"}</span><br />
+              <span className="italic text-jazz-gold relative z-10">{lang === "BG" ? "в Пловдив" : "in Plovdiv"}</span>
               <div className="absolute -inset-10 bg-jazz-gold/10 blur-[120px] rounded-full -z-10 opacity-50" />
             </h1>
             <p className="max-w-2xl mx-auto text-jazz-cream/60 text-base md:text-xl font-light leading-relaxed mb-16 italic tracking-wide px-4">{t.heroDesc}</p>
             <div className="mt-16 flex flex-col items-center gap-8 w-full px-4">
               <div className="flex flex-col md:flex-row gap-4 md:gap-10 justify-center items-center w-full max-w-[320px] md:max-w-none">
-                <button onClick={handleMenuClick} className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]">
+                <a href="/menu-standalone.html" target="_blank" rel="noopener noreferrer" className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-transparent text-white text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all border border-white/10 flex items-center justify-center min-w-[200px]">
                   <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 group-hover:text-jazz-black whitespace-nowrap">{t.viewMenu}</span>
-                </button>
-                <button onClick={handleReservationClick} className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all shadow-2xl flex items-center justify-center min-w-[200px]">
+                </a>
+                <a href={RESERVATION_LINK} target="_blank" rel="noopener noreferrer" className="group relative w-full md:w-auto px-12 md:px-16 py-5 md:py-6 bg-jazz-gold text-jazz-black text-[10px] uppercase tracking-[0.4em] font-bold overflow-hidden transition-all shadow-2xl flex items-center justify-center min-w-[200px]">
                   <div className="absolute inset-0 bg-white -translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 whitespace-nowrap">{t.bookNow}</span>
-                </button>
+                </a>
               </div>
               <span className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#00ff88] font-black animate-pulse text-center">{t.onlineResStat}</span>
             </div>
@@ -661,7 +684,7 @@ export default function App() {
               <div className="w-full lg:w-1/2 relative group">
                 <div className="absolute -inset-4 bg-jazz-gold/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[16/9] overflow-hidden rounded-sm border border-white/10 group">
-                  <img src={hallImages[selectedHall][hallIndex[selectedHall]]} alt={selectedHall} className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out" loading="lazy" referrerPolicy="no-referrer" />
+                  <img src={hallImages[selectedHall][hallIndex[selectedHall]]} alt={`${currentHall?.name} в ресторант Tomato, Пловдив`} className="w-full h-full object-cover transition-transform duration-[2.5s] ease-out" loading="lazy" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-jazz-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/p6.png')]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-jazz-black/80 to-transparent" />
                   <div className="absolute bottom-8 left-8 z-10">
@@ -699,7 +722,7 @@ export default function App() {
       <section id="vibe" className="py-24 md:py-32 px-6 md:px-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20 items-center text-center md:text-left">
           <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-[4/5] bg-zinc-900 overflow-hidden relative transition-all duration-1000">
-            <img src="https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg" alt="Jazz atmosphere" className="w-full h-full object-cover opacity-80 border border-black" loading="lazy" referrerPolicy="no-referrer" />
+            <img src="https://i.postimg.cc/Pqp14S5L/IMG-0695(1).jpg" alt="Джаз атмосфера в ресторант Tomato в Пловдив" className="w-full h-full object-cover opacity-80 border border-black" loading="lazy" referrerPolicy="no-referrer" />
             <div className="absolute inset-0 bg-gradient-to-r from-jazz-black/80 to-transparent" />
             <div className="absolute bottom-10 left-6 md:bottom-12 md:left-12 text-left">
               <Music size={48} className="text-jazz-gold/40 mb-6" />
@@ -742,12 +765,14 @@ export default function App() {
             <div className="flex flex-col md:flex-row gap-12 md:gap-20 justify-center items-center mb-16 px-4">
               <div className="flex flex-col items-center gap-4"><MapPin className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.addressLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">{t.addressValue}</p></div></div>
               <div className="flex flex-col items-center gap-4 text-center"><Clock className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.workingHoursTitle}</p><div className="text-sm md:text-base font-serif italic text-jazz-cream/80 leading-relaxed uppercase tracking-widest"><p>{t.workingHoursWeek}</p><p>{t.workingHoursThuFri}</p><p>{t.workingHoursSat}</p><p>{t.workingHoursSun}</p></div><p className="text-[10px] uppercase tracking-[0.2em] font-bold text-jazz-gold/90 mt-2">{t.summerHoursAnnouncement}</p></div></div>
-              <div className="flex flex-col items-center gap-4"><Phone className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p><p className="text-xl font-serif italic text-jazz-cream/80 leading-tight">089 637 0777</p></div></div>
+              <div className="flex flex-col items-center gap-4"><Phone className="text-jazz-gold/60" size={32} /><div className="space-y-2"><p className="text-jazz-gold text-[9px] uppercase tracking-[0.3em] font-bold opacity-60">{t.resLabel}</p><a href="tel:+359896370777" className="text-xl font-serif italic text-jazz-cream/80 leading-tight hover:text-jazz-gold transition-colors">089 637 0777</a></div></div>
             </div>
             <a href="https://www.google.com/maps/dir/?api=1&destination=ul.+Yoakim+Gruev+21,+4000+Plovdiv" target="_blank" rel="noopener noreferrer" className="inline-block px-8 md:px-12 py-5 border border-jazz-gold/30 text-jazz-gold text-[10px] uppercase tracking-[0.4em] font-black hover:bg-jazz-gold hover:text-jazz-black transition-all duration-500 shadow-xl">{t.directions}</a>
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-white/10 pt-20 pb-16 px-8 md:px-16 bg-jazz-black">
