@@ -471,7 +471,7 @@ export default function App() {
       <nav className={`fixed top-0 left-0 w-full z-[80] flex justify-between items-center px-6 md:px-16 py-6 transition-all duration-500 ${scrolled ? "backdrop-blur-md border-b border-white/5 bg-jazz-black/50" : "bg-transparent border-transparent"}`}>
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-4 md:gap-6 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative group-hover:scale-105 transition-transform duration-500">
-            <img src="https://i.postimg.cc/s2jX3RhP/20260516-160804(1)(1)(1)(1)(1).jpg" alt="Лого на ресторант Tomato в Пловдив" className="w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
+            <img src="/tomato-logo.jpg" alt="Лого на ресторант Tomato в Пловдив" className="w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
           </div>
           <div className="flex flex-col">
             <p className="text-3xl md:text-5xl font-bold font-serif tracking-tighter text-jazz-gold uppercase">TOMATO</p>
