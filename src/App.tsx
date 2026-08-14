@@ -520,9 +520,15 @@ export default function App() {
             role="status"
             aria-live="polite"
           >
-            <div className="flex max-w-3xl items-center gap-4 border border-[#ffe6a3] bg-jazz-gold px-5 py-4 text-center shadow-[0_16px_45px_rgba(212,169,84,0.45)] backdrop-blur-md md:px-8 md:py-5">
-              <Calendar size={22} className="shrink-0 text-jazz-black" aria-hidden="true" />
-              <p className="text-sm font-black uppercase tracking-[0.12em] text-jazz-black md:text-base md:tracking-[0.16em]">
+            <div className="relative flex max-w-[43rem] items-center gap-3 overflow-hidden rounded-[1.4rem_0.3rem_1.4rem_0.3rem] border border-[#ffe6a3] bg-jazz-gold px-4 py-3.5 text-center shadow-[0_16px_45px_rgba(212,169,84,0.45)] backdrop-blur-md md:gap-4 md:px-7 md:py-4">
+              <span aria-hidden="true" className="pointer-events-none absolute left-2.5 top-2.5 h-3.5 w-3.5 border-l border-t border-jazz-black/70" />
+              <span aria-hidden="true" className="pointer-events-none absolute right-2.5 top-2.5 h-3.5 w-3.5 border-r border-t border-jazz-black/70" />
+              <span aria-hidden="true" className="pointer-events-none absolute bottom-2.5 left-2.5 h-3.5 w-3.5 border-b border-l border-jazz-black/70" />
+              <span aria-hidden="true" className="pointer-events-none absolute bottom-2.5 right-2.5 h-3.5 w-3.5 border-b border-r border-jazz-black/70" />
+              <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 bg-jazz-black/65" />
+              <span aria-hidden="true" className="pointer-events-none absolute bottom-2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 bg-jazz-black/65" />
+              <Calendar size={20} className="relative shrink-0 text-jazz-black" aria-hidden="true" />
+              <p className="relative text-sm font-black uppercase tracking-[0.1em] text-jazz-black md:text-[15px] md:tracking-[0.14em]">
                 Ресторантът излиза в отпуска от 24 август до 2 септември включително.
               </p>
             </div>
