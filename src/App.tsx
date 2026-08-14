@@ -411,7 +411,7 @@ export default function App() {
     let hideTimer: ReturnType<typeof window.setTimeout> | undefined;
     const showTimer = window.setTimeout(() => {
       setIsVacationNoticeVisible(true);
-      hideTimer = window.setTimeout(() => setIsVacationNoticeVisible(false), 5000);
+      hideTimer = window.setTimeout(() => setIsVacationNoticeVisible(false), 7000);
     }, 500);
 
     return () => {
@@ -520,9 +520,9 @@ export default function App() {
             role="status"
             aria-live="polite"
           >
-            <div className="flex max-w-2xl items-center gap-3 border border-jazz-gold/50 bg-jazz-black/95 px-4 py-3 text-center shadow-2xl backdrop-blur-md md:px-6">
-              <Calendar size={18} className="shrink-0 text-jazz-gold" aria-hidden="true" />
-              <p className="text-xs font-bold uppercase tracking-[0.12em] text-white md:text-sm md:tracking-[0.16em]">
+            <div className="flex max-w-3xl items-center gap-4 border border-[#ffe6a3] bg-jazz-gold px-5 py-4 text-center shadow-[0_16px_45px_rgba(212,169,84,0.45)] backdrop-blur-md md:px-8 md:py-5">
+              <Calendar size={22} className="shrink-0 text-jazz-black" aria-hidden="true" />
+              <p className="text-sm font-black uppercase tracking-[0.12em] text-jazz-black md:text-base md:tracking-[0.16em]">
                 Ресторантът излиза в отпуска от 24 август до 2 септември включително.
               </p>
             </div>
