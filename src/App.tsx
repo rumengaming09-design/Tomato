@@ -403,8 +403,22 @@ export default function App() {
   const [selectedHall, setSelectedHall] = useState<"main" | "garden" | "bar">("main");
   const [hallIndex, setHallIndex] = useState<Record<string, number>>({ main: 0, garden: 0, bar: 0 });
   const [heroIndex, setHeroIndex] = useState(0);
+  const [isVacationNoticeVisible, setIsVacationNoticeVisible] = useState(false);
 
   const t = useMemo(() => LANGUAGES[lang], [lang]);
+
+  useEffect(() => {
+    let hideTimer: ReturnType<typeof window.setTimeout> | undefined;
+    const showTimer = window.setTimeout(() => {
+      setIsVacationNoticeVisible(true);
+      hideTimer = window.setTimeout(() => setIsVacationNoticeVisible(false), 5000);
+    }, 500);
+
+    return () => {
+      window.clearTimeout(showTimer);
+      if (hideTimer) window.clearTimeout(hideTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const isBulgarian = lang === "BG";
@@ -494,6 +508,27 @@ export default function App() {
           </button>
         </div>
       </nav>
+
+      <AnimatePresence>
+        {isVacationNoticeVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: -24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -24 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="fixed top-[5.75rem] left-4 right-4 z-[90] flex justify-center pointer-events-none md:top-28"
+            role="status"
+            aria-live="polite"
+          >
+            <div className="flex max-w-2xl items-center gap-3 border border-jazz-gold/50 bg-jazz-black/95 px-4 py-3 text-center shadow-2xl backdrop-blur-md md:px-6">
+              <Calendar size={18} className="shrink-0 text-jazz-gold" aria-hidden="true" />
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-white md:text-sm md:tracking-[0.16em]">
+                Ресторантът излиза в отпуска от 24 август до 2 септември включително.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Menu Overlay - ПРОМЕНЕНА ПОДРЕДБАТА! "Частни Събития" е втори */}
       <AnimatePresence mode="wait">
